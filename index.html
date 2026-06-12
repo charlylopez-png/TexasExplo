@@ -1876,6 +1876,10 @@ function resetCamOrder() {
 }
 
 function saveCamOrder() {
+  // Strip any nulls from orders
+  Object.keys(camOrder).forEach(m => {
+    camOrder[m] = (camOrder[m] || []).filter(Boolean);
+  });
   localStorage.setItem('tx_cam_order', JSON.stringify(camOrder));
   if (sbReady) {
     // Save to Supabase as a single config row
@@ -1943,8 +1947,12 @@ function camToSBRow(c) {
     estado:      c.estado || 'operativa',
     comentarios: c.comentarios || null,
     activo:      c.activo !== false,
-    motivo_baja: c.motivoBaja || null,
-    fecha_baja:  c.bajReal ? c.bajReal.split('/').reverse().join('-') : null,
+    motivo_baja: c.motivoBaja || c.motivo_baja || null,
+    fecha_baja:  (c.bajReal || c.fecha_baja)
+      ? (c.bajReal || c.fecha_baja).includes('-')
+        ? (c.bajReal || c.fecha_baja)
+        : (c.bajReal || c.fecha_baja).split('/').reverse().join('-')
+      : null,
     ata:         c.ata || false,
     nota:        c.nota || null,
     seguro:      c.seguro || false,
@@ -2015,6 +2023,20 @@ function onCamDrop(e, targetCode, targetModelo) {
   camOrder[dragSrcModel] = order;
   saveCamOrder(); renderCameras();
   dragSrcCode = null; dragSrcModel = null; dragOverCode = null;
+}
+
+function onContainerDrop(e, modelo) {
+  // Only fire if dropped on the container itself (not a card)
+  if (e.target.classList.contains('cam-card') || e.target.closest('.cam-card')) return;
+  e.preventDefault();
+  if (!dragSrcCode || dragSrcModel !== modelo) return;
+  const modelCams = getCamFiltered().filter(c => c.modelo === modelo);
+  let order = [...(camOrder[modelo] || modelCams.map(c => c.code))].filter(Boolean);
+  order = order.filter(c => c !== dragSrcCode);
+  order.push(dragSrcCode); // append at end
+  camOrder[modelo] = order;
+  saveCamOrder(); renderCameras();
+  dragSrcCode = null; dragSrcModel = null;
 }
 
 function onSlotDrop(e, modelo, slotIdx) {
@@ -2352,7 +2374,7 @@ function renderCameras() {
         </div>
         <div class="cam-model-cards"
           ondragover="event.preventDefault()"
-          ondrop="onSlotDrop(event,'${modelo}',999)"
+          ondrop="onContainerDrop(event,'${modelo}')"
           data-view-del="${camFilters.del}">
           ${(()=>{
             const baseOrder = (camOrder[modelo] || []).filter(Boolean);
@@ -2648,11 +2670,37 @@ window.confirmBaja = function() {
   if (pendingBajaId && pendingBajaId.startsWith('CAM:')) {
     const code = pendingBajaId.replace('CAM:','');
     const c = cameras.find(x => x.code === code);
-    if (c) { c.activo = false; c.bajReal = new Date().toLocaleDateString('es-ES'); c.motivoBaja = document.getElementById('confirm-motivo').value.trim()||null; }
+    if (c) {
+      c.activo = false;
+      c.bajReal = new Date().toLocaleDateString('es-ES');
+      c.motivoBaja = document.getElementById('confirm-motivo').value.trim()||null;
+      c.motivo_baja = c.motivoBaja;
+      c.fecha_baja = c.bajReal;
+    }
     saveCameras();
+    if (c) {
+      // Direct Supabase update for baja — most reliable approach
+      if (sbReady && c._id) {
+        const today = new Date().toISOString().split('T')[0];
+        sbPatch('cameras', c._id, {
+          activo: false,
+          motivo_baja: c.motivoBaja || null,
+          fecha_baja: today
+        }).catch(e => console.warn('baja sync error:', e));
+      } else if (sbReady) {
+        // find by code
+        sbGet('cameras', 'code=eq.'+encodeURIComponent(c.code)+'&limit=1').then(rows => {
+          if (rows[0]) {
+            c._id = rows[0].id;
+            const today = new Date().toISOString().split('T')[0];
+            return sbPatch('cameras', rows[0].id, { activo: false, motivo_baja: c.motivoBaja||null, fecha_baja: today });
+          }
+        }).catch(e => console.warn('baja find error:', e));
+      }
+    }
     document.getElementById('modal-confirm').classList.remove('open');
     pendingBajaId = null;
-    renderCameras(); closeModal();
+    renderCameras(); renderCamStats(); closeModal();
   } else { _origConfirmBaja(); }
 };
 
@@ -2887,7 +2935,7 @@ async function migrateToSupabase() {
     comentarios: c.comentarios || null,
     fecha_alta:  c.fechaAlta ? c.fechaAlta.split('/').reverse().join('-') : null,
     activo:      c.activo !== false,
-    motivo_baja: c.motivoBaja || null,
+    motivo_baja: c.motivoBaja || c.motivo_baja || null,
     ata:         c.ata || false,
     nota:        c.nota || null,
     seguro:      c.seguro || false,
