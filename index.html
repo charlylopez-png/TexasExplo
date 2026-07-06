@@ -4007,7 +4007,19 @@ async function renderAsistencia() {
   let asgnToday = [];
   if (sbReady) {
     try { att = await sbGet('operator_attendance', 'fecha=eq.'+fecha); } catch(e) { console.warn(e); }
-    try { asgnToday = await sbGet('assignments', 'fecha=eq.'+fecha+'&asset_type=eq.camera&limit=500'); } catch(e) { console.warn(e); }
+    try {
+      // Coberturas con fecha exacta (las que salieron ese día)
+      const byFecha = await sbGet('assignments', 'fecha=eq.'+fecha+'&asset_type=eq.camera&limit=500');
+      // Coberturas que salieron un día ANTES y tienen regreso en este día o
+      // posterior (multiday con hora_fin >= inicio del día actual)
+      const startOfDay = new Date(fecha+'T00:00:00').toISOString();
+      const byHoraFin = await sbGet('assignments',
+        'fecha=lt.'+fecha+'&hora_fin=gte.'+encodeURIComponent(startOfDay)+'&asset_type=eq.camera&limit=200');
+      // También las activas que salieron antes y aún no tienen hora_fin
+      const activeOld = await sbGet('assignments',
+        'fecha=lt.'+fecha+'&estado=eq.activa&asset_type=eq.camera&limit=200');
+      asgnToday = [...byFecha, ...byHoraFin, ...activeOld];
+    } catch(e) { console.warn(e); }
   }
   window._asistPresent = new Set(att.map(a=>presKey(a.operator_nombre, a.prod)));
   window._asistActive  = new Set(asgnToday.map(a=>presKey(a.operator_nombre, a.prod)));
