@@ -7051,12 +7051,25 @@ async function renderCoberturas() {
     + '<input type="date" id="cob-from" onclick="this.showPicker && this.showPicker()" onchange="cobDateChanged(\'from\')" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px 10px;font-size:13px;cursor:pointer"></div>'
     + '<div style="display:flex;flex-direction:column;gap:3px"><label style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Hasta</label>'
     + '<input type="date" id="cob-to" onclick="this.showPicker && this.showPicker()" onchange="cobDateChanged(\'to\')" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px 10px;font-size:13px;cursor:pointer"></div>'
-    + '<button onclick="document.getElementById(\'cob-prod\').value=\'\';document.getElementById(\'cob-op\').value=\'\';document.getElementById(\'cob-from\').value=\'\';document.getElementById(\'cob-to\').value=\'\';window._cobSoloSospechosas=false;document.getElementById(\'cob-sospechosas\').style.background=\'\';document.getElementById(\'cob-sospechosas\').style.color=\'var(--muted)\';cobFilterChanged()" style="background:none;border:1px solid var(--border2);color:var(--muted);border-radius:6px;padding:8px 14px;font-size:12px;cursor:pointer;align-self:flex-end">✕ Limpiar</button>'
+    + '<button onclick="document.getElementById(\'cob-prod\').value=\'\';document.getElementById(\'cob-op\').value=\'\';document.getElementById(\'cob-from\').value=\'\';document.getElementById(\'cob-to\').value=\'\';window._cobSoloSospechosas=false;window._cobSoloLiveu=false;[\'cob-sospechosas\',\'cob-liveu\'].forEach(id=>{const b=document.getElementById(id);if(b){b.style.background=\'\';b.style.color=\'var(--muted)\';b.textContent=b.id===\'cob-sospechosas\'?\'⚠ Solo sospechosas\':\'📡 Solo Live-U\';}});cobFilterChanged()" style="background:none;border:1px solid var(--border2);color:var(--muted);border-radius:6px;padding:8px 14px;font-size:12px;cursor:pointer;align-self:flex-end">✕ Limpiar</button>'
     + '<button id="cob-sospechosas" onclick="toggleCobSospechosas()" style="background:none;border:1px solid var(--danger);color:var(--muted);border-radius:6px;padding:8px 14px;font-size:12px;cursor:pointer;align-self:flex-end;white-space:nowrap">⚠ Solo sospechosas</button>'
+    + '<button id="cob-liveu" onclick="toggleCobLiveu()" style="background:none;border:1px solid #60a5fa;color:var(--muted);border-radius:6px;padding:8px 14px;font-size:12px;cursor:pointer;align-self:flex-end;white-space:nowrap">📡 Solo Live-U</button>'
     + '</div>'
     + '<div style="font-size:11px;color:var(--muted);margin:6px 0 4px">💡 Para ver un solo día, elige solo "Desde" — "Hasta" se rellena igual automáticamente. Cambia "Hasta" si quieres un rango.</div>'
     + '<div id="cob-results"></div>';
 
+  renderCoberturasResults();
+}
+
+function toggleCobLiveu() {
+  window._cobSoloLiveu = !window._cobSoloLiveu;
+  const btn = document.getElementById('cob-liveu');
+  if (btn) {
+    btn.style.background = window._cobSoloLiveu ? 'rgba(96,165,250,.15)' : '';
+    btn.style.color = window._cobSoloLiveu ? '#60a5fa' : 'var(--muted)';
+    btn.textContent = window._cobSoloLiveu ? '📡 Solo Live-U ✓' : '📡 Solo Live-U';
+  }
+  window._cobPage = 0;
   renderCoberturasResults();
 }
 
@@ -7117,6 +7130,10 @@ function renderCoberturasResults() {
       const d = asgnDurationMin(a);
       return d && !a.viaje && d > COBERTURA_HORAS_SOSPECHOSA;
     });
+  }
+  // Filtro adicional: solo las que llevaron Live-U
+  if (window._cobSoloLiveu) {
+    list = list.filter(a => !!a.liveu);
   }
 
   const total = list.reduce((s,a)=>s+(a.num_coberturas||1),0);
@@ -7942,7 +7959,12 @@ function openEditCobertura(id) {
     + '<div class="form-group"><label>Hora de regreso</label><input type="time" id="ec-regreso" value="'+regresoHM+'"></div>'
     + '</div></div>'
     + '<div style="font-size:11px;color:var(--muted);margin-top:8px">Por defecto, salida y regreso comparten fecha — cambia la fecha de regreso si la cobertura cruzó a otro día (o varios).</div>'
-    + (a.estado!=='finalizada' ? '<div style="font-size:11px;color:var(--warn);margin-top:6px">Esta cobertura sigue activa (no se ha liberado todavía) — la hora de regreso no se usará hasta que se libere.</div>' : '');
+    + (a.estado!=='finalizada' ? '<div style="font-size:11px;color:var(--warn);margin-top:6px">Esta cobertura sigue activa (no se ha liberado todavía) — la hora de regreso no se usará hasta que se libere.</div>' : '')
+    + ((a.liveu || a.wificam) ? '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">'
+        + (a.liveu ? '<span class="cam-chip liveu" style="font-size:12px;padding:5px 12px">📡 Live-U: '+(a.liveu_unidad||'—')+'</span>' : '')
+        + (a.wificam ? '<span class="cam-chip wificam" style="font-size:12px;padding:5px 12px">📶 WifiCam: '+(a.wificam_unidad||'—')+'</span>' : '')
+        + '<span style="font-size:11px;color:var(--muted);align-self:center">Para cambiar el equipo asignado, usa "Editar adjudicación" desde la ficha de la cámara.</span>'
+        + '</div>' : '');
   document.getElementById('modal-actions').innerHTML =
     '<button class="btn btn-primary" onclick="saveEditCobertura(\''+id+'\')">Guardar</button>'
     + '<button class="btn" style="background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:var(--danger)" onclick="deleteCobertura(\''+id+'\')">🗑 Eliminar</button>'
