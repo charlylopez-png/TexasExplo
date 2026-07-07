@@ -7158,6 +7158,8 @@ function renderCoberturasResults() {
           + '<span class="prod-badge ' + (a.prod==='A3'?'a3':'l6') + '" style="flex-shrink:0">'+(a.prod==='L6'?'La Sexta':a.prod==='A3'?'Antena 3':(a.prod||'—'))+'</span>'
           + '<span style="flex:0 1 260px;font-size:19px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+aliasOnly(a.operator_nombre||'')+(a.operador2_nombre?' + '+aliasOnly(a.operador2_nombre):'')+'</span>'
           + '<span style="flex:1;font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0">'+(a.cobertura||'')+'</span>'
+          + (a.liveu ? '<span class="cam-chip liveu" style="flex-shrink:0">📡 '+(a.liveu_unidad||'Live-U')+'</span>' : '')
+          + (a.wificam ? '<span class="cam-chip wificam" style="flex-shrink:0">📶 '+(a.wificam_unidad||'WifiCam')+'</span>' : '')
           + durationSpanHtml(a, d)
           + '<span style="color:var(--border2);flex-shrink:0;font-size:15px">✎</span>'
           + '</div>';
@@ -7261,6 +7263,8 @@ function renderCoberturasOperatorMode(el, op, prod, from, to, scrollY) {
           + '<span style="color:var(--muted);flex-shrink:0;font-size:16px;font-weight:700;min-width:75px">'+fmtDate(a.fecha)+'</span>'
           + '<span class="prod-badge ' + (a.prod==='A3'?'a3':'l6') + '" style="flex-shrink:0">'+(a.prod==='L6'?'La Sexta':a.prod==='A3'?'Antena 3':(a.prod||'—'))+'</span>'
           + '<span style="flex:1;font-size:14px;font-weight:600">'+(a.cobertura||'')+'</span>'
+          + (a.liveu ? '<span class="cam-chip liveu" style="flex-shrink:0">📡 '+(a.liveu_unidad||'Live-U')+'</span>' : '')
+          + (a.wificam ? '<span class="cam-chip wificam" style="flex-shrink:0">📶 '+(a.wificam_unidad||'WifiCam')+'</span>' : '')
           + durationSpanHtml(a, d)
           + '<span style="color:var(--border2);flex-shrink:0;font-size:15px">✎</span>'
           + '</div>';
