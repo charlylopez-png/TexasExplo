@@ -7163,8 +7163,6 @@ function renderCoberturasResults() {
     + '<div style="display:flex;gap:8px;flex-wrap:wrap">'
     + '<button class="cb-add" style="font-size:13px;padding:9px 16px" onclick="openAddPastCobertura(\''+(opFilter||'').replace(/'/g,"\\'")+'\')">+ Añadir cobertura</button>'
     + '<button class="cb-add" style="font-size:11px;padding:7px 13px;background:#a78bfa;border-color:#a78bfa" onclick="openAddUnionHours(\''+(opFilter||'').replace(/'/g,"\\'")+'\')">⚖ Horas sindicales</button>'
-    + '<button class="cb-add" style="font-size:13px;padding:9px 16px;background:var(--bg3);border-color:var(--border2);color:var(--text)" onclick="exportCoberturasXLSX()">📊 XLSX</button>'
-    + '<button class="cb-add" style="font-size:13px;padding:9px 16px;background:var(--bg3);border-color:var(--border2);color:var(--text)" onclick="exportCoberturasPDF()">📄 PDF</button>'
     + '</div></div>'
     + '<div style="display:flex;flex-direction:column;gap:8px">'
     + (shown.length ? shown.map(a => {
@@ -7243,8 +7241,6 @@ function renderCoberturasOperatorMode(el, op, prod, from, to, scrollY) {
     + '<div style="display:flex;gap:8px;flex-wrap:wrap">'
     + '<button class="cb-add" style="font-size:14px;padding:10px 20px" onclick="openAddPastCobertura(\''+op.replace(/'/g,"\\'")+'\')">+ Añadir cobertura</button>'
     + '<button class="cb-add" style="font-size:12px;padding:8px 16px;background:#a78bfa;border-color:#a78bfa" onclick="openAddUnionHours(\''+op.replace(/'/g,"\\'")+'\')">⚖ Horas sindicales</button>'
-    + '<button class="cb-add" style="font-size:14px;padding:10px 20px;background:var(--bg3);border-color:var(--border2);color:var(--text)" onclick="exportCoberturasXLSX()">📊 XLSX</button>'
-    + '<button class="cb-add" style="font-size:14px;padding:10px 20px;background:var(--bg3);border-color:var(--border2);color:var(--text)" onclick="exportCoberturasPDF()">📄 PDF</button>'
     + '</div>'
     + '</div>'
     + '<div style="font-size:12px;color:var(--muted);margin:-2px 0 14px">Toca cualquiera de la lista para corregirla o eliminarla</div>'
@@ -7755,6 +7751,68 @@ async function savePastCobertura(opName) {
 }
 
 // ── EXPORTAR COBERTURAS (XLSX / PDF) ──────────────────────
+// Un viaje puede haberse guardado de dos formas: (a) ya dividido en una fila
+// por día (mismo viaje_id repetido — el generador retroactivo de "+ Añadir
+// cobertura ▸ Es un viaje"), o (b) como una única fila con salida/regreso
+// reales que abarcan varios días (el flujo normal de Cámaras, marcando
+// "viaje" mientras el equipo sigue fuera). Para que el informe siempre
+// muestre un día por línea, sea cual sea el origen, aquí se detecta el caso
+// (b) y se expande en filas sintéticas — una por día — igual que lo haría
+// el generador retroactivo (2 coberturas/8h por día, 4h u 8h el último día
+// según la hora de regreso). El caso (a) se deja tal cual, ya viene dividido.
+function expandViajeForExport(list) {
+  const groups = {};
+  const singles = [];
+  const rest = [];
+
+  list.forEach(item => {
+    if (item.t !== 'cob' || !item.data.viaje) { rest.push(item); return; }
+    const a = item.data;
+    const key = a.viaje_id || null;
+    if (key) {
+      (groups[key] = groups[key] || []).push(item);
+    } else {
+      singles.push(item);
+    }
+  });
+
+  const result = [...rest];
+
+  Object.values(groups).forEach(group => {
+    if (group.length > 1) { result.push(...group); return; } // ya viene dividido por días
+    singles.push(group[0]); // grupo de 1 sola fila con viaje_id: se trata igual que un "single"
+  });
+
+  singles.forEach(item => {
+    const a = item.data;
+    const startDate = a.fecha;
+    const endDate = a.hora_fin ? toLocalDateStr(new Date(a.hora_fin)) : startDate;
+    const numDias = Math.max(1, Math.round((new Date(endDate+'T00:00:00') - new Date(startDate+'T00:00:00')) / 86400000) + 1);
+
+    if (numDias <= 1) { result.push(item); return; }
+
+    const regresoHM = a.hora_fin ? new Date(a.hora_fin).toTimeString().slice(0,5) : null;
+    const start = new Date(startDate+'T00:00:00');
+    for (let i = 0; i < numDias; i++) {
+      const d = new Date(start); d.setDate(d.getDate()+i);
+      const fechaDia = toLocalDateStr(d);
+      const isFirst = i === 0;
+      const isLast = i === numDias - 1;
+      const synthetic = Object.assign({}, a, {
+        fecha: fechaDia,
+        cobertura: isFirst ? a.cobertura : (a.cobertura||'') + ' (viaje día '+(i+1)+')',
+        num_coberturas: isLast ? viajeNumCoberturasRegreso(regresoHM) : 2,
+        hora_salida: isFirst ? a.hora_salida : null,
+        hora_fin: isLast ? a.hora_fin : null,
+      });
+      result.push({ t:'cob', fecha: fechaDia, data: synthetic });
+    }
+  });
+
+  result.sort((x,y) => x.fecha.localeCompare(y.fecha));
+  return result;
+}
+
 function buildExportRows() {
   const exp = window._sopExport;
   if (!exp || !exp.list) return [];
@@ -7769,6 +7827,8 @@ function buildExportRows() {
         'Cobertura': '',
         'Producción': '',
         'Operador': realNameOnly(r.operator_nombre) || '',
+        'Live-U': '',
+        'WifiCam': '',
         'Hora salida': r.hora_inicio || '',
         'Hora regreso': r.hora_fin || '',
         'Duración': fmtHM(dur*60),
@@ -7785,13 +7845,19 @@ function buildExportRows() {
       const finHM = fin.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
       horaRegresoStr = (toLocalDateStr(fin) !== a.fecha) ? (fmtDate(toLocalDateStr(fin))+' '+finHM) : finHM;
     }
+    // Si hubo un 2º operador (típico de Live-U con dos personas), se listan
+    // ambos en la misma fila — nunca se separan en filas distintas.
+    let operadorStr = realNameOnly(a.operator_nombre) || '';
+    if (a.operador2_nombre) operadorStr += ' + ' + (realNameOnly(a.operador2_nombre) || a.operador2_nombre);
     return {
       'Fecha': fmtDate(a.fecha),
       'Tipo': 'Cobertura',
       'Cámara': camLabel,
       'Cobertura': a.cobertura || '',
       'Producción': a.prod==='L6'?'La Sexta':a.prod==='A3'?'Antena 3':(a.prod||''),
-      'Operador': realNameOnly(a.operator_nombre) || '',
+      'Operador': operadorStr,
+      'Live-U': a.liveu ? (a.liveu_unidad || 'Sí') : '',
+      'WifiCam': a.wificam ? (a.wificam_unidad || 'Sí') : '',
       'Hora salida': a.hora_salida ? new Date(a.hora_salida).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}) : '',
       'Hora regreso': horaRegresoStr,
       'Duración': (dur ? fmtHM(dur) : '') + (sospechosa ? ' ⚠' : ''),
@@ -7852,7 +7918,7 @@ function doExportXLSX(title, subtitle, rows, summary, filenameBase) {
     );
   }
   const ws = XLSX.utils.aoa_to_sheet(aoa);
-  ws['!cols'] = [{wch:30},{wch:16},{wch:10},{wch:30},{wch:12},{wch:26},{wch:11},{wch:11},{wch:10}];
+  ws['!cols'] = [{wch:12},{wch:16},{wch:10},{wch:30},{wch:12},{wch:26},{wch:14},{wch:14},{wch:11},{wch:11},{wch:10}];
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Coberturas');
   XLSX.writeFile(wb, filenameBase+'.xlsx');
@@ -7898,29 +7964,9 @@ function doExportPDF(title, subtitle, rows, summary, filenameBase) {
   doc.save(filenameBase+'.pdf');
 }
 
-function exportCoberturasXLSX() {
-  const exp = window._sopExport;
-  if (!exp || !exp.list.length) { alert('No hay coberturas en la lista para exportar.'); return; }
-  const rows = buildExportRows();
-  const { from, to } = exportPeriodRange();
-  const s = buildExportSummary();
-  const safeOp = realNameOnly(exp.op).replace(/[^a-zA-Z0-9]+/g,'_');
-  doExportXLSX('Coberturas — '+realNameOnly(exp.op), 'Período: '+from+' a '+to, rows, s, 'coberturas_'+safeOp);
-}
-
-function exportCoberturasPDF() {
-  const exp = window._sopExport;
-  if (!exp || !exp.list.length) { alert('No hay coberturas en la lista para exportar.'); return; }
-  const rows = buildExportRows();
-  const { from, to } = exportPeriodRange();
-  const s = buildExportSummary();
-  const safeOp = realNameOnly(exp.op).replace(/[^a-zA-Z0-9]+/g,'_');
-  doExportPDF('Coberturas — '+realNameOnly(exp.op), 'Período: '+from+' a '+to, rows, s, 'coberturas_'+safeOp);
-}
-
 // ─── Modal de exportación avanzada ──────────────────────────────────────────
 // Filtros independientes de los de pantalla: fechas, producción, delegación,
-// operador, Live-U (incl. "individual" = un solo operador con Live-U),
+// operador, Live-U (cualquiera / 1 operador / 2 operadores / sin Live-U),
 // WifiCam, viajes y duración sospechosa. Trabaja siempre sobre el dataset
 // completo cargado (window._cobAsgn), no sobre lo que se esté viendo.
 function openExportModal() {
@@ -7951,7 +7997,7 @@ function openExportModal() {
     + '</div>'
     + '<div class="form-row">'
     + '<div class="form-group"><label>Live-U</label><select id="exp-liveu">'
-    + '<option value="">Cualquiera</option><option value="con">Solo con Live-U</option><option value="individual">Solo Live-U individual (1 operador)</option><option value="sin">Sin Live-U</option>'
+    + '<option value="">Cualquiera</option><option value="con">Live-U (cualquiera)</option><option value="1op">Live-U — 1 operador</option><option value="2op">Live-U — 2 operadores</option><option value="sin">Sin Live-U</option>'
     + '</select></div>'
     + '<div class="form-group"><label>WifiCam</label><select id="exp-wificam"><option value="">Cualquiera</option><option value="con">Solo con WifiCam</option><option value="sin">Sin WifiCam</option></select></div>'
     + '</div>'
@@ -8019,7 +8065,8 @@ function getAdvancedExportFilteredList() {
     if (opFilter && a.operator_nombre !== opFilter && a.operador2_nombre !== opFilter) return false;
     if (liveuF === 'con' && !a.liveu) return false;
     if (liveuF === 'sin' && a.liveu) return false;
-    if (liveuF === 'individual' && !(a.liveu && !a.operador2_nombre)) return false;
+    if (liveuF === '1op' && !(a.liveu && !a.operador2_nombre)) return false;
+    if (liveuF === '2op' && !(a.liveu && !!a.operador2_nombre)) return false;
     if (wificamF === 'con' && !a.wificam) return false;
     if (wificamF === 'sin' && a.wificam) return false;
     if (viajeF === 'con' && !a.viaje) return false;
@@ -8052,7 +8099,7 @@ function runAdvancedExport(format) {
   window._sopExport = {
     op: opFilter || 'Todas las coberturas',
     from, to,
-    list: list.map(a => ({ t:'cob', fecha:a.fecha, data:a })),
+    list: expandViajeForExport(list.map(a => ({ t:'cob', fecha:a.fecha, data:a }))),
   };
   const rows = buildExportRows();
   const s = buildExportSummary();
@@ -8063,7 +8110,8 @@ function runAdvancedExport(format) {
   if (prod) parts.push(prod==='L6'?'La Sexta':'Antena 3');
   if (del) parts.push(del);
   if (liveuF === 'con') parts.push('con Live-U');
-  if (liveuF === 'individual') parts.push('Live-U individual');
+  if (liveuF === '1op') parts.push('Live-U 1 operador');
+  if (liveuF === '2op') parts.push('Live-U 2 operadores');
   if (liveuF === 'sin') parts.push('sin Live-U');
   if (wificamF === 'con') parts.push('con WifiCam');
   if (wificamF === 'sin') parts.push('sin WifiCam');
