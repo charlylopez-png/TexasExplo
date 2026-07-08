@@ -7054,6 +7054,7 @@ async function renderCoberturas() {
     + '<button onclick="document.getElementById(\'cob-prod\').value=\'\';document.getElementById(\'cob-op\').value=\'\';document.getElementById(\'cob-from\').value=\'\';document.getElementById(\'cob-to\').value=\'\';window._cobSoloSospechosas=false;window._cobSoloLiveu=false;[\'cob-sospechosas\',\'cob-liveu\'].forEach(id=>{const b=document.getElementById(id);if(b){b.style.background=\'\';b.style.color=\'var(--muted)\';b.textContent=b.id===\'cob-sospechosas\'?\'⚠ Solo sospechosas\':\'📡 Solo Live-U\';}});cobFilterChanged()" style="background:none;border:1px solid var(--border2);color:var(--muted);border-radius:6px;padding:8px 14px;font-size:12px;cursor:pointer;align-self:flex-end">✕ Limpiar</button>'
     + '<button id="cob-sospechosas" onclick="toggleCobSospechosas()" style="background:none;border:1px solid var(--danger);color:var(--muted);border-radius:6px;padding:8px 14px;font-size:12px;cursor:pointer;align-self:flex-end;white-space:nowrap">⚠ Solo sospechosas</button>'
     + '<button id="cob-liveu" onclick="toggleCobLiveu()" style="background:none;border:1px solid #60a5fa;color:var(--muted);border-radius:6px;padding:8px 14px;font-size:12px;cursor:pointer;align-self:flex-end;white-space:nowrap">📡 Solo Live-U</button>'
+    + '<button onclick="openExportModal()" style="background:#38bdf8;border:1px solid #38bdf8;color:#0d0f14;font-weight:700;border-radius:6px;padding:8px 14px;font-size:12px;cursor:pointer;align-self:flex-end;white-space:nowrap">📤 Exportar avanzado</button>'
     + '</div>'
     + '<div style="font-size:11px;color:var(--muted);margin:6px 0 4px">💡 Para ver un solo día, elige solo "Desde" — "Hasta" se rellena igual automáticamente. Cambia "Hasta" si quieres un rango.</div>'
     + '<div id="cob-results"></div>';
@@ -7825,52 +7826,50 @@ function buildExportSummary() {
   return { totalCob, horasTotalesMin, diasActivos, mediaCobDia, mediaHorasDiaMin };
 }
 
-function exportCoberturasXLSX() {
-  const exp = window._sopExport;
-  if (!exp || !exp.list.length) { alert('No hay coberturas en la lista para exportar.'); return; }
+// ─── Exportación XLSX/PDF — helpers compartidos ────────────────────────────
+// Usados tanto por los botones rápidos (📊/📄 sobre el listado ya filtrado
+// en pantalla) como por el modal de exportación avanzada (con sus propios
+// filtros independientes de lo que se esté viendo en la pantalla).
+function doExportXLSX(title, subtitle, rows, summary, filenameBase) {
+  if (!rows.length) { alert('No hay coberturas que coincidan con estos filtros.'); return; }
   if (typeof XLSX === 'undefined') { alert('La librería de exportación no se ha cargado (revisa tu conexión) e inténtalo de nuevo.'); return; }
-  const rows = buildExportRows();
-  const { from, to } = exportPeriodRange();
-  const s = buildExportSummary();
   const headers = Object.keys(rows[0]);
-
   const aoa = [
-    ['Coberturas — '+realNameOnly(exp.op)],
-    ['Período: '+from+' a '+to],
+    [title],
+    [subtitle],
     [],
     headers,
     ...rows.map(r => headers.map(h => r[h])),
-    [],
-    ['RESUMEN'],
-    ['Total de coberturas', s.totalCob],
-    ['Horas totales en cobertura', fmtHM(s.horasTotalesMin)],
-    ['Media de coberturas por día activo', s.mediaCobDia.toFixed(1)],
-    ['Media de horas en cobertura por día activo', fmtHM(s.mediaHorasDiaMin)],
   ];
+  if (summary) {
+    aoa.push(
+      [],
+      ['RESUMEN'],
+      ['Total de coberturas', summary.totalCob],
+      ['Horas totales en cobertura', fmtHM(summary.horasTotalesMin)],
+      ['Media de coberturas por día activo', summary.mediaCobDia.toFixed(1)],
+      ['Media de horas en cobertura por día activo', fmtHM(summary.mediaHorasDiaMin)],
+    );
+  }
   const ws = XLSX.utils.aoa_to_sheet(aoa);
   ws['!cols'] = [{wch:30},{wch:16},{wch:10},{wch:30},{wch:12},{wch:26},{wch:11},{wch:11},{wch:10}];
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Coberturas');
-  const safeOp = realNameOnly(exp.op).replace(/[^a-zA-Z0-9]+/g,'_');
-  XLSX.writeFile(wb, 'coberturas_'+safeOp+'.xlsx');
+  XLSX.writeFile(wb, filenameBase+'.xlsx');
 }
 
-function exportCoberturasPDF() {
-  const exp = window._sopExport;
-  if (!exp || !exp.list.length) { alert('No hay coberturas en la lista para exportar.'); return; }
+function doExportPDF(title, subtitle, rows, summary, filenameBase) {
+  if (!rows.length) { alert('No hay coberturas que coincidan con estos filtros.'); return; }
   if (typeof window.jspdf === 'undefined') { alert('La librería de exportación no se ha cargado (revisa tu conexión) e inténtalo de nuevo.'); return; }
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ orientation: 'landscape' });
-  const rows = buildExportRows();
-  const { from, to } = exportPeriodRange();
-  const s = buildExportSummary();
 
   doc.setFontSize(14);
   doc.setTextColor(0);
-  doc.text('Coberturas — '+realNameOnly(exp.op), 14, 15);
+  doc.text(title, 14, 15);
   doc.setFontSize(10);
   doc.setTextColor(120);
-  doc.text('Período: '+from+' a '+to, 14, 21);
+  doc.text(subtitle, 14, 21);
   doc.autoTable({
     startY: 26,
     head: [Object.keys(rows[0])],
@@ -7880,22 +7879,206 @@ function exportCoberturasPDF() {
   });
 
   let y = (doc.lastAutoTable ? doc.lastAutoTable.finalY : 30) + 10;
-  doc.setFontSize(11);
-  doc.setTextColor(0);
-  doc.text('Resumen', 14, y);
-  y += 7;
-  doc.setFontSize(10);
-  doc.setTextColor(60);
-  const summaryLines = [
-    'Total de coberturas: '+s.totalCob,
-    'Horas totales en cobertura: '+fmtHM(s.horasTotalesMin),
-    'Media de coberturas por día activo: '+s.mediaCobDia.toFixed(1),
-    'Media de horas en cobertura por día activo: '+fmtHM(s.mediaHorasDiaMin),
-  ];
-  summaryLines.forEach(line => { doc.text(line, 14, y); y += 6; });
+  if (summary) {
+    doc.setFontSize(11);
+    doc.setTextColor(0);
+    doc.text('Resumen', 14, y);
+    y += 7;
+    doc.setFontSize(10);
+    doc.setTextColor(60);
+    const summaryLines = [
+      'Total de coberturas: '+summary.totalCob,
+      'Horas totales en cobertura: '+fmtHM(summary.horasTotalesMin),
+      'Media de coberturas por día activo: '+summary.mediaCobDia.toFixed(1),
+      'Media de horas en cobertura por día activo: '+fmtHM(summary.mediaHorasDiaMin),
+    ];
+    summaryLines.forEach(line => { doc.text(line, 14, y); y += 6; });
+  }
 
+  doc.save(filenameBase+'.pdf');
+}
+
+function exportCoberturasXLSX() {
+  const exp = window._sopExport;
+  if (!exp || !exp.list.length) { alert('No hay coberturas en la lista para exportar.'); return; }
+  const rows = buildExportRows();
+  const { from, to } = exportPeriodRange();
+  const s = buildExportSummary();
   const safeOp = realNameOnly(exp.op).replace(/[^a-zA-Z0-9]+/g,'_');
-  doc.save('coberturas_'+safeOp+'.pdf');
+  doExportXLSX('Coberturas — '+realNameOnly(exp.op), 'Período: '+from+' a '+to, rows, s, 'coberturas_'+safeOp);
+}
+
+function exportCoberturasPDF() {
+  const exp = window._sopExport;
+  if (!exp || !exp.list.length) { alert('No hay coberturas en la lista para exportar.'); return; }
+  const rows = buildExportRows();
+  const { from, to } = exportPeriodRange();
+  const s = buildExportSummary();
+  const safeOp = realNameOnly(exp.op).replace(/[^a-zA-Z0-9]+/g,'_');
+  doExportPDF('Coberturas — '+realNameOnly(exp.op), 'Período: '+from+' a '+to, rows, s, 'coberturas_'+safeOp);
+}
+
+// ─── Modal de exportación avanzada ──────────────────────────────────────────
+// Filtros independientes de los de pantalla: fechas, producción, delegación,
+// operador, Live-U (incl. "individual" = un solo operador con Live-U),
+// WifiCam, viajes y duración sospechosa. Trabaja siempre sobre el dataset
+// completo cargado (window._cobAsgn), no sobre lo que se esté viendo.
+function openExportModal() {
+  if (!window._cobAsgn) { alert('Todavía se están cargando las coberturas, espera un momento e inténtalo de nuevo.'); return; }
+  const opNames = [...new Set(operators.filter(o=>o.rol!=='explotacion').map(o=>operatorFullName(o)))].sort();
+  const delegaciones = [...new Set((window._cobAsgn||[]).map(a=>a.delegacion).filter(Boolean))].sort();
+
+  document.getElementById('modal-title').textContent = '📤 Exportar coberturas';
+  document.getElementById('modal-sub').textContent = 'Combina los filtros que necesites y exporta solo lo que quieras';
+  document.getElementById('modal-body').innerHTML =
+    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">'
+    + '<button type="button" onclick="expPreset(\'mes\')" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text);border-radius:6px;padding:7px 13px;font-size:11px;cursor:pointer">Mes actual</button>'
+    + '<button type="button" onclick="expPreset(\'30d\')" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text);border-radius:6px;padding:7px 13px;font-size:11px;cursor:pointer">Últimos 30 días</button>'
+    + '<button type="button" onclick="expPreset(\'anio\')" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text);border-radius:6px;padding:7px 13px;font-size:11px;cursor:pointer">Este año</button>'
+    + '<button type="button" onclick="expPreset(\'todo\')" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text);border-radius:6px;padding:7px 13px;font-size:11px;cursor:pointer">Todo el histórico</button>'
+    + '</div>'
+    + '<div class="form-row">'
+    + '<div class="form-group"><label>Desde</label><input type="date" id="exp-from" onclick="this.showPicker && this.showPicker()"></div>'
+    + '<div class="form-group"><label>Hasta</label><input type="date" id="exp-to" onclick="this.showPicker && this.showPicker()"></div>'
+    + '</div>'
+    + '<div class="form-row">'
+    + '<div class="form-group"><label>Producción</label><select id="exp-prod"><option value="">Todas</option><option value="L6">La Sexta</option><option value="A3">Antena 3</option></select></div>'
+    + '<div class="form-group"><label>Delegación</label><select id="exp-del"><option value="">Todas</option>'+delegaciones.map(d=>'<option value="'+d.replace(/"/g,'&quot;')+'">'+d+'</option>').join('')+'</select></div>'
+    + '</div>'
+    + '<div class="form-row">'
+    + '<div class="form-group full"><label>Operador (opcional)</label><input id="exp-op" list="exp-op-list" placeholder="Todos los operadores...">'
+    + '<datalist id="exp-op-list">'+opNames.map(n=>'<option value="'+n.replace(/"/g,'&quot;')+'">').join('')+'</datalist></div>'
+    + '</div>'
+    + '<div class="form-row">'
+    + '<div class="form-group"><label>Live-U</label><select id="exp-liveu">'
+    + '<option value="">Cualquiera</option><option value="con">Solo con Live-U</option><option value="individual">Solo Live-U individual (1 operador)</option><option value="sin">Sin Live-U</option>'
+    + '</select></div>'
+    + '<div class="form-group"><label>WifiCam</label><select id="exp-wificam"><option value="">Cualquiera</option><option value="con">Solo con WifiCam</option><option value="sin">Sin WifiCam</option></select></div>'
+    + '</div>'
+    + '<div class="form-row">'
+    + '<div class="form-group"><label>Viajes</label><select id="exp-viaje"><option value="">Cualquiera</option><option value="con">Solo viajes</option><option value="sin">Sin viajes (coberturas normales)</option></select></div>'
+    + '<div class="form-group"><label>Duración</label><select id="exp-sospechosa"><option value="">Cualquiera</option><option value="sospechosa">Solo sospechosas (&gt;8h)</option></select></div>'
+    + '</div>'
+    + '<div id="exp-preview" style="font-size:12px;color:var(--muted);margin-top:4px;padding:12px 14px;background:var(--bg3);border-radius:8px;border:1px solid var(--border)"></div>';
+
+  document.getElementById('modal-actions').innerHTML =
+    '<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'
+    + '<button class="btn" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text)" onclick="runAdvancedExport(\'xlsx\')">📊 Exportar XLSX</button>'
+    + '<button class="btn" style="background:#38bdf8;color:#0d0f14" onclick="runAdvancedExport(\'pdf\')">📄 Exportar PDF</button>';
+
+  ['exp-from','exp-to','exp-prod','exp-del','exp-op','exp-liveu','exp-wificam','exp-viaje','exp-sospechosa'].forEach(id => {
+    const elm = document.getElementById(id);
+    if (elm) { elm.addEventListener('input', updateExportPreview); elm.addEventListener('change', updateExportPreview); }
+  });
+  updateExportPreview();
+  document.getElementById('modal').classList.add('open');
+}
+
+// Accesos rápidos que rellenan las fechas del modal — no exportan por sí solos,
+// solo ahorran tener que elegir el rango a mano en los casos más habituales.
+function expPreset(kind) {
+  const fromEl = document.getElementById('exp-from');
+  const toEl   = document.getElementById('exp-to');
+  if (!fromEl || !toEl) return;
+  const today = new Date();
+  if (kind === 'todo') {
+    fromEl.value = ''; toEl.value = '';
+  } else if (kind === 'mes') {
+    fromEl.value = toLocalDateStr(new Date(today.getFullYear(), today.getMonth(), 1));
+    toEl.value = todayLocal();
+  } else if (kind === '30d') {
+    const d = new Date(today); d.setDate(d.getDate() - 30);
+    fromEl.value = toLocalDateStr(d);
+    toEl.value = todayLocal();
+  } else if (kind === 'anio') {
+    fromEl.value = toLocalDateStr(new Date(today.getFullYear(), 0, 1));
+    toEl.value = todayLocal();
+  }
+  updateExportPreview();
+}
+
+// Lee todos los filtros del modal y devuelve el listado de assignments que
+// coinciden, junto con los propios valores de los filtros (para el título
+// del informe y el nombre del archivo).
+function getAdvancedExportFilteredList() {
+  const from       = document.getElementById('exp-from')?.value || '';
+  const to         = document.getElementById('exp-to')?.value || '';
+  const prod       = document.getElementById('exp-prod')?.value || '';
+  const del        = document.getElementById('exp-del')?.value || '';
+  const opFilter   = document.getElementById('exp-op')?.value.trim() || '';
+  const liveuF     = document.getElementById('exp-liveu')?.value || '';
+  const wificamF   = document.getElementById('exp-wificam')?.value || '';
+  const viajeF     = document.getElementById('exp-viaje')?.value || '';
+  const sospechosaF = document.getElementById('exp-sospechosa')?.value || '';
+
+  let list = (window._cobAsgn || []).filter(a => {
+    if (from && a.fecha < from) return false;
+    if (to && a.fecha > to) return false;
+    if (prod && a.prod !== prod) return false;
+    if (del && a.delegacion !== del) return false;
+    if (opFilter && a.operator_nombre !== opFilter && a.operador2_nombre !== opFilter) return false;
+    if (liveuF === 'con' && !a.liveu) return false;
+    if (liveuF === 'sin' && a.liveu) return false;
+    if (liveuF === 'individual' && !(a.liveu && !a.operador2_nombre)) return false;
+    if (wificamF === 'con' && !a.wificam) return false;
+    if (wificamF === 'sin' && a.wificam) return false;
+    if (viajeF === 'con' && !a.viaje) return false;
+    if (viajeF === 'sin' && a.viaje) return false;
+    if (sospechosaF === 'sospechosa') {
+      const d = asgnDurationMin(a);
+      if (!(d && !a.viaje && d > COBERTURA_HORAS_SOSPECHOSA)) return false;
+    }
+    return true;
+  });
+  list.sort((a,b) => a.fecha.localeCompare(b.fecha));
+  return { list, from, to, prod, del, opFilter, liveuF, wificamF, viajeF, sospechosaF };
+}
+
+function updateExportPreview() {
+  const el = document.getElementById('exp-preview');
+  if (!el) return;
+  const { list } = getAdvancedExportFilteredList();
+  if (!list.length) { el.textContent = '⚠ Ningún resultado con estos filtros'; return; }
+  const total = list.reduce((s,a)=>s+(a.num_coberturas||1),0);
+  const durs = list.map(asgnDurationMin).filter(x=>x!=null && x>0);
+  const horasTotalMin = durs.reduce((s,x)=>s+x,0);
+  el.textContent = '📋 '+list.length+' coberturas encontradas · '+total+' coberturas totales · '+fmtHM(horasTotalMin)+' en total';
+}
+
+function runAdvancedExport(format) {
+  const { list, from, to, prod, del, opFilter, liveuF, wificamF, viajeF, sospechosaF } = getAdvancedExportFilteredList();
+  if (!list.length) { alert('No hay coberturas que coincidan con estos filtros.'); return; }
+
+  window._sopExport = {
+    op: opFilter || 'Todas las coberturas',
+    from, to,
+    list: list.map(a => ({ t:'cob', fecha:a.fecha, data:a })),
+  };
+  const rows = buildExportRows();
+  const s = buildExportSummary();
+  const periodo = exportPeriodRange();
+
+  const parts = [];
+  if (opFilter) parts.push(realNameOnly(opFilter));
+  if (prod) parts.push(prod==='L6'?'La Sexta':'Antena 3');
+  if (del) parts.push(del);
+  if (liveuF === 'con') parts.push('con Live-U');
+  if (liveuF === 'individual') parts.push('Live-U individual');
+  if (liveuF === 'sin') parts.push('sin Live-U');
+  if (wificamF === 'con') parts.push('con WifiCam');
+  if (wificamF === 'sin') parts.push('sin WifiCam');
+  if (viajeF === 'con') parts.push('solo viajes');
+  if (viajeF === 'sin') parts.push('sin viajes');
+  if (sospechosaF === 'sospechosa') parts.push('sospechosas >8h');
+
+  const title = 'Coberturas — ' + (parts.length ? parts.join(', ') : 'Todas');
+  const subtitle = 'Período: '+periodo.from+' a '+periodo.to;
+  const safeName = (parts.join('_') || 'todas').replace(/[^a-zA-Z0-9]+/g,'_').toLowerCase();
+
+  if (format === 'xlsx') doExportXLSX(title, subtitle, rows, s, 'coberturas_export_'+safeName);
+  else doExportPDF(title, subtitle, rows, s, 'coberturas_export_'+safeName);
+
+  closeModal();
 }
 
 function openEditCobertura(id) {
