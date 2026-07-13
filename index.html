@@ -7630,6 +7630,31 @@ function openAddPastCobertura(opName) {
     + '<div class="form-group"><label>Fecha de regreso</label><input type="date" id="ac-regreso-fecha" value="'+todayLocal()+'" onchange="window._acRegresoTouched=true"></div>'
     + '</div>'
     + '<div id="ac-regreso-hint" style="font-size:11px;color:var(--muted);margin-top:-6px;margin-bottom:10px">Por defecto la fecha de regreso es la misma — cámbiala si la cobertura cruzó a otro día.</div>'
+    + '<div class="form-row" style="align-items:center;margin-top:2px">'
+    + '<div class="form-group" style="display:flex;align-items:center;gap:8px">'
+    + '<input type="checkbox" id="ac-liveu" onchange="toggleAcLiveUFields()" style="width:18px;height:18px;cursor:pointer;accent-color:var(--kinto)">'
+    + '<label for="ac-liveu" style="font-size:13px;font-weight:600;cursor:pointer">📡 Live-U</label>'
+    + '</div>'
+    + '<div class="form-group" style="display:flex;align-items:center;gap:8px">'
+    + '<input type="checkbox" id="ac-wificam" onchange="toggleAcWifiCamFields()" style="width:18px;height:18px;cursor:pointer;accent-color:var(--kinto)">'
+    + '<label for="ac-wificam" style="font-size:13px;font-weight:600;cursor:pointer">📶 WifiCam</label>'
+    + '</div></div>'
+    + '<div id="ac-liveu-fields" style="display:none">'
+    + '<div class="form-row"><div class="form-group full"><label>Unidad Live-U</label>'
+    + '<select id="ac-liveu-unidad"><option value="">— Seleccionar unidad —</option>'
+    + cfgList('banco_liveu').map(u=>`<option value="${u.valor}">${u.etiqueta||u.valor}</option>`).join('')
+    + '</select></div></div>'
+    + '<div class="form-row"><div class="form-group full"><label>2º operador (opcional)</label>'
+    + '<input id="ac-op2" list="ac-op2-list" placeholder="Solo si dos personas llevaron el Live-U">'
+    + '<datalist id="ac-op2-list">'+opNames.map(n=>'<option value="'+n.replace(/"/g,'&quot;')+'">').join('')+'</datalist>'
+    + '</div></div>'
+    + '</div>'
+    + '<div id="ac-wificam-fields" style="display:none">'
+    + '<div class="form-row"><div class="form-group full"><label>Unidad WifiCam</label>'
+    + '<select id="ac-wificam-unidad"><option value="">— Seleccionar unidad —</option>'
+    + cfgList('banco_wificam').map(u=>`<option value="${u.valor}">${u.etiqueta||u.valor}</option>`).join('')
+    + '</select></div></div>'
+    + '</div>'
     + '<div class="form-row" id="ac-viaje-horas-wrap" style="display:none">'
     + '<div class="form-group full"><label>🕐 Hora de regreso el último día</label><input type="time" id="ac-viaje-regreso"></div>'
     + '</div>'
@@ -7656,6 +7681,16 @@ function toggleAcViajeFields() {
   document.getElementById('ac-viaje-hint').style.display = isViaje ? '' : 'none';
 }
 
+function toggleAcLiveUFields() {
+  const on = document.getElementById('ac-liveu').checked;
+  document.getElementById('ac-liveu-fields').style.display = on ? '' : 'none';
+}
+
+function toggleAcWifiCamFields() {
+  const on = document.getElementById('ac-wificam').checked;
+  document.getElementById('ac-wificam-fields').style.display = on ? '' : 'none';
+}
+
 // Vuelve a pintar la pantalla (o pantallas) de coberturas que estén activas
 // ahora mismo, sin importar si se llegó aquí desde Stats Operadores o desde Coberturas
 function refreshCoberturaViews() {
@@ -7678,6 +7713,12 @@ async function savePastCobertura(opName) {
   const regresoHM = document.getElementById('ac-regreso')?.value;
   const regresoFecha = document.getElementById('ac-regreso-fecha')?.value || fecha;
   const viajeRegresoHM = document.getElementById('ac-viaje-regreso')?.value;
+  const liveu        = document.getElementById('ac-liveu')?.checked || false;
+  const liveuUnidad  = liveu ? (document.getElementById('ac-liveu-unidad')?.value || null) : null;
+  const op2Input     = liveu ? (document.getElementById('ac-op2')?.value.trim() || '') : '';
+  const op2Nombre    = op2Input || null;
+  const wificam      = document.getElementById('ac-wificam')?.checked || false;
+  const wificamUnidad = wificam ? (document.getElementById('ac-wificam-unidad')?.value || null) : null;
 
   if (!fecha)     { alert('Indica la fecha'); return; }
   if (!cobertura) { alert('Escribe el nombre de la cobertura'); return; }
@@ -7707,6 +7748,8 @@ async function savePastCobertura(opName) {
           estado: 'finalizada',
           num_coberturas: isLastDay ? viajeNumCoberturasRegreso(viajeRegresoHM) : 2,
           viaje: true, viaje_id: viajeId,
+          liveu, liveu_unidad: liveuUnidad, operador2_nombre: op2Nombre,
+          wificam, wificam_unidad: wificamUnidad,
         });
       }
       inserted = await sbPost('assignments', rows);
@@ -7733,6 +7776,8 @@ async function savePastCobertura(opName) {
         estado: 'finalizada', // es un registro retroactivo: ya pasó, nunca "sigue activa"
         hora_fin: horaFinISO,
         num_coberturas: 1, viaje: false,
+        liveu, liveu_unidad: liveuUnidad, operador2_nombre: op2Nombre,
+        wificam, wificam_unidad: wificamUnidad,
       });
       showSyncStatus('✓ Cobertura añadida', 'ok');
     }
@@ -8191,11 +8236,28 @@ function openEditCobertura(id) {
     + '</div></div>'
     + '<div style="font-size:11px;color:var(--muted);margin-top:8px">Por defecto, salida y regreso comparten fecha — cambia la fecha de regreso si la cobertura cruzó a otro día (o varios).</div>'
     + (a.estado!=='finalizada' ? '<div style="font-size:11px;color:var(--warn);margin-top:6px">Esta cobertura sigue activa (no se ha liberado todavía) — la hora de regreso no se usará hasta que se libere.</div>' : '')
-    + ((a.liveu || a.wificam) ? '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">'
-        + (a.liveu ? '<span class="cam-chip liveu" style="font-size:12px;padding:5px 12px">📡 Live-U: '+(a.liveu_unidad||'—')+'</span>' : '')
-        + (a.wificam ? '<span class="cam-chip wificam" style="font-size:12px;padding:5px 12px">📶 WifiCam: '+(a.wificam_unidad||'—')+'</span>' : '')
-        + '<span style="font-size:11px;color:var(--muted);align-self:center">Para cambiar el equipo asignado, usa "Editar adjudicación" desde la ficha de la cámara.</span>'
-        + '</div>' : '');
+    + '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-top:10px">'
+    + '<div class="form-row" style="align-items:center;margin-bottom:0">'
+    + '<div class="form-group" style="display:flex;align-items:center;gap:8px">'
+    + '<input type="checkbox" id="ec-liveu" '+(a.liveu?'checked':'')+' style="width:18px;height:18px;cursor:pointer;accent-color:var(--kinto)" onchange="toggleEcLiveUFields()">'
+    + '<label for="ec-liveu" style="font-size:13px;font-weight:600;cursor:pointer">📡 Live-U</label>'
+    + '</div>'
+    + '<div class="form-group" style="display:flex;align-items:center;gap:8px">'
+    + '<input type="checkbox" id="ec-wificam" '+(a.wificam?'checked':'')+' style="width:18px;height:18px;cursor:pointer;accent-color:var(--kinto)" onchange="toggleEcWifiCamFields()">'
+    + '<label for="ec-wificam" style="font-size:13px;font-weight:600;cursor:pointer">📶 WifiCam</label>'
+    + '</div></div>'
+    + '<div id="ec-liveu-fields" style="display:'+(a.liveu?'':'none')+';margin-top:10px">'
+    + '<div class="form-row" style="margin-bottom:0"><div class="form-group full"><label>Unidad Live-U</label>'
+    + '<select id="ec-liveu-unidad"><option value="">— Seleccionar unidad —</option>'
+    + cfgList('banco_liveu').map(u=>`<option value="${u.valor}" ${a.liveu_unidad===u.valor?'selected':''}>${u.etiqueta||u.valor}</option>`).join('')
+    + '</select></div></div></div>'
+    + '<div id="ec-wificam-fields" style="display:'+(a.wificam?'':'none')+';margin-top:10px">'
+    + '<div class="form-row" style="margin-bottom:0"><div class="form-group full"><label>Unidad WifiCam</label>'
+    + '<select id="ec-wificam-unidad"><option value="">— Seleccionar unidad —</option>'
+    + cfgList('banco_wificam').map(u=>`<option value="${u.valor}" ${a.wificam_unidad===u.valor?'selected':''}>${u.etiqueta||u.valor}</option>`).join('')
+    + '</select></div></div></div>'
+    + '<div style="font-size:11px;color:var(--muted);margin-top:8px">Si la cámara sigue asignada ahora mismo, esto solo cambia el registro de esta cobertura — para el estado en vivo de la cámara usa "Editar adjudicación" desde su ficha.</div>'
+    + '</div>';
   document.getElementById('modal-actions').innerHTML =
     '<button class="btn btn-primary" onclick="saveEditCobertura(\''+id+'\')">Guardar</button>'
     + '<button class="btn" style="background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:var(--danger)" onclick="deleteCobertura(\''+id+'\')">🗑 Eliminar</button>'
@@ -8206,6 +8268,16 @@ function openEditCobertura(id) {
 function findAssignmentById(id) {
   return (window._sopAsgn||[]).find(x=>String(x.id)===String(id))
       || (window._cobAsgn||[]).find(x=>String(x.id)===String(id));
+}
+
+function toggleEcLiveUFields() {
+  const on = document.getElementById('ec-liveu').checked;
+  document.getElementById('ec-liveu-fields').style.display = on ? '' : 'none';
+}
+
+function toggleEcWifiCamFields() {
+  const on = document.getElementById('ec-wificam').checked;
+  document.getElementById('ec-wificam-fields').style.display = on ? '' : 'none';
 }
 
 async function deleteCobertura(id) {
@@ -8238,6 +8310,10 @@ async function saveEditCobertura(id) {
   const salidaHM     = document.getElementById('ec-salida').value;
   const regresoFecha = document.getElementById('ec-regreso-fecha').value;
   const regresoHM    = document.getElementById('ec-regreso').value;
+  const liveu        = document.getElementById('ec-liveu')?.checked || false;
+  const liveuUnidad  = liveu ? (document.getElementById('ec-liveu-unidad')?.value || null) : null;
+  const wificam      = document.getElementById('ec-wificam')?.checked || false;
+  const wificamUnidad = wificam ? (document.getElementById('ec-wificam-unidad')?.value || null) : null;
 
   if (!fecha)     { alert('Indica la fecha'); return; }
   if (!cobertura) { alert('Escribe el nombre de la cobertura'); return; }
@@ -8251,6 +8327,8 @@ async function saveEditCobertura(id) {
       operator_nombre: resolveOp(opInput),
       operador2_nombre: op2Input ? resolveOp(op2Input) : null,
       camera_id: camInput ? (window._addCobCamMap?.[camInput] || null) : null,
+      liveu, liveu_unidad: liveuUnidad,
+      wificam, wificam_unidad: wificamUnidad,
     };
     if (salidaFecha && salidaHM) {
       const [hh, mm] = salidaHM.split(':').map(Number);
