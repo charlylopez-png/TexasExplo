@@ -748,11 +748,11 @@ nav button.active { color:var(--a3); }
     <button id="top-asistencia" class="top-btn" onclick="setSection('asistencia')">📋 OPERADORES HOY</button>
   </div>
   <nav id="sub-nav-camaras">
-    <button class="active" onclick="showView('camaras')">Dashboard</button>
-    <button onclick="showView('stats-equipos')">Stats Equipos</button>
-    <button onclick="showView('stats-operadores')">Stats Operadores</button>
+    <button onclick="showView('camaras')" class="active">Dashboard</button>
+    <button id="nav-stats-equipos" onclick="showView('stats-equipos')">Stats Equipos</button>
+    <button id="nav-stats-operadores" onclick="showView('stats-operadores')">Stats Operadores</button>
     <button onclick="showView('coberturas')">Coberturas</button>
-    <button onclick="showView('stats-mantenimiento')">Stats Mant.</button>
+    <button id="nav-stats-mant" onclick="showView('stats-mantenimiento')">Stats Mant.</button>
     <button onclick="showView('admin')">Admin</button>
   </nav>
   <nav id="sub-nav-flota" style="display:none">
@@ -1665,6 +1665,11 @@ function setSection(section) {
 }
 
 function showView(view) {
+  // Stats Equipos / Stats Operadores / Stats Mant. son solo para el admin —
+  // si alguien intenta forzar la vista sin serlo, se le redirige al Dashboard.
+  if (['stats-equipos','stats-operadores','stats-mantenimiento'].includes(view) && currentUser?.rol !== 'admin') {
+    view = 'camaras';
+  }
   ['fleet','camaras','bajas','historico','stats','stats-equipos','stats-operadores','coberturas','stats-mantenimiento','stats-flota','admin','admin-flota','usuarios','asistencia'].forEach(v => {
     const el = document.getElementById('view-'+v);
     if (el) el.style.display = view===v ? '' : 'none';
@@ -3911,6 +3916,11 @@ async function doLogin() {
 function applySession(p) {
   const topUsuarios = document.getElementById('top-usuarios');
   if (topUsuarios) topUsuarios.style.display = p.rol === 'admin' ? '' : 'none';
+  // Stats Equipos / Stats Operadores / Stats Mant. — solo visibles para el admin
+  ['nav-stats-equipos','nav-stats-operadores','nav-stats-mant'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) btn.style.display = p.rol === 'admin' ? '' : 'none';
+  });
   const widget = document.getElementById('user-widget');
   if (widget) {
     widget.innerHTML =
