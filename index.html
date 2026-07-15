@@ -7336,11 +7336,14 @@ async function renderStatsOperadores() {
     + '<div style="border-top:1px solid var(--border);margin:8px 0 20px"></div>'
     + dateFilterBar('sop', 'renderStatsOperadoresBody')
     + '<div id="sop-body"></div>'
+    + '<div id="sop-operator-panel" style="margin-top:8px"></div>'
     + '<div style="border-top:1px solid var(--border);margin:24px 0 8px"></div>'
     + '<div style="font-size:12px;color:var(--muted);padding:8px 0 16px">¿Buscas las coberturas de un operador en concreto? Pásate a la pestaña <b style="color:var(--l6)">Coberturas</b>, justo aquí al lado.</div>';
 
   renderStatsOpHoy();
   renderStatsOperadoresBody();
+  const opPanelEl = document.getElementById('sop-operator-panel');
+  if (opPanelEl) opPanelEl.innerHTML = renderSopOperatorPanel();
 }
 
 // ── Helpers de cálculo compartidos por HOY y por el cuerpo del período ──────
@@ -7397,6 +7400,47 @@ function dowChartData(subset, from, to) {
   return { labels, data };
 }
 
+// Media de operadores presentes por día de la semana, separando los que ese
+// día tuvieron cobertura de los que estuvieron presentes pero sin cobertura.
+function dowPresenciaChartData(subset, attSubset, from, to) {
+  const counts = countDowInRange(from, to);
+  const sumsCon = [0,0,0,0,0,0,0], sumsSin = [0,0,0,0,0,0,0];
+  const activosPorDia = {};
+  subset.forEach(a => { (activosPorDia[a.fecha] = activosPorDia[a.fecha] || new Set()).add(a.operator_nombre||'?'); });
+  const presentesPorDia = {};
+  attSubset.forEach(r => { (presentesPorDia[r.fecha] = presentesPorDia[r.fecha] || new Set()).add(r.operator_nombre); });
+  Object.keys(presentesPorDia).forEach(fecha => {
+    const dow = new Date(fecha+'T00:00:00').getDay();
+    const presentSet = presentesPorDia[fecha];
+    const activeSet = activosPorDia[fecha] || new Set();
+    let con = 0, sin = 0;
+    presentSet.forEach(n => { if (activeSet.has(n)) con++; else sin++; });
+    sumsCon[dow] += con; sumsSin[dow] += sin;
+  });
+  const order = [1,2,3,4,5,6,0];
+  const labels = ['L','M','X','J','V','S','D'];
+  const dataCon = order.map(i => counts[i] ? +(sumsCon[i]/counts[i]).toFixed(2) : 0);
+  const dataSin = order.map(i => counts[i] ? +(sumsSin[i]/counts[i]).toFixed(2) : 0);
+  return { labels, dataCon, dataSin };
+}
+
+// Media de salidas con Live-U por día de la semana, separando las que llevó
+// un solo operador de las que llevaron dos.
+function dowLiveUChartData(subset, from, to) {
+  const counts = countDowInRange(from, to);
+  const sums1 = [0,0,0,0,0,0,0], sums2 = [0,0,0,0,0,0,0];
+  subset.forEach(a => {
+    if (!a.liveu) return;
+    const dow = new Date(a.fecha+'T00:00:00').getDay();
+    if (a.operador2_nombre) sums2[dow]++; else sums1[dow]++;
+  });
+  const order = [1,2,3,4,5,6,0];
+  const labels = ['L','M','X','J','V','S','D'];
+  const data1 = order.map(i => counts[i] ? +(sums1[i]/counts[i]).toFixed(2) : 0);
+  const data2 = order.map(i => counts[i] ? +(sums2[i]/counts[i]).toFixed(2) : 0);
+  return { labels, data1, data2 };
+}
+
 function miniInline(value, label) {
   return '<div><div style="font-family:Barlow Condensed,sans-serif;font-size:20px;font-weight:800;color:var(--text);line-height:1.1">'+value+'</div>'
     + '<div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-top:1px">'+label+'</div></div>';
@@ -7429,25 +7473,50 @@ function weekTypeCard(title, stats, color, numDays) {
     + '</div></div>';
 }
 
-// Destruye y vuelve a crear el gráfico de barras (Chart.js) de un canvas dado.
-function renderSopChart(canvasId, labels, data, color) {
+// Resuelve un color en formato var(--xxx) a su valor real — Canvas/Chart.js
+// no entiende variables CSS directamente, solo colores literales.
+function resolveCssColor(c) {
+  if (typeof c === 'string' && c.indexOf('var(') === 0) {
+    const varName = c.slice(4, -1).trim();
+    const val = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    return val || '#9ca3af';
+  }
+  return c;
+}
+
+// Dibuja (o redibuja) el gráfico de barras de un canvas. `series` es un array
+// de { data, color, label } — 1 serie = barra simple (findes en naranja),
+// 2+ series = barras apiladas por categoría (sin resaltar findes, ya los
+// distingue el propio color de cada serie).
+function renderSopChart(canvasId, labels, series) {
   const canvas = document.getElementById(canvasId);
   if (!canvas || typeof Chart === 'undefined') return;
   window._sopChartInstances = window._sopChartInstances || {};
   if (window._sopChartInstances[canvasId]) window._sopChartInstances[canvasId].destroy();
-  const bgColors = labels.map((l,i) => i >= 5 ? 'rgba(245,158,11,0.75)' : color);
+
+  const stacked = series.length > 1;
+  const datasets = series.map(s => {
+    const col = resolveCssColor(s.color);
+    return {
+      label: s.label || '',
+      data: s.data,
+      backgroundColor: stacked ? col : labels.map((l,i) => i >= 5 ? 'rgba(245,158,11,0.75)' : col),
+      borderRadius: 4, maxBarThickness: 48,
+    };
+  });
+
   window._sopChartInstances[canvasId] = new Chart(canvas.getContext('2d'), {
     type: 'bar',
-    data: { labels, datasets: [{ data, backgroundColor: bgColors, borderRadius: 4, maxBarThickness: 48 }] },
+    data: { labels, datasets },
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: {
-        legend: { display: false },
-        tooltip: { callbacks: { label: ctx => ctx.parsed.y+' coberturas de media' } },
+        legend: { display: stacked, labels: { color: '#e8eaf0', font: { size: 11 }, boxWidth: 12 } },
+        tooltip: { callbacks: { label: ctx => (ctx.dataset.label ? ctx.dataset.label+': ' : '')+ctx.parsed.y } },
       },
       scales: {
-        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,.06)' }, ticks: { color: '#6b7280', font: { size: 10 } } },
-        x: { grid: { display: false }, ticks: { color: '#e8eaf0', font: { size: 12, weight: 700 } } },
+        y: { stacked, beginAtZero: true, grid: { color: 'rgba(255,255,255,.06)' }, ticks: { color: '#6b7280', font: { size: 10 } } },
+        x: { stacked, grid: { display: false }, ticks: { color: '#e8eaf0', font: { size: 12, weight: 700 } } },
       },
     },
   });
@@ -7538,11 +7607,16 @@ function renderSopTabContent() {
   const statsTotal   = computeBlockStats(subset, attSubset, days);
   const statsWeekday = computeBlockStats(subsetWeekday, attWeekday, weekdayDays);
   const statsWeekend = computeBlockStats(subsetWeekend, attWeekend, weekendDays);
-  const chartData    = dowChartData(subset, from, to);
+
+  // Media de coberturas por operador presente, contando TODAS las presencias
+  // (las que tuvieron cobertura y las que no) — no operadores distintos.
+  const mediaCobPorPresente = attSubset.length ? (statsTotal.total/attSubset.length).toFixed(2) : '—';
+
+  const chartMode = window._sopChartMode || 'coberturas';
 
   cont.innerHTML =
     '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:20px">'
-    + '<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">📊 Media de coberturas por día de la semana <span style="color:var(--warn);font-weight:600;text-transform:none;letter-spacing:0">· fines de semana en naranja</span></div>'
+    + sopChartHeader(chartMode)
     + '<div style="height:170px"><canvas id="sop-chart-dow"></canvas></div>'
     + '</div>'
     + '<div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:22px">'
@@ -7553,20 +7627,154 @@ function renderSopTabContent() {
     + '<div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px">'
     + miniStatCard(statsTotal.total, 'Total coberturas', color)
     + miniStatCard(fmtHM(statsTotal.tiempoTotal), 'Horas totales', color)
-    + miniStatCard(statsTotal.opsActivos, 'Operadores activos', color)
-    + miniStatCard(statsTotal.opsPresentes, 'Operadores presentes', color)
-    + miniStatCard(statsTotal.inactivos, 'Operadores inactivos', 'var(--warn)')
     + '</div>'
     + sectionHdr('Medias del período', 'var(--muted)')
     + '<div style="display:flex;flex-wrap:wrap;gap:10px">'
     + miniStatCardMedia(statsTotal.mediaDia.toFixed(1), 'coberturas / día', color)
     + miniStatCardMedia(fmtHM(statsTotal.mediaTiempo), 'tiempo / cobertura', color)
-    + miniStatCardMedia(statsTotal.mediaOpDia.toFixed(2), 'coberturas / operador activo / día', color)
+    + miniStatCardMedia(mediaCobPorPresente, 'coberturas / operador presente', color)
     + miniStatCardMedia(statsTotal.pctInactividad!=null ? statsTotal.pctInactividad+'%' : '—', '% inactividad sobre presentes', 'var(--warn)')
     + miniStatCardMedia(Math.round(statsTotal.mediaDia*365).toLocaleString('es-ES'), 'proyección coberturas / año', color)
     + '</div>';
 
-  requestAnimationFrame(() => renderSopChart('sop-chart-dow', chartData.labels, chartData.data, color));
+  requestAnimationFrame(() => renderSopChartByMode(chartMode, subset, attSubset, from, to, color));
+}
+
+// Cabecera del gráfico: título según el modo + selector de qué datos mostrar.
+function sopChartHeader(mode) {
+  const mk = (key, label) => {
+    const on = mode === key;
+    return '<button onclick="setSopChartMode(\''+key+'\')" style="background:'+(on?'#38bdf8':'transparent')+';color:'+(on?'#0d0f14':'var(--muted)')+';border:1px solid '+(on?'#38bdf8':'var(--border2)')+';border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.3px">'+label+'</button>';
+  };
+  const titles = {
+    coberturas: '📊 Media de coberturas por día de la semana <span style="color:var(--warn);font-weight:600;text-transform:none;letter-spacing:0">· fines de semana en naranja</span>',
+    presentes:  '📊 Media de operadores presentes por día — <span style="color:#38bdf8;font-weight:600;text-transform:none;letter-spacing:0">con cobertura</span> vs <span style="color:var(--warn);font-weight:600;text-transform:none;letter-spacing:0">sin cobertura</span>',
+    liveu:      '📊 Media de salidas con Live-U por día — <span style="color:#60a5fa;font-weight:600;text-transform:none;letter-spacing:0">1 operador</span> vs <span style="color:#a78bfa;font-weight:600;text-transform:none;letter-spacing:0">2 operadores</span>',
+  };
+  return '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px">'
+    + '<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px">'+titles[mode]+'</div>'
+    + '<div style="display:flex;gap:6px">'+mk('coberturas','Coberturas')+mk('presentes','Presentes')+mk('liveu','Live-U')+'</div>'
+    + '</div>';
+}
+
+function setSopChartMode(mode) {
+  window._sopChartMode = mode;
+  renderSopTabContent();
+}
+
+function renderSopChartByMode(mode, subset, attSubset, from, to, color) {
+  if (mode === 'presentes') {
+    const d = dowPresenciaChartData(subset, attSubset, from, to);
+    renderSopChart('sop-chart-dow', d.labels, [
+      { data: d.dataCon, color: '#38bdf8', label: 'Con cobertura' },
+      { data: d.dataSin, color: 'var(--warn)', label: 'Sin cobertura' },
+    ]);
+  } else if (mode === 'liveu') {
+    const d = dowLiveUChartData(subset, from, to);
+    renderSopChart('sop-chart-dow', d.labels, [
+      { data: d.data1, color: '#60a5fa', label: '1 operador' },
+      { data: d.data2, color: '#a78bfa', label: '2 operadores' },
+    ]);
+  } else {
+    const d = dowChartData(subset, from, to);
+    renderSopChart('sop-chart-dow', d.labels, [{ data: d.data, color }]);
+  }
+}
+
+// ── Buscador de operador: estadísticas completas de una persona ────────────
+function renderSopOperatorPanel() {
+  const opNames = [...new Set(operators.filter(o=>o.rol!=='explotacion').map(o=>operatorFullName(o)))].sort();
+  return '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-top:8px">'
+    + '<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">🔍 Buscar operador · estadísticas completas</div>'
+    + '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:4px">'
+    + '<input id="sop-op-search" list="sop-op-list" placeholder="Escribe un nombre o elige de la lista" style="flex:1;min-width:220px;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:9px 12px;font-size:13px" onkeydown="if(event.key===\'Enter\')renderSopOperatorStats()">'
+    + '<datalist id="sop-op-list">'+opNames.map(n=>'<option value="'+n.replace(/"/g,'&quot;')+'">').join('')+'</datalist>'
+    + '<button class="btn btn-primary" style="padding:9px 20px;font-size:12px" onclick="renderSopOperatorStats()">Buscar</button>'
+    + '</div>'
+    + '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Se calcula sobre el período elegido arriba (📅 Período) — si lo cambias, pulsa Buscar de nuevo.</div>'
+    + '<div id="sop-op-result" style="margin-top:14px"></div>'
+    + '</div>';
+}
+
+function renderSopOperatorStats() {
+  const resEl = document.getElementById('sop-op-result');
+  if (!resEl) return;
+  const name = document.getElementById('sop-op-search')?.value.trim();
+  if (!name) { resEl.innerHTML = '<div style="color:var(--muted);font-size:12px">Escribe o selecciona un operador.</div>'; return; }
+
+  const { from, to } = getDateRange('sop');
+  const asgnAll  = (window._sopAsgn||[]).filter(a=>a.fecha>=from && a.fecha<=to);
+  const attAll   = (window._sopAtt||[]).filter(a=>a.fecha>=from && a.fecha<=to);
+  const unionAll = (window._sopUnion||[]).filter(r=>r.fecha>=from && r.fecha<=to);
+
+  const mine         = asgnAll.filter(a => a.operator_nombre === name);
+  const mineAsSegundo = asgnAll.filter(a => a.operador2_nombre === name);
+  const mineAtt      = attAll.filter(a => a.operator_nombre === name);
+  const mineUnion    = unionAll.filter(r => r.operator_nombre === name);
+
+  if (!mine.length && !mineAtt.length && !mineUnion.length && !mineAsSegundo.length) {
+    resEl.innerHTML = '<div style="color:var(--muted);font-size:12px">Sin datos para "'+name.replace(/</g,'&lt;')+'" en este período.</div>';
+    return;
+  }
+
+  const total = mine.reduce((s,a)=>s+(a.num_coberturas||1),0);
+  const durs = mine.map(asgnDurationMin).filter(x=>x!=null && x>0);
+  const tiempoTotal = durs.reduce((s,x)=>s+x,0);
+  const mediaTiempo = durs.length ? tiempoTotal/durs.length : 0;
+  const diasConCobertura = new Set(mine.map(a=>a.fecha)).size;
+  const diasPresente = new Set(mineAtt.map(a=>a.fecha)).size;
+  const diasPresenteSinCobertura = Math.max(0, diasPresente - diasConCobertura);
+  const mediaCobDiaPresente = diasPresente ? (total/diasPresente).toFixed(2) : '—';
+  const mediaCobDiaActivo   = diasConCobertura ? (total/diasConCobertura).toFixed(2) : '—';
+
+  const { weekday, weekend } = splitWeekdayWeekend(mine);
+  const totalWeekday = weekday.reduce((s,a)=>s+(a.num_coberturas||1),0);
+  const totalWeekend = weekend.reduce((s,a)=>s+(a.num_coberturas||1),0);
+
+  const liveu1 = mine.filter(a=>a.liveu && !a.operador2_nombre).length;
+  const liveu2 = mine.filter(a=>a.liveu && a.operador2_nombre).length;
+  const wificamN = mine.filter(a=>a.wificam).length;
+  const viajesN = new Set(mine.filter(a=>a.viaje && a.viaje_id).map(a=>a.viaje_id)).size;
+
+  const unionHoras = mineUnion.reduce((s,r)=>s+unionHoursDuration(r),0);
+  const unionDias  = new Set(mineUnion.map(r=>r.fecha)).size;
+
+  const totalL6 = mine.filter(a=>a.prod==='L6').reduce((s,a)=>s+(a.num_coberturas||1),0);
+  const totalA3 = mine.filter(a=>a.prod==='A3').reduce((s,a)=>s+(a.num_coberturas||1),0);
+
+  resEl.innerHTML =
+    '<div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px">👤 '+realNameOnly(name)+' <span style="color:var(--muted);font-weight:500;font-size:11px">· '+fmtDate(from)+' a '+fmtDate(to)+' · La Sexta '+totalL6+' / Antena 3 '+totalA3+'</span></div>'
+    + sectionHdr('Actividad', '#38bdf8')
+    + '<div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px">'
+    + miniStatCard(total, 'Total coberturas', '#38bdf8')
+    + miniStatCard(fmtHM(tiempoTotal), 'Horas totales', '#38bdf8')
+    + miniStatCard(diasPresente, 'Días presente', '#38bdf8')
+    + miniStatCard(diasConCobertura, 'Días con cobertura', '#38bdf8')
+    + miniStatCard(diasPresenteSinCobertura, 'Días presente sin cobertura', 'var(--warn)')
+    + '</div>'
+    + '<div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px">'
+    + miniStatCardMedia(mediaCobDiaPresente, 'coberturas / día presente', '#38bdf8')
+    + miniStatCardMedia(mediaCobDiaActivo, 'coberturas / día con cobertura', '#38bdf8')
+    + miniStatCardMedia(fmtHM(mediaTiempo), 'tiempo / cobertura', '#38bdf8')
+    + '</div>'
+    + sectionHdr('Entre semana vs fin de semana', 'var(--muted)')
+    + '<div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px">'
+    + miniStatCard(totalWeekday, 'Coberturas entre semana (L–V)', '#38bdf8')
+    + miniStatCard(totalWeekend, 'Coberturas fin de semana (S–D)', 'var(--warn)')
+    + '</div>'
+    + sectionHdr('Equipamiento', '#8b5cf6')
+    + '<div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px">'
+    + miniStatCard(liveu1, 'Salidas Live-U · 1 op.', '#60a5fa')
+    + miniStatCard(liveu2, 'Salidas Live-U · 2 ops.', '#a78bfa')
+    + miniStatCard(wificamN, 'Salidas WifiCam', '#ec4899')
+    + miniStatCard(viajesN, 'Viajes', 'var(--warn)')
+    + miniStatCard(mineAsSegundo.length, 'Veces como 2º operador', 'var(--muted)')
+    + '</div>'
+    + sectionHdr('Horas sindicales', 'var(--a3)')
+    + '<div style="display:flex;flex-wrap:wrap;gap:10px">'
+    + miniStatCard(unionHoras.toFixed(1)+'h', 'Total horas sindicales', 'var(--a3)')
+    + miniStatCard(unionDias, 'Días con horas sindicales', 'var(--a3)')
+    + '</div>';
 }
 
 // Duración en horas (decimal) de un tramo de horas sindicales
