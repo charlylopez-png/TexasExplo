@@ -1000,6 +1000,7 @@ nav button.active { color:var(--a3); }
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
 // ─── DATA ────────────────────────────────────────────────────────────────────
 const DATES = {
@@ -7342,50 +7343,146 @@ async function renderStatsOperadores() {
   renderStatsOperadoresBody();
 }
 
+// ── Helpers de cálculo compartidos por HOY y por el cuerpo del período ──────
+
+// Cuenta cuántos lunes, martes... hay entre from y to (inclusive). Índice = getDay() (0=Domingo..6=Sábado).
+function countDowInRange(from, to) {
+  const counts = [0,0,0,0,0,0,0];
+  const start = new Date(from+'T00:00:00');
+  const end = new Date(to+'T00:00:00');
+  if (isNaN(start) || isNaN(end) || end < start) return counts;
+  for (let d = new Date(start); d <= end; d.setDate(d.getDate()+1)) counts[d.getDay()]++;
+  return counts;
+}
+
+function isWeekendFecha(fecha) {
+  const dow = new Date(fecha+'T00:00:00').getDay();
+  return dow === 0 || dow === 6;
+}
+
+function splitWeekdayWeekend(list) {
+  const weekday = [], weekend = [];
+  list.forEach(a => (isWeekendFecha(a.fecha) ? weekend : weekday).push(a));
+  return { weekday, weekend };
+}
+
+// Estadísticas de un bloque (coberturas + asistencia) para un nº de días dado.
+function computeBlockStats(subset, attSubset, days) {
+  const total = subset.reduce((s,a)=>s+(a.num_coberturas||1),0);
+  const opsActivosSet = new Set(subset.map(a=>a.operator_nombre||'?'));
+  const opsPresentesSet = new Set(attSubset.map(a=>a.operator_nombre));
+  let inactivos = 0;
+  opsPresentesSet.forEach(n => { if (!opsActivosSet.has(n)) inactivos++; });
+  const durs = subset.map(asgnDurationMin).filter(x=>x!=null && x>0);
+  const tiempoTotal = durs.reduce((s,x)=>s+x,0);
+  const mediaTiempo = durs.length ? tiempoTotal/durs.length : 0;
+  const mediaDia = days ? total/days : 0;
+  const mediaOpDia = (opsActivosSet.size && days) ? total/days/opsActivosSet.size : 0;
+  const pctInactividad = opsPresentesSet.size ? Math.round(inactivos/opsPresentesSet.size*100) : null;
+  return {
+    total, opsActivos: opsActivosSet.size, opsPresentes: opsPresentesSet.size, inactivos,
+    tiempoTotal, mediaTiempo, mediaDia, mediaOpDia, pctInactividad,
+  };
+}
+
+// Media de coberturas para cada día de la semana en el rango (robusto a que
+// el período tenga algún lunes de más que domingos, etc.)
+function dowChartData(subset, from, to) {
+  const counts = countDowInRange(from, to);
+  const sums = [0,0,0,0,0,0,0];
+  subset.forEach(a => { const dow = new Date(a.fecha+'T00:00:00').getDay(); sums[dow] += (a.num_coberturas||1); });
+  const order = [1,2,3,4,5,6,0]; // L,M,X,J,V,S,D
+  const labels = ['L','M','X','J','V','S','D'];
+  const data = order.map(i => counts[i] ? +(sums[i]/counts[i]).toFixed(2) : 0);
+  return { labels, data };
+}
+
+function miniInline(value, label) {
+  return '<div><div style="font-family:Barlow Condensed,sans-serif;font-size:20px;font-weight:800;color:var(--text);line-height:1.1">'+value+'</div>'
+    + '<div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-top:1px">'+label+'</div></div>';
+}
+
+function miniStatCard(value, label, color) {
+  color = color || 'var(--text)';
+  return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;min-width:112px">'
+    + '<div style="font-family:Barlow Condensed,sans-serif;font-size:22px;font-weight:800;color:'+color+';line-height:1.1">'+value+'</div>'
+    + '<div style="font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:600;margin-top:3px">'+label+'</div>'
+    + '</div>';
+}
+
+function miniStatCardMedia(value, label, color) {
+  color = color || 'var(--muted)';
+  return '<div style="background:transparent;border:1px dashed var(--border2);border-radius:8px;padding:10px 14px;min-width:112px">'
+    + '<div style="font-family:Barlow Condensed,sans-serif;font-size:19px;font-weight:700;color:'+color+';line-height:1.1">'+value+'</div>'
+    + '<div style="font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:600;margin-top:3px">'+label+'</div>'
+    + '</div>';
+}
+
+function weekTypeCard(title, stats, color, numDays) {
+  return '<div style="background:var(--bg3);border:1px solid var(--border);border-left:3px solid '+color+';border-radius:10px;padding:14px 16px;flex:1;min-width:230px">'
+    + '<div style="font-size:10px;font-weight:700;color:'+color+';text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">'+title+' <span style="color:var(--muted);font-weight:500;text-transform:none;letter-spacing:0">('+numDays+' día'+(numDays===1?'':'s')+')</span></div>'
+    + '<div style="display:flex;gap:16px;flex-wrap:wrap">'
+    + miniInline(stats.total, 'Coberturas')
+    + miniInline(stats.mediaDia.toFixed(1), 'Media/día')
+    + miniInline(fmtHM(stats.tiempoTotal), 'Horas totales')
+    + miniInline(stats.opsActivos, 'Op. activos')
+    + '</div></div>';
+}
+
+// Destruye y vuelve a crear el gráfico de barras (Chart.js) de un canvas dado.
+function renderSopChart(canvasId, labels, data, color) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas || typeof Chart === 'undefined') return;
+  window._sopChartInstances = window._sopChartInstances || {};
+  if (window._sopChartInstances[canvasId]) window._sopChartInstances[canvasId].destroy();
+  const bgColors = labels.map((l,i) => i >= 5 ? 'rgba(245,158,11,0.75)' : color);
+  window._sopChartInstances[canvasId] = new Chart(canvas.getContext('2d'), {
+    type: 'bar',
+    data: { labels, datasets: [{ data, backgroundColor: bgColors, borderRadius: 4, maxBarThickness: 48 }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ctx.parsed.y+' coberturas de media' } },
+      },
+      scales: {
+        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,.06)' }, ticks: { color: '#6b7280', font: { size: 10 } } },
+        x: { grid: { display: false }, ticks: { color: '#e8eaf0', font: { size: 12, weight: 700 } } },
+      },
+    },
+  });
+}
+
 function renderStatsOpHoy() {
   const el = document.getElementById('sop-hoy');
   if (!el) return;
   const asgn = window._sopAsgn || [];
   const att  = window._sopAtt  || [];
-
   const today = todayLocal();
+  const weekendToday = isWeekendFecha(today);
   const todayAsgn = asgn.filter(a=>a.fecha===today);
-  const todayL6 = todayAsgn.filter(a=>a.prod==='L6');
-  const todayA3 = todayAsgn.filter(a=>a.prod==='A3');
-  const todayAtt = att.filter(a=>a.fecha===today);
-  const todayAttL6 = todayAtt.filter(a=>a.prod==='L6');
-  const todayAttA3 = todayAtt.filter(a=>a.prod==='A3');
+  const todayAtt  = att.filter(a=>a.fecha===today);
 
-  function diaColStats(subset, attSubset, label, color) {
-    const total = subset.reduce((s,a)=>s+(a.num_coberturas||1),0);
-    const activeSet = new Set(subset.map(a=>a.operator_nombre||'?'));
-    const ops = activeSet.size;
-    const mediaOp = ops ? (total/ops).toFixed(1) : '—';
-    const durs = subset.map(asgnDurationMin).filter(x=>x!=null && x>0);
-    const tiempoTotal = durs.reduce((s,x)=>s+x,0);
-    const mediaTiempo = durs.length ? tiempoTotal/durs.length : 0;
-
-    const presentSet = new Set(attSubset.map(a=>a.operator_nombre));
-    const presentes = presentSet.size;
-    const mediaPresente = presentes ? (total/presentes).toFixed(1) : '—';
-    let inactivos = 0;
-    presentSet.forEach(n => { if (!activeSet.has(n)) inactivos++; });
-
-    return '<div style="flex:1;min-width:200px">'
-      + sectionHdr(label, color)
-      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'
-      + statBox(total, 'Total coberturas', mediaOp, 'Media/operador activo', color)
-      + statBox(fmtHM(tiempoTotal), 'Tiempo total coberturas', fmtHM(mediaTiempo), 'Media/cobertura', color)
-      + statBox(presentes, 'Operadores presentes', mediaPresente, 'Media coberturas/presente', color)
-      + statBox(ops, 'Operadores activos', inactivos, 'Operadores inactivos', 'var(--warn)')
+  function hoyBlock(subset, attSubset, label, color) {
+    const s = computeBlockStats(subset, attSubset, 1);
+    return '<div style="flex:1;min-width:230px;background:var(--bg3);border:1px solid var(--border);border-left:3px solid '+color+';border-radius:10px;padding:12px 16px">'
+      + '<div style="font-size:10px;font-weight:700;color:'+color+';text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">'+label+'</div>'
+      + '<div style="display:flex;gap:14px;flex-wrap:wrap">'
+      + miniInline(s.total, 'Coberturas')
+      + miniInline(fmtHM(s.tiempoTotal), 'Horas')
+      + miniInline(s.opsActivos, 'Activos')
+      + miniInline(s.opsPresentes, 'Presentes')
+      + miniInline(s.inactivos, 'Inactivos')
       + '</div></div>';
   }
 
-  el.innerHTML = '<div style="font-size:11px;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">📅 HOY</div>'
-    + '<div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin-bottom:24px">'
-    + diaColStats(todayAsgn, todayAtt, 'GLOBAL', 'var(--text)')
-    + diaColStats(todayL6, todayAttL6, 'LA SEXTA', 'var(--l6)')
-    + diaColStats(todayA3, todayAttA3, 'ANTENA 3', 'var(--a3)')
+  el.innerHTML = '<div style="font-size:11px;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">📅 HOY'
+      + (weekendToday ? ' <span style="color:var(--muted);font-weight:500;text-transform:none;letter-spacing:0">· fin de semana</span>' : '')
+      + '</div>'
+    + '<div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:24px">'
+    + hoyBlock(todayAsgn, todayAtt, 'GLOBAL', '#38bdf8')
+    + hoyBlock(todayAsgn.filter(a=>a.prod==='L6'), todayAtt.filter(a=>a.prod==='L6'), 'LA SEXTA', 'var(--l6)')
+    + hoyBlock(todayAsgn.filter(a=>a.prod==='A3'), todayAtt.filter(a=>a.prod==='A3'), 'ANTENA 3', 'var(--a3)')
     + '</div>';
 }
 
@@ -7393,63 +7490,83 @@ function renderStatsOperadoresBody() {
   const body = document.getElementById('sop-body');
   if (!body) return;
   const { from, to, days } = getDateRange('sop');
-  const asgn = (window._sopAsgn||[]).filter(a=>a.fecha>=from && a.fecha<=to);
-  const att  = (window._sopAtt||[]).filter(a=>a.fecha>=from && a.fecha<=to);
+  window._sopBodyRange = { from, to, days };
+  body.innerHTML = sopTabBar() + '<div id="sop-tab-content"></div>';
+  renderSopTabContent();
+}
 
-  function periodColStats(subset, attSubset, label, color) {
-    const total = subset.reduce((s,a)=>s+(a.num_coberturas||1),0);
-    const ops = new Set(subset.map(a=>a.operator_nombre||'?')).size;
-    const mediaDia = (total/days).toFixed(1);
-    const mediaOpDia = ops ? (total/days/ops).toFixed(2) : '—';
-    const durs = subset.map(asgnDurationMin).filter(x=>x!=null && x>0);
-    const tiempoTotal = durs.reduce((s,x)=>s+x,0);
-    const mediaTiempo = durs.length ? tiempoTotal/durs.length : 0;
-    const proyeccionAño = Math.round(total/days*365);
-
-    // Asistencia día a día: presentes vs activos, para sacar inactivos por día
-    const byDayActivos = {};
-    subset.forEach(a => {
-      if (!byDayActivos[a.fecha]) byDayActivos[a.fecha] = new Set();
-      byDayActivos[a.fecha].add(a.operator_nombre||'?');
-    });
-    const byDayPresentes = {};
-    attSubset.forEach(r => {
-      if (!byDayPresentes[r.fecha]) byDayPresentes[r.fecha] = new Set();
-      byDayPresentes[r.fecha].add(r.operator_nombre);
-    });
-    const totalPresenciaDias = attSubset.length;
-    let totalInactivosDias = 0;
-    Object.keys(byDayPresentes).forEach(fecha => {
-      const presentSet = byDayPresentes[fecha];
-      const activeSet = byDayActivos[fecha] || new Set();
-      presentSet.forEach(n => { if (!activeSet.has(n)) totalInactivosDias++; });
-    });
-    const mediaPresentesDia = (totalPresenciaDias/days).toFixed(1);
-    const mediaCobPresente  = totalPresenciaDias ? (total/totalPresenciaDias).toFixed(2) : '—';
-    const mediaInactivosDia = (totalInactivosDias/days).toFixed(1);
-    const pctInactividad = totalPresenciaDias ? Math.round(totalInactivosDias/totalPresenciaDias*100)+'%' : '—';
-
-    return '<div style="flex:1;min-width:200px">'
-      + sectionHdr(label, color)
-      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'
-      + statBox(total, 'Total coberturas', mediaDia, 'Media coberturas/día', color)
-      + statBox(mediaOpDia, 'Media/operador activo/día', fmtHM(tiempoTotal), 'Total horas cobertura', color)
-      + statBox(fmtHM(mediaTiempo), 'Media tiempo/cobertura', proyeccionAño.toLocaleString('es-ES'), 'Proyección coberturas/año', color)
-      + statBox(mediaPresentesDia, 'Media operadores presentes/día', mediaCobPresente, 'Media coberturas/op. presente', color)
-      + statBox(mediaInactivosDia, 'Media operadores inactivos/día', pctInactividad, '% inactividad sobre presentes', 'var(--warn)')
-      + '</div></div>';
-  }
-
-  const l6 = asgn.filter(a=>a.prod==='L6');
-  const a3 = asgn.filter(a=>a.prod==='A3');
-  const attL6 = att.filter(a=>a.prod==='L6');
-  const attA3 = att.filter(a=>a.prod==='A3');
-
-  body.innerHTML = '<div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">'
-    + periodColStats(asgn, att, 'GLOBAL', 'var(--text)')
-    + periodColStats(l6, attL6, 'LA SEXTA', 'var(--l6)')
-    + periodColStats(a3, attA3, 'ANTENA 3', 'var(--a3)')
+function sopTabBar() {
+  const tab = window._sopTab || 'global';
+  const mk = (key, label, color) => {
+    const on = tab === key;
+    return '<button onclick="setSopTab(\''+key+'\')" style="background:'+(on?color:'var(--bg3)')+';color:'+(on?'#0d0f14':'var(--muted)')+';border:1px solid '+(on?color:'var(--border2)')+';border-radius:7px;padding:8px 22px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.5px">'+label+'</button>';
+  };
+  return '<div style="display:flex;gap:8px;margin-bottom:20px">'
+    + mk('global', 'GLOBAL', '#38bdf8')
+    + mk('l6', 'LA SEXTA', 'var(--l6)')
+    + mk('a3', 'ANTENA 3', 'var(--a3)')
     + '</div>';
+}
+
+function setSopTab(tab) {
+  window._sopTab = tab;
+  renderStatsOperadoresBody();
+}
+
+function renderSopTabContent() {
+  const cont = document.getElementById('sop-tab-content');
+  if (!cont) return;
+  const { from, to, days } = window._sopBodyRange || getDateRange('sop');
+  const tab = window._sopTab || 'global';
+  const prodMap  = { global: null, l6: 'L6', a3: 'A3' };
+  const colorMap = { global: '#38bdf8', l6: 'var(--l6)', a3: 'var(--a3)' };
+  const prod  = prodMap[tab];
+  const color = colorMap[tab];
+
+  const asgnAll = (window._sopAsgn||[]).filter(a=>a.fecha>=from && a.fecha<=to);
+  const attAll  = (window._sopAtt||[]).filter(a=>a.fecha>=from && a.fecha<=to);
+  const subset      = prod ? asgnAll.filter(a=>a.prod===prod) : asgnAll;
+  const attSubset   = prod ? attAll.filter(a=>a.prod===prod)  : attAll;
+
+  const dowCounts   = countDowInRange(from, to);
+  const weekdayDays = dowCounts[1]+dowCounts[2]+dowCounts[3]+dowCounts[4]+dowCounts[5];
+  const weekendDays = dowCounts[0]+dowCounts[6];
+
+  const { weekday: subsetWeekday, weekend: subsetWeekend } = splitWeekdayWeekend(subset);
+  const { weekday: attWeekday, weekend: attWeekend } = splitWeekdayWeekend(attSubset);
+
+  const statsTotal   = computeBlockStats(subset, attSubset, days);
+  const statsWeekday = computeBlockStats(subsetWeekday, attWeekday, weekdayDays);
+  const statsWeekend = computeBlockStats(subsetWeekend, attWeekend, weekendDays);
+  const chartData    = dowChartData(subset, from, to);
+
+  cont.innerHTML =
+    '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:20px">'
+    + '<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">📊 Media de coberturas por día de la semana <span style="color:var(--warn);font-weight:600;text-transform:none;letter-spacing:0">· fines de semana en naranja</span></div>'
+    + '<div style="height:170px"><canvas id="sop-chart-dow"></canvas></div>'
+    + '</div>'
+    + '<div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:22px">'
+    + weekTypeCard('🗓 ENTRE SEMANA (L–V)', statsWeekday, color, weekdayDays)
+    + weekTypeCard('🌴 FIN DE SEMANA (S–D)', statsWeekend, 'var(--warn)', weekendDays)
+    + '</div>'
+    + sectionHdr('Números absolutos del período completo', color)
+    + '<div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px">'
+    + miniStatCard(statsTotal.total, 'Total coberturas', color)
+    + miniStatCard(fmtHM(statsTotal.tiempoTotal), 'Horas totales', color)
+    + miniStatCard(statsTotal.opsActivos, 'Operadores activos', color)
+    + miniStatCard(statsTotal.opsPresentes, 'Operadores presentes', color)
+    + miniStatCard(statsTotal.inactivos, 'Operadores inactivos', 'var(--warn)')
+    + '</div>'
+    + sectionHdr('Medias del período', 'var(--muted)')
+    + '<div style="display:flex;flex-wrap:wrap;gap:10px">'
+    + miniStatCardMedia(statsTotal.mediaDia.toFixed(1), 'coberturas / día', color)
+    + miniStatCardMedia(fmtHM(statsTotal.mediaTiempo), 'tiempo / cobertura', color)
+    + miniStatCardMedia(statsTotal.mediaOpDia.toFixed(2), 'coberturas / operador activo / día', color)
+    + miniStatCardMedia(statsTotal.pctInactividad!=null ? statsTotal.pctInactividad+'%' : '—', '% inactividad sobre presentes', 'var(--warn)')
+    + miniStatCardMedia(Math.round(statsTotal.mediaDia*365).toLocaleString('es-ES'), 'proyección coberturas / año', color)
+    + '</div>';
+
+  requestAnimationFrame(() => renderSopChart('sop-chart-dow', chartData.labels, chartData.data, color));
 }
 
 // Duración en horas (decimal) de un tramo de horas sindicales
