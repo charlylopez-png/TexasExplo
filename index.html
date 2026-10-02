@@ -3814,6 +3814,26 @@ async function sbGet(table, query='') {
   return r.json();
 }
 
+// ── ANTI DOBLE CLIC ───────────────────────────────────────
+// Bloquea los botones del modal mientras se guarda y descarta clics repetidos,
+// para que un segundo "Guardar" no cree registros duplicados.
+window._saveLocks = window._saveLocks || {};
+async function withSaveLock(key, fn) {
+  if (window._saveLocks[key]) return;
+  window._saveLocks[key] = true;
+  const btns = Array.from(document.querySelectorAll('#modal-actions button'));
+  const prev = btns.map(b => ({ d: b.disabled, o: b.style.opacity, c: b.style.cursor }));
+  btns.forEach(b => { b.disabled = true; b.style.opacity = '.5'; b.style.cursor = 'wait'; });
+  try {
+    return await fn();
+  } finally {
+    window._saveLocks[key] = false;
+    btns.forEach((b, i) => {
+      if (b.isConnected) { b.disabled = prev[i].d; b.style.opacity = prev[i].o; b.style.cursor = prev[i].c; }
+    });
+  }
+}
+
 async function sbPost(table, body) {
   const r = await fetch(`${SB_URL}/rest/v1/${table}`, {
     method: 'POST', headers: await getSbHeaders(), body: JSON.stringify(body)
@@ -5085,7 +5105,8 @@ function toggleWifiCamFields() {
   document.getElementById('asgn-wificam-fields').style.display = on ? '' : 'none';
 }
 
-async function confirmAssign(code, isEdit) {
+function confirmAssign(code, isEdit) { return withSaveLock('confirmAssign', () => _confirmAssignImpl(code, isEdit)); }
+async function _confirmAssignImpl(code, isEdit) {
   const opEl     = document.getElementById('asgn-op');
   const opInput  = opEl.value.trim();
   const matched  = window._asgnOpMap?.[opInput];
@@ -5249,7 +5270,8 @@ function openReservaManana(code) {
   document.getElementById('modal').classList.add('open');
 }
 
-async function saveReservaManana(code) {
+function saveReservaManana(code) { return withSaveLock('saveReservaManana', () => _saveReservaMananaImpl(code)); }
+async function _saveReservaMananaImpl(code) {
   const c = cameras.find(x => x.code === code);
   if (!c) return;
   const opInput = document.getElementById('resv-op').value.trim();
@@ -5374,7 +5396,8 @@ function openRelevo(code) {
   document.getElementById('modal').classList.add('open');
 }
 
-async function confirmRelevo(code) {
+function confirmRelevo(code) { return withSaveLock('confirmRelevo', () => _confirmRelevoImpl(code)); }
+async function _confirmRelevoImpl(code) {
   const c = cameras.find(x => x.code === code);
   if (!c) return;
 
@@ -8033,7 +8056,8 @@ function refreshCoberturaViews() {
   if (document.getElementById('cob-results')) renderCoberturasResults();
 }
 
-async function savePastCobertura(opName) {
+function savePastCobertura(opName) { return withSaveLock('savePastCobertura', () => _savePastCoberturaImpl(opName)); }
+async function _savePastCoberturaImpl(opName) {
   if (!opName) {
     opName = document.getElementById('ac-op')?.value.trim();
     if (!opName) { alert('Indica el operador'); return; }
