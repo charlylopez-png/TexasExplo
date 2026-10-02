@@ -751,6 +751,7 @@ nav button.active { color:var(--a3); }
     <button onclick="showView('camaras')" class="active">Dashboard</button>
     <button id="nav-stats-equipos" onclick="showView('stats-equipos')">Stats Equipos</button>
     <button id="nav-stats-operadores" onclick="showView('stats-operadores')">Stats Operadores</button>
+    <button id="nav-stats-coberturas" onclick="showView('stats-coberturas')">Stats Coberturas</button>
     <button onclick="showView('coberturas')">Coberturas</button>
     <button id="nav-stats-mant" onclick="showView('stats-mantenimiento')">Stats Mant.</button>
     <button onclick="showView('admin')">Admin</button>
@@ -932,6 +933,9 @@ nav button.active { color:var(--a3); }
 </div>
 <div id="view-stats-operadores" style="display:none;min-height:100vh;background:var(--bg);">
   <div id="stats-operadores-content" style="padding:20px 20px 100px"></div>
+</div>
+<div id="view-stats-coberturas" style="display:none;min-height:100vh;background:var(--bg);">
+  <div id="stats-coberturas-content" style="padding:20px 20px 100px"></div>
 </div>
 <div id="view-coberturas" style="display:none;min-height:100vh;background:var(--bg);">
   <div id="coberturas-content" style="padding:20px 20px 100px"></div>
@@ -1668,10 +1672,10 @@ function setSection(section) {
 function showView(view) {
   // Stats Equipos / Stats Operadores / Stats Mant. son solo para el admin —
   // si alguien intenta forzar la vista sin serlo, se le redirige al Dashboard.
-  if (['stats-equipos','stats-operadores','stats-mantenimiento'].includes(view) && currentUser?.rol !== 'admin') {
+  if (['stats-equipos','stats-operadores','stats-coberturas','stats-mantenimiento'].includes(view) && currentUser?.rol !== 'admin') {
     view = 'camaras';
   }
-  ['fleet','camaras','bajas','historico','stats','stats-equipos','stats-operadores','coberturas','stats-mantenimiento','stats-flota','admin','admin-flota','usuarios','asistencia'].forEach(v => {
+  ['fleet','camaras','bajas','historico','stats','stats-equipos','stats-operadores','stats-coberturas','coberturas','stats-mantenimiento','stats-flota','admin','admin-flota','usuarios','asistencia'].forEach(v => {
     const el = document.getElementById('view-'+v);
     if (el) el.style.display = view===v ? '' : 'none';
   });
@@ -1692,6 +1696,7 @@ function showView(view) {
   if (view==='stats') renderStats();
   if (view==='stats-equipos') renderStatsEquipos();
   if (view==='stats-operadores') renderStatsOperadores();
+  if (view==='stats-coberturas') renderStatsCoberturas();
   if (view==='coberturas') renderCoberturas();
   if (view==='stats-mantenimiento') renderStatsMant();
   if (view==='stats-flota') renderStatsFlota();
@@ -3938,7 +3943,7 @@ function applySession(p) {
   const topUsuarios = document.getElementById('top-usuarios');
   if (topUsuarios) topUsuarios.style.display = p.rol === 'admin' ? '' : 'none';
   // Stats Equipos / Stats Operadores / Stats Mant. — solo visibles para el admin
-  ['nav-stats-equipos','nav-stats-operadores','nav-stats-mant'].forEach(id => {
+  ['nav-stats-equipos','nav-stats-operadores','nav-stats-coberturas','nav-stats-mant'].forEach(id => {
     const btn = document.getElementById(id);
     if (btn) btn.style.display = p.rol === 'admin' ? '' : 'none';
   });
@@ -8720,6 +8725,180 @@ async function saveEditCobertura(id) {
     console.warn('saveEditCobertura:', e.message);
     showSyncStatus('⚠ No se pudo guardar', 'error');
   }
+}
+
+// ═══════════════════════════════════════════════════════
+// STATS COBERTURAS (solo admin)
+// Conteo por SALIDA registrada (una fila = una cobertura). Los viajes
+// guardados como una sola fila de varios días se expanden a un día por fila
+// con expandViajeForExport(), igual que en la exportación.
+// ═══════════════════════════════════════════════════════
+async function renderStatsCoberturas() {
+  const el = document.getElementById('stats-coberturas-content');
+  if (!el) return;
+  el.innerHTML = '<div style="color:var(--muted);padding:20px">Cargando...</div>';
+  let asgn = [];
+  if (sbReady) {
+    try { asgn = await sbGet('assignments', 'asset_type=eq.camera&order=fecha.desc&limit=10000'); }
+    catch(e) { console.warn('renderStatsCoberturas:', e.message); }
+  }
+  // Expandir viajes de una sola fila a un día por fila
+  window._scobRows = expandViajeForExport(asgn.map(a => ({ t:'cob', fecha:a.fecha, data:a }))).map(x => x.data);
+
+  el.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:10px;margin-bottom:14px">'
+    + '<div><div style="font-size:20px;font-weight:700;margin-bottom:4px">📊 Stats Coberturas</div>'
+    + '<div style="font-size:12px;color:var(--muted)">Cada salida registrada cuenta como una cobertura · los viajes de varios días se cuentan día a día</div></div>'
+    + '<div style="display:flex;gap:8px">'
+    + '<button class="cb-add" style="font-size:12px;padding:8px 16px" onclick="exportStatsCoberturas(\'xlsx\')">📊 Excel</button>'
+    + '<button class="cb-add" style="font-size:12px;padding:8px 16px;background:#ef4444;border-color:#ef4444" onclick="exportStatsCoberturas(\'pdf\')">📄 PDF</button>'
+    + '</div></div>'
+    + dateFilterBar('scob', 'renderStatsCoberturasBody', 'mes')
+    + '<div id="scob-body"></div>';
+  renderStatsCoberturasBody();
+}
+
+function scobCompute(rows) {
+  const total = rows.length;
+  const liveu = rows.filter(a => !!a.liveu);
+  const liveuAcomp = liveu.filter(a => (a.operador2_nombre||'').trim()).length;
+  const liveuSolo = liveu.length - liveuAcomp;
+  const wificam = rows.filter(a => !!a.wificam).length;
+  const viajeRows = rows.filter(a => !!a.viaje);
+  const normales = total - viajeRows.length;
+  const viajesUnicos = new Set(viajeRows.map(a => a.viaje_id || ('row:'+a.id))).size;
+  const viajeDias = viajeRows.length;
+  return { total, liveu: liveu.length, liveuSolo, liveuAcomp, wificam, normales, viajesUnicos, viajeDias };
+}
+
+function scobPct(n, d) { return d ? (n*100/d) : 0; }
+function scobPctTxt(n, d) { return d ? scobPct(n,d).toFixed(1).replace('.',',')+'%' : '—'; }
+
+function scobGetData() {
+  const { from, to } = getDateRange('scob');
+  const rows = (window._scobRows||[]).filter(a => a.fecha >= from && a.fecha <= to);
+  return {
+    from, to,
+    G:  scobCompute(rows),
+    L6: scobCompute(rows.filter(a => a.prod === 'L6')),
+    A3: scobCompute(rows.filter(a => a.prod === 'A3')),
+  };
+}
+
+// Tabla de métricas común a pantalla, Excel y PDF: [etiqueta, fn(s)->[abs, pct]]
+function scobMetrics() {
+  return [
+    { sec:'COBERTURAS' },
+    { lbl:'Total coberturas', f:s=>[s.total, null] },
+    { sec:'LIVE-U' },
+    { lbl:'Coberturas con Live-U', f:s=>[s.liveu, scobPctTxt(s.liveu, s.total)+' del total'] },
+    { lbl:'  · Operador solo', f:s=>[s.liveuSolo, scobPctTxt(s.liveuSolo, s.liveu)+' de Live-U'] },
+    { lbl:'  · Acompañado (2º operador)', f:s=>[s.liveuAcomp, scobPctTxt(s.liveuAcomp, s.liveu)+' de Live-U'] },
+    { sec:'WIFICAM' },
+    { lbl:'Coberturas con WifiCam', f:s=>[s.wificam, scobPctTxt(s.wificam, s.total)+' del total'] },
+    { sec:'VIAJES (cada viaje cuenta 1)' },
+    { lbl:'Viajes', f:s=>[s.viajesUnicos, scobPctTxt(s.viajesUnicos, s.viajesUnicos+s.normales)] },
+    { lbl:'Coberturas normales', f:s=>[s.normales, scobPctTxt(s.normales, s.viajesUnicos+s.normales)] },
+    { sec:'VIAJES (cada día de viaje cuenta 1)' },
+    { lbl:'Días de viaje', f:s=>[s.viajeDias, scobPctTxt(s.viajeDias, s.viajeDias+s.normales)] },
+    { lbl:'Coberturas normales', f:s=>[s.normales, scobPctTxt(s.normales, s.viajeDias+s.normales)] },
+  ];
+}
+
+function scobCard(title, color, big, bigLbl, lines) {
+  return '<div style="background:var(--bg3);border:1px solid var(--border);border-top:3px solid '+color+';border-radius:10px;padding:14px 16px">'
+    + '<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:'+color+';font-weight:700;margin-bottom:6px">'+title+'</div>'
+    + '<div style="font-size:30px;font-weight:800;color:#fff;line-height:1">'+big+'</div>'
+    + '<div style="font-size:11px;color:var(--muted);margin:2px 0 8px">'+bigLbl+'</div>'
+    + lines.map(l => '<div style="display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:4px 0;border-top:1px solid var(--border)">'
+        + '<span style="color:var(--muted)">'+l[0]+'</span><span style="color:var(--text);font-weight:700;white-space:nowrap">'+l[1]+'</span></div>').join('')
+    + '</div>';
+}
+
+function renderStatsCoberturasBody() {
+  const el = document.getElementById('scob-body');
+  if (!el) return;
+  const d = scobGetData();
+  const cols = [['GLOBAL','#e8eaf0',d.G],['LA SEXTA','var(--l6)',d.L6],['ANTENA 3','var(--a3)',d.A3]];
+  const grid = inner => '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px">'+inner+'</div>';
+  const n = v => v.toLocaleString('es-ES');
+
+  el.innerHTML =
+    sectionHdr('Coberturas', 'var(--text)')
+    + grid(cols.map(([t,c,s]) => scobCard(t, c, n(s.total), 'coberturas en el período',
+        t==='GLOBAL' ? [['La Sexta', n(d.L6.total)+' · '+scobPctTxt(d.L6.total, s.total)], ['Antena 3', n(d.A3.total)+' · '+scobPctTxt(d.A3.total, s.total)]]
+                     : [['Peso sobre el global', scobPctTxt(s.total, d.G.total)]])).join(''))
+    + sectionHdr('📡 Live-U', '#60a5fa')
+    + grid(cols.map(([t,c,s]) => scobCard(t, c, n(s.liveu), 'con Live-U · '+scobPctTxt(s.liveu, s.total)+' del total', [
+        ['👤 Operador solo', n(s.liveuSolo)+' · '+scobPctTxt(s.liveuSolo, s.liveu)],
+        ['👥 Acompañado', n(s.liveuAcomp)+' · '+scobPctTxt(s.liveuAcomp, s.liveu)],
+      ])).join(''))
+    + sectionHdr('📶 WifiCam', '#ec4899')
+    + grid(cols.map(([t,c,s]) => scobCard(t, c, n(s.wificam), 'con WifiCam', [
+        ['% sobre el total', scobPctTxt(s.wificam, s.total)],
+        ['Sin WifiCam', n(s.total - s.wificam)+' · '+scobPctTxt(s.total - s.wificam, s.total)],
+      ])).join(''))
+    + sectionHdr('✈ Viajes — cada viaje cuenta 1', 'var(--warn)')
+    + grid(cols.map(([t,c,s]) => scobCard(t, c, n(s.viajesUnicos), 'viajes', [
+        ['% viajes vs. normales', scobPctTxt(s.viajesUnicos, s.viajesUnicos+s.normales)],
+        ['Coberturas normales', n(s.normales)+' · '+scobPctTxt(s.normales, s.viajesUnicos+s.normales)],
+      ])).join(''))
+    + sectionHdr('✈ Viajes — cada día cuenta 1', 'var(--warn)')
+    + grid(cols.map(([t,c,s]) => scobCard(t, c, n(s.viajeDias), 'días de viaje', [
+        ['% días de viaje vs. normales', scobPctTxt(s.viajeDias, s.viajeDias+s.normales)],
+        ['Coberturas normales', n(s.normales)+' · '+scobPctTxt(s.normales, s.viajeDias+s.normales)],
+      ])).join(''));
+}
+
+function exportStatsCoberturas(fmt) {
+  if (!window._scobRows) { alert('Todavía se están cargando los datos.'); return; }
+  const d = scobGetData();
+  const title = 'Stats Coberturas';
+  const subtitle = 'Período: '+fmtDate(d.from)+' — '+fmtDate(d.to)+' · generado '+fmtDate(todayLocal());
+  const head = ['Métrica','Global','%','La Sexta','%','Antena 3','%'];
+  const body = [];
+  scobMetrics().forEach(m => {
+    if (m.sec) { body.push([m.sec,'','','','','','']); return; }
+    const g = m.f(d.G), l = m.f(d.L6), a = m.f(d.A3);
+    body.push([m.lbl.trim(), g[0], g[1]||'', l[0], l[1]||'', a[0], a[1]||'']);
+  });
+  const fname = 'stats_coberturas_'+d.from+'_'+d.to;
+
+  if (fmt === 'xlsx') {
+    if (typeof XLSX === 'undefined') { alert('La librería de exportación no se ha cargado (revisa tu conexión) e inténtalo de nuevo.'); return; }
+    const aoa = [[title],[subtitle],[],head,...body,[],
+      ['Notas'],
+      ['Cada salida registrada cuenta como una cobertura; los viajes de varios días se cuentan día a día.'],
+      ['Live-U acompañado = con 2º operador. Los % de solo/acompañado son sobre las coberturas con Live-U.'],
+      ['% de viajes = viajes / (viajes + coberturas normales).']];
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws['!cols'] = [{wch:36},{wch:10},{wch:18},{wch:10},{wch:18},{wch:10},{wch:18}];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Stats Coberturas');
+    XLSX.writeFile(wb, fname+'.xlsx');
+    return;
+  }
+
+  if (typeof window.jspdf === 'undefined') { alert('La librería de exportación no se ha cargado (revisa tu conexión) e inténtalo de nuevo.'); return; }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'landscape' });
+  doc.setFontSize(14); doc.setTextColor(0); doc.text(title, 14, 15);
+  doc.setFontSize(10); doc.setTextColor(120); doc.text(subtitle, 14, 21);
+  doc.autoTable({
+    startY: 26, head: [head], body,
+    styles: { fontSize: 9 },
+    headStyles: { fillColor: [37,99,235] },
+    didParseCell: (h) => {
+      if (h.section === 'body' && h.row.raw[1] === '' && h.row.raw[0]) {
+        h.cell.styles.fillColor = [230,232,238]; h.cell.styles.fontStyle = 'bold';
+      }
+    },
+  });
+  let y = (doc.lastAutoTable ? doc.lastAutoTable.finalY : 30) + 8;
+  doc.setFontSize(8); doc.setTextColor(110);
+  ['Cada salida registrada cuenta como una cobertura; los viajes de varios días se cuentan día a día.',
+   'Live-U acompañado = con 2º operador. Los % de solo/acompañado son sobre las coberturas con Live-U.',
+   '% de viajes = viajes / (viajes + coberturas normales).'].forEach(t => { doc.text(t, 14, y); y += 4.5; });
+  doc.save(fname+'.pdf');
 }
 
 // ═══════════════════════════════════════════════════════
