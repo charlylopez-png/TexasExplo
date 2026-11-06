@@ -39,6 +39,10 @@ qué está en mantenimiento y qué vehículos hay en cada delegación.
 - Accesibilidad: texto mínimo 11–12 px, botones de al menos ~38–42 px de alto, foco visible, contraste AA en modo claro.
   Los estados de una ficha se indican con **color + texto** (franja `.cam-status`), nunca atenuando la ficha.
 - La capa "MEJORAS 2026-11" al final del `<style>` contiene los ajustes de legibilidad y móvil.
+- Cabecera fija en dos filas: arriba logo, secciones y herramientas (reloj, zoom, conexión, usuario, tema);
+  abajo las vistas de la sección. No volver a poner widgets flotantes (`position:fixed`) sobre el contenido.
+- Dashboard de cámaras compacto: indicadores en una franja, filtros en rejilla de dos filas
+  (búsqueda · Prod · Del · Tipo / Modelo · acciones) y fichas de 150 px agrupadas por modelo, sin huecos.
 - Debe funcionar bien en móvil: los trabajadores la usan desde el teléfono.
 
 ## Cómo trabajar en este repo

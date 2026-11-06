@@ -876,26 +876,8 @@ nav button { font-size:14px; min-height:40px; }
 }
 .theme-toggle:hover { border-color:var(--hl-4); }
 
-/* ── Cabecera en dos filas: arriba secciones, abajo vistas (todo visible) ── */
-@media (max-width:1700px) {
-  header { flex-wrap:wrap; height:auto; padding:8px 18px 0; gap:8px 14px; }
-  #sub-nav-camaras, #sub-nav-flota {
-    order:4; flex:1 1 100%; overflow-x:auto; margin:0 -18px; padding:4px 18px 6px;
-    border-top:1px solid var(--border);
-  }
-  .top-btn, nav button { white-space:nowrap; }
-  /* filtros: si no caben, bajan de línea en vez de quedar cortados */
-  .cam-filters, .cb-filters { flex-wrap:wrap; }
-  .cam-filter-row, .cb-filter-row { border-bottom:1px solid var(--border); }
-  .cb-filter-row { flex:0 0 auto; }
-  .cam-add, .cb-add { min-height:52px; }
-}
 .cb-search { display:flex; align-items:center; min-height:52px; }
-@media (max-width:1100px) {
-  .tagline { display:none; }
-  .top-nav { order:3; flex:1 1 100%; overflow-x:auto; margin-left:0; }
-  #user-widget { margin-left:auto; }
-}
+
 @media (max-width:760px) {
   .cam-stats { overflow-x:auto; }
   .cam-stat { min-width:130px; padding:12px 14px; min-height:auto; }
@@ -925,6 +907,155 @@ nav button { font-size:14px; min-height:40px; }
   .modal { border-radius:16px 16px 0 0; max-height:94vh; overflow-y:auto; }
   .modal-actions { flex-wrap:wrap; }
 }
+
+/* ═══════════════════════════════════════════════════════
+   MEJORAS 2026-11 (2) · cabecera fija, datos, filtros y fichas compactas
+   ═══════════════════════════════════════════════════════ */
+/* Cabecera: fila 1 = marca + secciones + herramientas; fila 2 = vistas */
+header {
+  display:flex; flex-direction:column; align-items:stretch; gap:0;
+  height:auto; padding:0; position:sticky; top:0; z-index:100;
+}
+.hdr-main { display:flex; align-items:center; gap:16px; height:52px; padding:0 16px; }
+.hdr-main .logo { font-size:21px; flex-shrink:0; }
+.hdr-main .top-nav { margin-left:4px; }
+.hdr-main .top-btn { min-height:36px; font-size:14px; padding:4px 14px; }
+.hdr-tools { margin-left:auto; display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.hdr-tools > * { flex-shrink:0; }
+.hdr-clock {
+  display:flex; align-items:baseline; gap:8px; height:36px; padding:0 12px;
+  border-radius:8px; background:var(--bg3); border:1px solid var(--border);
+}
+#clock-date { font-size:13px; font-weight:600; color:var(--muted); text-transform:capitalize; align-self:center; }
+#clock-time { font-family:'Barlow Condensed',sans-serif; font-size:24px; font-weight:800; color:var(--a3); line-height:34px; letter-spacing:.5px; }
+.hdr-zoom { display:flex; align-items:center; height:36px; border:1px solid var(--border2); border-radius:8px; overflow:hidden; background:var(--bg2); }
+.hdr-zoom button {
+  height:100%; min-width:34px; border:none; background:none; color:var(--text);
+  font:600 15px 'Barlow',sans-serif; cursor:pointer;
+}
+.hdr-zoom button:hover { background:var(--bg3); }
+.hdr-zoom #zoom-val { min-width:52px; font-size:12px; color:var(--muted); border-left:1px solid var(--border); border-right:1px solid var(--border); }
+.hdr-status { display:flex; align-items:center; gap:6px; height:36px; padding:0 10px; border-radius:8px; border:1px solid var(--border); }
+#user-widget { display:flex; align-items:center; gap:10px; white-space:nowrap; }
+#user-widget span { font-size:13px !important; }
+#user-widget button { font-size:12px !important; }
+.theme-toggle { height:36px; }
+.hdr-views { display:flex; align-items:center; height:42px; padding:0 12px; border-top:1px solid var(--border); overflow-x:auto; }
+.hdr-views nav { margin-left:0; gap:2px; }
+.hdr-views nav button { min-height:34px; padding:4px 14px; white-space:nowrap; }
+
+/* Datos: franja de indicadores de igual altura, número + etiqueta en línea */
+.cam-stats { display:grid; grid-template-columns:2fr repeat(4,1fr); gap:1px; }
+.cam-stat {
+  display:grid; grid-template-columns:auto 1fr; grid-template-rows:auto auto;
+  column-gap:12px; row-gap:2px; align-items:center;
+  min-height:0; padding:10px 16px;
+}
+.cam-stat-val { grid-row:1 / span 2; font-size:38px !important; line-height:1; }
+.cam-stat-label { grid-column:2; align-self:end; font-size:12px; }
+.cam-stat-sub { grid-column:2; align-self:start; font-size:12px; min-height:0 !important; display:flex; flex-wrap:wrap; gap:2px 10px; }
+.cam-stat-sub > span { font-weight:600; color:var(--muted); }
+
+/* Filtros: fila 1 = búsqueda · Prod · Del · Tipo · acciones; fila 2 = Modelo */
+.cam-filters { display:flex; flex-wrap:wrap; align-items:center; gap:10px 22px; padding:10px 16px; min-height:0; }
+.cam-search {
+  flex:0 0 300px; height:36px; border:1px solid var(--border2); border-radius:8px; background:var(--bg2);
+}
+.cam-search input { font-size:14px; padding-left:36px; }
+.cam-search .cb-search-icon { left:12px; font-size:14px; }
+.cam-filter-row { border:none !important; min-height:0 !important; height:auto; gap:8px; flex:0 0 auto; }
+.cam-filter-label { border:none; padding:0; height:auto; min-width:auto; font-size:11px; }
+.cam-filter-btns { padding:0; gap:0; flex-wrap:nowrap; }
+.cam-filter-btns .cam-btn {
+  min-height:32px; padding:4px 12px; font-size:12px; border-radius:0; margin-left:-1px;
+  background:var(--bg2); box-shadow:none;
+}
+.cam-filter-btns .cam-btn:first-of-type { border-radius:7px 0 0 7px; margin-left:0; }
+.cam-filter-btns .cam-btn:last-of-type  { border-radius:0 7px 7px 0; }
+.cam-filter-btns .cam-btn.active { position:relative; z-index:1; background:var(--text); color:var(--bg2); border-color:var(--text); box-shadow:none; }
+.cam-filter-btns .cam-btn.a3.active { background:var(--a3); border-color:var(--a3); color:#fff; }
+.cam-filter-btns .cam-btn.l6.active { background:var(--l6); border-color:var(--l6); color:#fff; }
+.cam-filter-btns .cam-btn.visual.active { background:var(--kinto); border-color:var(--kinto); color:#fff; }
+#empresa-filter-btns { margin-left:10px; }
+#modelo-filter-row { order:10; flex:1 1 100%; }
+#modelo-filter-row .cam-filter-btns { flex-wrap:wrap; row-gap:4px; }
+.cam-actions { order:5; margin-left:auto; display:flex; gap:8px; }
+.cam-order-btn {
+  height:36px; padding:0 12px; border-radius:8px; border:1px solid var(--border2);
+  background:var(--bg2); color:var(--muted); font:600 12px 'Barlow',sans-serif; cursor:pointer;
+}
+.cam-order-btn:hover { color:var(--text); }
+.cam-add { height:36px !important; min-height:36px !important; border-radius:8px; padding:0 18px; margin-left:0; }
+
+/* Rejilla de filtros: fila 1 búsqueda · Prod · Del · Tipo; fila 2 Modelo · acciones */
+.cam-filters {
+  display:grid; grid-template-columns:300px auto auto 1fr auto; align-items:center;
+  grid-template-areas:"search prod del tipo tipo" "modelo modelo modelo modelo actions";
+}
+.cam-filters > .cam-search { grid-area:search; }
+.cam-filters > .cam-filter-row:nth-child(2) { grid-area:prod; }
+.cam-filters > .cam-filter-row:nth-child(3) { grid-area:del; }
+.cam-filters > #modelo-filter-row { grid-area:modelo; }
+.cam-filters > #tipo-filter-row { grid-area:tipo; justify-self:start; }
+.cam-filters > .cam-actions { grid-area:actions; margin-left:0; }
+.cam-model-label > span:first-child { font-size:14px; letter-spacing:.5px; }
+
+/* Resumen de la selección: una línea compacta */
+.cam-selection { padding:6px 16px; gap:10px; }
+.cam-sel-num { font-size:22px; }
+
+/* Fichas compactas, alineadas por modelo y sin huecos */
+:root { --card-w: 150px; --card-gap: 6px; }
+.cam-grid-wrap { padding:6px 16px 60px; }
+.cam-model-row { padding:6px 0; align-items:stretch; }
+.cam-model-label { flex:0 0 64px; padding:4px 8px; margin-right:8px; font-size:11px; }
+.cam-model-count { font-size:22px; }
+.cam-model-cards { gap:var(--card-gap); }
+.cam-slot { display:none !important; }
+.cam-grid:has(.cam-card.dragging) .cam-slot { display:block !important; height:110px !important; opacity:.6 !important; border-color:var(--hl-3) !important; }
+.cam-card { width:var(--card-w); border-radius:8px; }
+.cam-card-accent { height:3px; }
+.cam-status { padding:3px 8px; font-size:11px; letter-spacing:.3px; }
+.cam-card-top { padding:5px 8px 0; }
+.cam-card-code { font-size:15px !important; letter-spacing:1px; }
+.cam-card-top .prod-badge { font-size:11px; padding:1px 6px; }
+.cam-card-modelo-small { display:none; }
+.cam-card-num { padding:0 8px 4px; }
+.cam-card-num .cn-model { font-size:14px !important; }
+.cam-card-num .cn-num { font-size:40px !important; letter-spacing:-1px; }
+.cam-nota-tag { font-size:11px; padding:2px 6px; margin-bottom:4px !important; }
+.cam-card-model { padding:0 8px 4px; font-size:12px; }
+.cam-card-model:empty { display:none; }
+.cam-card-bottom { border-top:none; padding:0 8px 5px; min-height:12px; gap:4px; }
+.cam-card-bottom .cam-chip { font-size:11px; padding:1px 6px; }
+.cam-salida { margin:0 6px 6px; padding:4px 7px; }
+.cam-salida-op { font-size:14px; gap:5px; }
+.cam-salida-cob { font-size:12px; }
+.cam-reserva { margin:0 6px 6px; padding:4px 7px; font-size:12px; }
+
+@media (max-width:1300px) {
+  #clock-date, .hdr-status #sb-status-label { display:none; }
+  .theme-toggle span { display:none; }
+}
+@media (max-width:760px) {
+  header { position:relative; }
+  .hdr-main { flex-wrap:wrap; height:auto; padding:8px 12px; }
+  .hdr-main .top-nav { order:3; flex:1 1 100%; overflow-x:auto; margin-left:0; }
+  .hdr-zoom, #user-widget button { display:none; }
+  .cam-stats { grid-template-columns:repeat(2,1fr); }
+  .cam-stat:first-child { grid-column:1 / -1; }
+  .cam-filters { display:flex; }
+  .cam-search { flex:1 1 100%; }
+  .cam-filter-row { flex:1 1 100%; }
+  .cam-filter-btns { overflow-x:auto; }
+  .cam-actions { flex:1 1 100%; }
+  .cam-add { flex:1; }
+  .cam-model-row { flex-direction:column; }
+  .cam-card { width:calc(33.333% - 4px); }
+  .hdr-main .top-btn { white-space:nowrap; }
+  .cam-model-label { padding:2px 8px; min-height:0; }
+  .cam-card-num .cn-num { font-size:34px !important; }
+}
 </style>
 </head>
 <body>
@@ -947,18 +1078,31 @@ nav button { font-size:14px; min-height:40px; }
 </div>
 
 <header>
-  <div class="logo">TEXAS<span>EXPLO</span></div>
-  <div class="tagline">GESTIÓN DE FLOTA · MEDIAPRO</div>
-  <div style="display:flex;align-items:center;gap:6px;margin-left:8px;padding-left:8px;border-left:1px solid var(--border)">
-    <span id="sb-status-dot" style="width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0"></span>
+  <div class="hdr-main">
+    <div class="logo" title="Gestión de flota · Mediapro">TEXAS<span>EXPLO</span></div>
+    <div class="top-nav">
+      <button id="top-camaras" class="top-btn active" onclick="setSection('camaras')">📷 CÁMARAS</button>
+      <button id="top-flota"   class="top-btn"        onclick="setSection('flota')">🚗 FLOTA</button>
+      <button id="top-usuarios" class="top-btn" onclick="setSection('usuarios')" style="display:none">👤 USUARIOS</button>
+      <button id="top-asistencia" class="top-btn" onclick="setSection('asistencia')">📋 OPERADORES HOY</button>
+    </div>
+    <div class="hdr-tools">
+      <div class="hdr-clock" id="clock-widget"><span id="clock-date"></span><span id="clock-time"></span></div>
+      <div class="hdr-zoom" id="zoom-pill" title="Tamaño de la pantalla">
+        <button onclick="applyZoom(parseInt(document.getElementById('zoom-slider').value)-10)" aria-label="Reducir tamaño">−</button>
+        <button id="zoom-val" onclick="applyZoom(100)" title="Volver al 100%">100%</button>
+        <button onclick="applyZoom(parseInt(document.getElementById('zoom-slider').value)+10)" aria-label="Aumentar tamaño">+</button>
+        <input type="hidden" id="zoom-slider" value="100">
+      </div>
+      <div class="hdr-status" title="Conexión con la base de datos">
+      <span id="sb-status-dot" style="width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0"></span>
     <span id="sb-status-label" style="font-size:12px;color:var(--muted);letter-spacing:.5px;font-family:'Barlow Condensed',sans-serif;font-weight:700">● OFFLINE</span>
+      </div>
+      <div id="user-widget"></div>
+      <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" title="Cambiar entre modo claro y oscuro"></button>
+    </div>
   </div>
-  <div class="top-nav">
-    <button id="top-camaras" class="top-btn active" onclick="setSection('camaras')">📷 CÁMARAS</button>
-    <button id="top-flota"   class="top-btn"        onclick="setSection('flota')">🚗 FLOTA</button>
-    <button id="top-usuarios" class="top-btn" onclick="setSection('usuarios')" style="display:none">👤 USUARIOS</button>
-    <button id="top-asistencia" class="top-btn" onclick="setSection('asistencia')">📋 OPERADORES HOY</button>
-  </div>
+  <div class="hdr-views">
   <nav id="sub-nav-camaras">
     <button onclick="showView('camaras')" class="active">Dashboard</button>
     <button id="nav-stats-equipos" onclick="showView('stats-equipos')">Stats Equipos</button>
@@ -973,8 +1117,7 @@ nav button { font-size:14px; min-height:40px; }
     <button onclick="showView('stats-flota')">Stats</button>
     <button onclick="showView('admin-flota')">Admin</button>
   </nav>
-  <div style="margin-left:auto;display:flex;align-items:center;gap:10px" id="user-widget"></div>
-  <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" title="Cambiar entre modo claro y oscuro"></button>
+  </div>
 </header>
 
 <div id="view-fleet" style="display:none">
@@ -1047,7 +1190,7 @@ nav button { font-size:14px; min-height:40px; }
           <button class="cam-btn"        data-group="del" data-val="VALENCIA"   onclick="setCamFilter('del','VALENCIA',this)">Valencia</button>
         </div>
       </div>
-      <div class="cam-filter-row">
+      <div class="cam-filter-row" id="modelo-filter-row">
         <span class="cam-filter-label">Modelo</span>
         <div class="cam-filter-btns" id="cam-modelo-filter-btns">
           <button class="cam-btn active" data-group="modelo" data-val="all"  onclick="setCamFilter('modelo','all',this)">Todos</button>
@@ -1070,8 +1213,10 @@ nav button { font-size:14px; min-height:40px; }
           <!-- populated dynamically -->
         </div>
       </div>
-      <button onclick="resetCamOrder()" style="height:100%;padding:0 14px;background:none;border:none;border-right:1px solid var(--border);color:var(--muted);font-size:11px;cursor:pointer;font-family:'Barlow',sans-serif;transition:color .15s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'" title="Restaurar orden original">↺ Orden</button>
-      <button class="cam-add" onclick="openAddCamera()">+ Añadir</button>
+      <div class="cam-actions">
+        <button class="cam-order-btn" onclick="resetCamOrder()" title="Restaurar orden original">↺ Orden</button>
+        <button class="cam-add" onclick="openAddCamera()">+ Añadir</button>
+      </div>
     </div>
   </div>
   <div class="cam-selection" id="cam-selection"></div>
@@ -3059,10 +3204,10 @@ function renderCameras() {
     const horaR = fmtHM(c.reservaManana?.horaSalida);
     let stCls = 'libre', stTxt = '● Disponible';
     if (isMant)            { stCls = 'mant';     stTxt = '🔧 Mantenimiento'; }
-    else if (isCustodia)   { stCls = 'custodia'; stTxt = '🏠 Apagada · en casa'; }
+    else if (isCustodia)   { stCls = 'custodia'; stTxt = '🏠 Apagada · casa'; }
     else if (fromOrigin)   { stCls = 'fuera';    stTxt = '↗ Fuera · ' + c.temp_del; }
-    else if (isAssigned)   { stCls = 'salida';   stTxt = (c.en_viaje ? '✈ De viaje' : '● En cobertura') + (horaS ? ' · ' + horaS : ''); }
-    else if (fromDest)     { stCls = 'visita';   stTxt = '↙ Viene de ' + c.del; }
+    else if (isAssigned)   { stCls = 'salida';   stTxt = (c.en_viaje ? '✈ Viaje' : '● Salida') + (horaS ? ' · ' + horaS : ''); }
+    else if (fromDest)     { stCls = 'visita';   stTxt = '↙ De ' + c.del; }
     return `<div class="cam-card ${isMant?'en-mant':''} ${isCustodia?'custodia-card':''} ${dispClass} ${isAssigned?'assigned':''}"
       data-cam-code="${safeCode}"
       onclick="openCamDetail('${safeCode}')"
@@ -3078,11 +3223,9 @@ function renderCameras() {
         <div class="cam-card-code" style="color:var(--cam-${c.modelo.toLowerCase()},var(--muted))">${c.code}</div>
         <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
           ${c.ata ? '<span class="cam-ata-badge">ATA</span>' : ''}
-          ${fromOrigin ? `<span style="font-size:11px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);color:var(--warn);letter-spacing:.5px">↗ ${c.temp_del}</span>` : ''}
           ${fromDest ? `<span style="font-size:11px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.6);color:var(--warn);letter-spacing:.5px">↙ ${c.del}</span>` : ''}
           <span style="width:5px;height:5px;border-radius:50%;background:${dc};display:inline-block;flex-shrink:0"></span>
           ${badge}
-          ${isVis?`<span class="cam-chip visual">${c.empresa||'ALQUILER'}</span>`:''}
         </div>
       </div>
       <div class="cam-card-modelo-small ${c.modelo.toLowerCase()}">PXW-${c.modelo}</div>
@@ -3099,6 +3242,7 @@ function renderCameras() {
       </div>` : ''}
       ${c.reservaManana ? `<div class="cam-reserva" title="Reserva para mañana: ${c.reservaManana.operador}${c.reservaManana.cobertura?' — '+c.reservaManana.cobertura:''}">📅 Mañana${horaR?' '+horaR:''}: <b>${aliasOnly(c.reservaManana.operador)}</b></div>` : ''}
       <div class="cam-card-bottom">
+        ${isVis?`<span class="cam-chip visual">${c.empresa||'ALQUILER'}</span>`:''}
         ${c.liveu?'<span class="cam-chip liveu">📡 '+(c.liveu_unidad||'Live-U')+'</span>':''}
         ${c.wificam?'<span class="cam-chip wificam">📶 '+(c.wificam_unidad||'WifiCam')+'</span>':''}
         <div class="${isMant?'mant-dot':'ok-dot'}" style="margin-left:auto;${c.asignado_a?'background:var(--ok);box-shadow:0 0 6px rgba(34,197,94,.7)':''}"></div>
@@ -3125,7 +3269,7 @@ function renderCameras() {
     rowsHtml += `
       <div class="cam-model-row">
         <div class="cam-model-label" style="border-left-color:${modelColor}">
-          <span style="color:${modelColor}">PXW-${modelo}</span>
+          <span style="color:${modelColor}" title="Sony PXW-${modelo}">${modelo}</span>
           <span class="cam-model-count">${cams.filter(c => !c.temp_del || c.temp_del === camFilters.del).length}</span>
         </div>
         <div class="cam-model-cards"
@@ -6807,7 +6951,7 @@ function renderBajas() {
     rowsHtml += `
       <div class="cam-model-row" style="opacity:.8">
         <div class="cam-model-label" style="border-left-color:${modelColor};opacity:.6">
-          <span style="color:${modelColor}">PXW-${modelo}</span>
+          <span style="color:${modelColor}" title="Sony PXW-${modelo}">${modelo}</span>
           <span class="cam-model-count" style="opacity:.5">${cams.length}</span>
         </div>
         <div class="cam-model-cards">
@@ -9420,14 +9564,9 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateClockWidget() {
   const widget = document.getElementById('clock-widget');
   if (!widget) return;
-  const camView = document.getElementById('view-camaras');
-  const visible = camView && camView.style.display !== 'none';
-  widget.style.display = visible ? '' : 'none';
-  if (!visible) return;
   const now = new Date();
-  const dateStr = now.toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'long' });
-  const yy = String(now.getFullYear()).slice(-2);
-  document.getElementById('clock-date').textContent = dateStr + " · '" + yy;
+  widget.title = now.toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  document.getElementById('clock-date').textContent = now.toLocaleDateString('es-ES', { weekday:'short', day:'numeric', month:'short' }).replace(/\./g,'');
   document.getElementById('clock-time').textContent = now.toLocaleTimeString('es-ES', { hour:'2-digit', minute:'2-digit' });
 }
 updateClockWidget();
@@ -9454,37 +9593,5 @@ function toggleTheme() {
 }
 updateThemeToggle();
 </script>
-<!-- RELOJ DASHBOARD CÁMARAS -->
-<div id="clock-widget" style="
-  position:fixed; top:64px; right:16px; z-index:400;
-  background:linear-gradient(135deg, var(--bg2), var(--bg3));
-  border:1px solid rgba(249,115,22,.35); border-radius:14px;
-  padding:16px 30px; text-align:right;
-  box-shadow:0 8px 28px rgba(0,0,0,.5), 0 0 0 1px rgba(249,115,22,.08);
-  display:none;
-">
-  <div id="clock-date" style="font-size:16px;font-weight:700;color:var(--sky);text-transform:capitalize;white-space:nowrap;letter-spacing:.3px"></div>
-  <div id="clock-time" style="font-family:Barlow Condensed,sans-serif;font-size:48px;font-weight:800;color:#f97316;line-height:1.15;white-space:nowrap;letter-spacing:1px"></div>
-</div>
-<!-- ZOOM CONTROL -->
-<div id="zoom-pill" style="
-  position:fixed; bottom:16px; left:16px; z-index:500;
-  background:var(--bg2); border:1px solid var(--border2); border-radius:20px;
-  display:flex; align-items:center; gap:8px; padding:6px 12px;
-  box-shadow:0 4px 16px rgba(0,0,0,.4);
-  transition:opacity .2s;
-" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='.6'"
-style="opacity:.6">
-  <button onclick="applyZoom(parseInt(document.getElementById('zoom-slider').value)-10)"
-    style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 2px">−</button>
-  <input type="range" id="zoom-slider" min="60" max="130" value="100" step="5"
-    style="width:70px;accent-color:var(--a3);cursor:pointer"
-    oninput="applyZoom(this.value)">
-  <button onclick="applyZoom(parseInt(document.getElementById('zoom-slider').value)+10)"
-    style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 2px">+</button>
-  <span id="zoom-val" style="font-size:11px;color:var(--muted);min-width:30px;text-align:center">100%</span>
-  <button onclick="applyZoom(100)" title="Reset"
-    style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;padding:0">↺</button>
-</div>
 </body>
 </html>
