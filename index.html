@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<script>try{if(localStorage.getItem('tx_theme')==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
 <title>TexasExplo · Cámaras</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYmciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzExMTQxYiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwZDBmMTQiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiByeD0iMjIiIGZpbGw9InVybCgjYmcpIi8+CiAgPHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiByeD0iMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2Y5NzMxNiIgc3Ryb2tlLW9wYWNpdHk9IjAuMjUiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjI5IiB5PSI2OCIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iNTgiIGZpbGw9IiNlOGVhZjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlQ8L3RleHQ+CiAgPHRleHQgeD0iNjgiIHk9IjY4IiBmb250LWZhbWlseT0iQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjkwMCIgZm9udC1zaXplPSI1OCIgZmlsbD0iI2Y5NzMxNiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+WDwvdGV4dD4KICA8cmVjdCB4PSIyNCIgeT0iNzYiIHdpZHRoPSI1MiIgaGVpZ2h0PSI1IiByeD0iMi41IiBmaWxsPSIjZjk3MzE2Ii8+Cjwvc3ZnPgo=">
 <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAEG0lEQVRYhcWXTWxUVRTHf+e+mbYznX5ECnVaoRZMSfjYNGAIIRqjsqhRojVxA0bjR9QFCzS40JBYQzSgKS5csGKhiYkxsS0b4waFNFGwFW2IwcaKktJYZmjn9Y3z6rx5x8Vj2k7nDRQL9b+YvHvuued37r3n3psRFqiupaWp2dIDDRF93BJZX1DihEqXYNa5X0vIFgqMTRXMQMo2vTMz4+milxQ/kslk97q4npgtmLqrOcgVwA/l3BocQARiFqyJQdSoPe7qcxMTk1/OJZBMJrvvreXzPxwxufyNMLcOX6xYBNoS6l/OaPeV9GSf1LW0NG2K+WOXs6buTsOLiltKa0LtX9NV7da6xsRbFuaRVG5l4KiS96E+KtWW+HnTENU9V1cQXtRkDhqrdY+xVNpzhZWFQ1DkliXtBiF+u6p9qfCiSVQTkcVdlmUtCa7q4/v6n+ALFVnY2Lixg/6+vpuFBODc2XPsfXYfPfcrr2wOEnn6K8OZiVL4p48qu9dCzoMH+4RLdul8zKJ0lwRfqMNDwsXp4EI5utOnxpqHP7kedq8Nmu8NlcNBke3rkzqaEUAxxhCPz9++tYlavj31DQADAwP09PTMDfY8D9d1Adi2Gk4+5mMJfHBeODIM9VUw+JTSHIcfU9B1UihoKbyjQYtbEJh838dxnLkEZP6mxvM8HMcJXaMfrsLxC8JrW5T9W5X+MeGlzQHc8+GNwXJ4UWZp1V7RNKf3h4XRjFBlwYmHYW9HYP94RBhJh8PRshpYAqmCXE/ZfxoKCvc1KEZgLAMfnq8Mh7AEQs75TXX9qDn5YMmLynrgaWV4eQLLgFsCHz2gVFswPRvUztZV8PKmyvDSBJZ5w726RelsCsa8cAq+/jOwv9mptNWFw+cTWCZ8Qz0c7Ay+PxsVzlyBg98JWS94/4/urBzQLBduBHp3KTUWpF1491wwftxRjgwHPg+1QveGSgksAw7w4mbYcXfw/fb3Qsqdj3L8AvyUCvoO74BVNSWBAEovosVwz/MYGgqm8fulS2Xw2gjsalZOX4ExG774rTRKwYfXB+HQtqDd1QafXCz1ke3tzTqakWW/ajc6amGeAB0N17fg/4AXFQnxmlNTDRzapsSjN+RXhGc9eOdsUJyVsoqokhWhNmySjVU+u5KQiEp5ZxhxkZw8NFZD2i33EQEVZqRzXfPIhCtb/vYWx71zyw4Qj8CaGCNmqmD6V8dWFq7A6hqYmpU+k7JNb5VRO1ashhWAxy2IWtgZ1z1mZmbG0+OuPt+WUD9mrQy8LaH+eEb32bZ9zQJwnOwvamp/bq2jqz4q1f/4wTN6u+AiwZ63xqGxBvtyhmf+mk4NwIJ/xwD19ffctSqWP9BYrU9ELWn3fBKh8IoK9zEGJ+8xNjUr/RnXPWbb9rVi379PDBKQ7SEDkwAAAABJRU5ErkJggg==">
@@ -11,6 +13,52 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
+  /* Modo claro (por defecto). El modo oscuro está en :root[data-theme="dark"] */
+  --cam-x320: #1d4ed8;
+  --cam-x180: #0e7490;
+  --cam-z280: #4d7c0f;
+  --cam-z300: #c2410c;
+  --cam-z200: #be185d;
+  --bg: #eef1f5;
+  --bg2: #ffffff;
+  --bg3: #f1f4f8;
+  --border: #dde2e9;
+  --border2: #c2c9d3;
+  --text: #0f172a;
+  --muted: #475569;
+  --a3: #c2410c;
+  --a3-dim: rgba(234,88,12,.12);
+  --l6: #15803d;
+  --l6-dim: rgba(22,163,74,.12);
+  --del-mad: #7c3aed;
+  --del-pv:  #0369a1;
+  --del-gal: #be123c;
+  --del-val: #a16207;
+  --ok: #15803d;
+  --warn: #b45309;
+  --danger: #b91c1c;
+  --kinto: #6d28d9;
+  --vwr: #0e7490;
+  --purple: #7c3aed;
+  --sky: #0369a1;
+  --blue: #1d4ed8;
+  --violet: #9333ea;
+  --lime: #4d7c0f;
+  --cyan: #0e7490;
+  --indigo: #4f46e5;
+  --ata: #a16207;
+  --hl-1: rgba(15,23,42,.04);
+  --hl-2: rgba(15,23,42,.10);
+  --hl-3: rgba(15,23,42,.22);
+  --hl-4: rgba(15,23,42,.34);
+  --hl-5: rgba(15,23,42,.50);
+  --on-accent: #ffffff;
+  --overlay: rgba(15,23,42,.45);
+  --grid: rgba(15,23,42,.08);
+  --focus: #2563eb;
+  --shadow: 0 1px 2px rgba(15,23,42,.06), 0 2px 6px rgba(15,23,42,.06);
+}
+:root[data-theme="dark"] {
   --cam-x320: #3b82f6;
   --cam-x180: #06b6d4;
   --cam-z280: #84cc16;
@@ -22,7 +70,7 @@
   --border: rgba(255,255,255,0.07);
   --border2: rgba(255,255,255,0.13);
   --text: #e8eaf0;
-  --muted: #6b7280;
+  --muted: #8b93a1;
   --a3: #f97316;
   --a3-dim: rgba(249,115,22,0.15);
   --l6: #22c55e;
@@ -36,6 +84,24 @@
   --danger: #ef4444;
   --kinto: #8b5cf6;
   --vwr: #06b6d4;
+  --purple: #a78bfa;
+  --sky: #38bdf8;
+  --blue: #60a5fa;
+  --violet: #c084fc;
+  --lime: #84cc16;
+  --cyan: #22d3ee;
+  --indigo: #818cf8;
+  --ata: #eab308;
+  --hl-1: rgba(255,255,255,.05);
+  --hl-2: rgba(255,255,255,.10);
+  --hl-3: rgba(255,255,255,.25);
+  --hl-4: rgba(255,255,255,.33);
+  --hl-5: rgba(255,255,255,.50);
+  --on-accent: #0d0f14;
+  --overlay: rgba(0,0,0,.75);
+  --grid: rgba(255,255,255,.06);
+  --focus: #60a5fa;
+  --shadow: none;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Barlow',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
@@ -82,8 +148,8 @@ nav button.active { color:var(--a3); }
   cursor:pointer; transition:all .15s; font-weight:600; letter-spacing:.4px;
   text-transform:uppercase; white-space:nowrap;
 }
-.prod-btn:hover, .rent-btn:hover, .mod-btn:hover { color:var(--text); border-color:rgba(255,255,255,.2); }
-.prod-btn.active, .rent-btn.active, .mod-btn.active { color:var(--text); border-color:rgba(255,255,255,.3); background:var(--bg3); }
+.prod-btn:hover, .rent-btn:hover, .mod-btn:hover { color:var(--text); border-color:var(--hl-3); }
+.prod-btn.active, .rent-btn.active, .mod-btn.active { color:var(--text); border-color:var(--hl-4); background:var(--bg3); }
 .prod-btn.a3.active { background:var(--a3-dim); border-color:var(--a3); color:var(--a3); }
 .prod-btn.l6.active { background:var(--l6-dim); border-color:var(--l6); color:var(--l6); }
 .rent-btn.kinto.active { background:rgba(139,92,246,.12); border-color:var(--kinto); color:var(--kinto); }
@@ -130,10 +196,10 @@ nav button.active { color:var(--a3); }
 }
 .sel-tag.prod { background:var(--a3-dim); border-color:var(--a3); color:var(--a3); }
 .sel-tag.prod.l6 { background:var(--l6-dim); border-color:var(--l6); color:var(--l6); }
-.sel-tag.del  { background:rgba(255,255,255,.05); }
+.sel-tag.del  { background:var(--hl-1); }
 .sel-tag.rent.kinto { background:rgba(139,92,246,.12); border-color:var(--kinto); color:var(--kinto); }
 .sel-tag.rent.vwr   { background:rgba(6,182,212,.12);  border-color:var(--vwr);   color:var(--vwr); }
-.sel-tag.mod  { background:rgba(255,255,255,.05); color:var(--muted); }
+.sel-tag.mod  { background:var(--hl-1); color:var(--muted); }
 .sel-clear {
   margin-left:auto; font-size:11px; color:var(--muted); cursor:pointer;
   background:none; border:1px solid var(--border); border-radius:6px;
@@ -255,7 +321,7 @@ nav button.active { color:var(--a3); }
   border-left:2px solid transparent; flex:1;
 }
 .cb-total:hover { background:var(--bg3); }
-.cb-total.active { background:var(--bg3); border-left-color:rgba(255,255,255,.25); }
+.cb-total.active { background:var(--bg3); border-left-color:var(--hl-3); }
 .cb-total-label {
   font-size:9px; text-transform:uppercase; letter-spacing:1.2px;
   color:var(--muted); margin-bottom:1px;
@@ -351,7 +417,7 @@ nav button.active { color:var(--a3); }
 
 /* MODAL */
 .modal-overlay {
-  position:fixed; inset:0; background:rgba(0,0,0,.75); z-index:200;
+  position:fixed; inset:0; background:var(--overlay); z-index:200;
   display:flex; align-items:center; justify-content:center;
   padding:40px 20px; overflow-y:auto; opacity:0; pointer-events:none;
   transition:opacity .2s;
@@ -395,7 +461,7 @@ nav button.active { color:var(--a3); }
 .btn-primary { background:var(--a3); color:#fff; }
 .btn-primary:hover { opacity:.85; }
 .btn-secondary { background:var(--bg3); border:1px solid var(--border2); color:var(--muted); }
-.btn-secondary:hover { color:var(--text); border-color:rgba(255,255,255,.25); }
+.btn-secondary:hover { color:var(--text); border-color:var(--hl-3); }
 .btn-danger { background:rgba(239,68,68,.15); border:1px solid rgba(239,68,68,.3); color:var(--danger); }
 .btn-danger:hover { background:rgba(239,68,68,.25); }
 .btn-icon-danger {
@@ -440,7 +506,7 @@ nav button.active { color:var(--a3); }
   color:var(--text); padding:9px 12px; font-family:'Barlow',sans-serif; font-size:13px;
   outline:none; transition:border-color .15s;
 }
-.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:rgba(255,255,255,.3); }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--hl-4); }
 .form-group select option { background:var(--bg2); }
 .form-group textarea { resize:vertical; min-height:70px; }
 
@@ -527,8 +593,8 @@ nav button.active { color:var(--a3); }
   cursor:pointer; transition:all .15s; font-weight:700; letter-spacing:.5px;
   text-transform:uppercase; white-space:nowrap;
 }
-.cam-btn:hover { color:var(--text); border-color:rgba(255,255,255,.25); }
-.cam-btn.active { color:var(--text); border-color:rgba(255,255,255,.35); background:var(--bg3); }
+.cam-btn:hover { color:var(--text); border-color:var(--hl-3); }
+.cam-btn.active { color:var(--text); border-color:var(--hl-4); background:var(--bg3); }
 .cam-btn.a3.active   { background:var(--a3-dim); border-color:var(--a3); color:var(--a3); }
 .cam-btn.l6.active   { background:var(--l6-dim); border-color:var(--l6); color:var(--l6); }
 .cam-btn.visual.active { background:rgba(139,92,246,.15); border-color:var(--kinto); color:var(--kinto); }
@@ -604,7 +670,7 @@ nav button.active { color:var(--a3); }
 .cam-card.en-mant { opacity:.5; filter:grayscale(.3); }
 .cam-card.en-mant .cam-card-accent { background:var(--warn) !important; }
 .cam-card.custodia-card { opacity:.5; filter:grayscale(.3); }
-.cam-card.custodia-card .cam-card-accent { background:#a78bfa !important; }
+.cam-card.custodia-card .cam-card-accent { background:var(--purple) !important; }
 .cam-card.displaced-origin {
   opacity:.7 !important;
   filter:grayscale(.3) !important;
@@ -614,12 +680,12 @@ nav button.active { color:var(--a3); }
 .cam-card.displaced-origin .cn-num { font-style:italic; }
 .cam-card.displaced-origin .cn-model { font-style:italic; }
 .cam-card.baja-card {
-  opacity:.85; border-color:rgba(255,255,255,.1);
+  opacity:.85; border-color:var(--hl-2);
   background:var(--bg2);
   cursor:pointer; transition:all .2s;
   border-style: dashed;
 }
-.cam-card.baja-card:hover { opacity:1; border-color:rgba(255,255,255,.25); border-style:solid; }
+.cam-card.baja-card:hover { opacity:1; border-color:var(--hl-3); border-style:solid; }
 .cam-card.displaced-origin .cam-card-accent { background:var(--muted) !important; }
 .cam-card.displaced-dest {
   border-color:rgba(245,158,11,.7) !important;
@@ -633,8 +699,8 @@ nav button.active { color:var(--a3); }
   transform:scale(.97);
 }
 .cam-card.drag-over {
-  border-color:rgba(255,255,255,.5);
-  box-shadow:inset 0 0 0 2px rgba(255,255,255,.2);
+  border-color:var(--hl-5);
+  box-shadow:inset 0 0 0 2px var(--hl-3);
 }
 .cam-card-accent { height:3px; width:100%; }
 .cam-card-accent.a3 { background:var(--a3); }
@@ -687,12 +753,12 @@ nav button.active { color:var(--a3); }
 .cam-ata-badge {
   font-size:9px; font-weight:800; padding:2px 6px; border-radius:3px;
   background:rgba(234,179,8,.15); border:1px solid rgba(234,179,8,.6);
-  color:#eab308; letter-spacing:1px; text-transform:uppercase; flex-shrink:0;
+  color:var(--ata); letter-spacing:1px; text-transform:uppercase; flex-shrink:0;
 }
 .cam-nota-tag {
   font-size:13px; font-weight:800; padding:4px 10px; border-radius:5px;
   background:rgba(59,130,246,.15); border:1px solid rgba(59,130,246,.5);
-  color:#60a5fa; letter-spacing:.8px; text-transform:uppercase;
+  color:var(--blue); letter-spacing:.8px; text-transform:uppercase;
   white-space:nowrap; flex-shrink:0;
 }
 .cam-chip {
@@ -701,8 +767,8 @@ nav button.active { color:var(--a3); }
 }
 .cam-chip.visual { border-color:rgba(139,92,246,.3); color:var(--kinto); background:rgba(139,92,246,.08); }
 .cam-chip.mant   { border-color:rgba(245,158,11,.3);  color:var(--warn);  background:rgba(245,158,11,.08); }
-.cam-chip.liveu   { border-color:rgba(59,130,246,.35);  color:#60a5fa; background:rgba(59,130,246,.1); }
-.cam-chip.wificam { border-color:rgba(236,72,153,.4);  color:#ec4899; background:rgba(236,72,153,.12); }
+.cam-chip.liveu   { border-color:rgba(59,130,246,.35);  color:var(--blue); background:rgba(59,130,246,.1); }
+.cam-chip.wificam { border-color:rgba(236,72,153,.4);  color:var(--cam-z200); background:rgba(236,72,153,.12); }
 .mant-dot { width:6px; height:6px; border-radius:50%; background:var(--warn); box-shadow:0 0 5px rgba(245,158,11,.6); flex-shrink:0; margin-left:auto; }
 .ok-dot   { width:6px; height:6px; border-radius:50%; background:var(--ok);   box-shadow:0 0 5px rgba(34,197,94,.5);  flex-shrink:0; margin-left:auto; }
 
@@ -712,6 +778,283 @@ nav button.active { color:var(--a3); }
   .stat { min-width:50%; }
   .info-grid { grid-template-columns:1fr; }
   .form-row { grid-template-columns:1fr; }
+}
+/* ═══════════════════════════════════════════════════════
+   MEJORAS 2026-11 · modo claro, legibilidad y móvil
+   (capa aditiva: sobrescribe tamaños y estados de arriba)
+   ═══════════════════════════════════════════════════════ */
+body { font-size:15px; line-height:1.4; -webkit-font-smoothing:antialiased; }
+:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition:none !important; animation:none !important; } }
+
+/* Superficies con sombra suave en modo claro */
+header, .cam-bar, .control-bar { box-shadow:var(--shadow); }
+.cam-card, .card, .del-mini, .hist-card, .modal { box-shadow:var(--shadow); }
+.tagline { white-space:nowrap; }
+.cam-detail-status { display:flex; flex-direction:column; gap:8px; }
+.cam-detail-status .info-item { margin-top:0 !important; }
+.cam-detail-status .info-val { font-size:18px !important; }
+.cam-card:hover, .card:hover { border-color:var(--border2); }
+
+/* Tamaños mínimos legibles */
+.tagline { font-size:11px; }
+.top-btn { font-size:15px; min-height:40px; padding:6px 16px; }
+nav button { font-size:14px; min-height:40px; }
+.cb-total-label, .tile-label, .cb-filter-label, .cam-filter-label { font-size:12px; letter-spacing:.6px; color:var(--muted); }
+.cb-total-sub, .tile-taller { font-size:12px; }
+.tile-prod-label { font-size:12px; font-weight:600; }
+.prod-btn, .rent-btn, .mod-btn, .cam-btn { font-size:13px; min-height:38px; padding:6px 14px; }
+.cam-btn.active { box-shadow:inset 0 0 0 1px currentColor; }
+.chip, .cam-chip { font-size:12px; padding:3px 8px; }
+.prod-badge { font-size:12px; padding:3px 8px; }
+.cam-ata-badge { font-size:11px; padding:2px 7px; }
+.sel-stat-label, .sel-label, .cam-sel-label { font-size:13px; }
+.sel-tag, .cam-sel-tag { font-size:12px; padding:3px 10px; }
+.sel-clear, .cam-sel-clear { font-size:13px; padding:6px 12px; }
+.cam-stat-label { font-size:13px; }
+.cam-stat-sub { font-size:13px; font-weight:600; }
+.info-key { font-size:12px; font-weight:600; }
+.info-val { font-size:15px; }
+.modal-sub { font-size:14px; }
+.section-title { font-size:14px; }
+.incident-item { font-size:14px; }
+.form-group label { font-size:12px; font-weight:600; }
+.form-group input, .form-group select { font-size:15px; min-height:42px; }
+.form-group textarea { font-size:15px; }
+.btn { font-size:14px; min-height:42px; }
+.close-btn { width:40px; height:40px; font-size:18px; }
+.cam-card-model { font-size:13px; }
+.cam-card-modelo-small { opacity:1; }
+.cam-card-num .cn-model { opacity:.7; }
+.no-results, .hist-empty { font-size:16px; }
+
+/* Estados: nunca atenuar la ficha (se volvía ilegible); se marca con color y texto */
+.card.en-taller, .cam-card.en-mant, .cam-card.custodia-card { opacity:1; filter:none; }
+.cam-card.displaced-origin { opacity:1 !important; filter:none !important; }
+.cam-card.en-mant  { background:color-mix(in srgb, var(--warn) 7%, var(--bg2)); border-color:color-mix(in srgb, var(--warn) 45%, transparent); }
+.cam-card.custodia-card { background:color-mix(in srgb, var(--purple) 7%, var(--bg2)); border-color:color-mix(in srgb, var(--purple) 40%, transparent); }
+.card.en-taller { background:color-mix(in srgb, var(--warn) 7%, var(--bg2)); border-color:color-mix(in srgb, var(--warn) 45%, transparent); }
+.cam-card.assigned { background:color-mix(in srgb, var(--ok) 6%, var(--bg2)); border-color:color-mix(in srgb, var(--ok) 40%, transparent); }
+.hist-card { opacity:.85; }
+
+/* Ficha de cámara: franja de estado + bloque de salida */
+:root { --card-w: 200px; }
+.cam-card { width:var(--card-w); }
+.cam-status {
+  display:flex; align-items:center; gap:6px; padding:5px 12px;
+  font:700 12px/1.25 'Barlow',sans-serif; letter-spacing:.5px; text-transform:uppercase;
+  color:var(--muted); background:var(--bg3); border-bottom:1px solid var(--border);
+}
+.cam-status.libre    { color:var(--ok); }
+.cam-status.salida   { color:var(--on-accent); background:var(--ok); border-color:var(--ok); }
+.cam-status.mant     { color:var(--warn); background:color-mix(in srgb, var(--warn) 14%, var(--bg2)); }
+.cam-status.custodia { color:var(--purple); background:color-mix(in srgb, var(--purple) 12%, var(--bg2)); }
+.cam-status.fuera    { color:var(--warn); background:color-mix(in srgb, var(--warn) 10%, var(--bg2)); }
+.cam-status.visita   { color:var(--warn); background:color-mix(in srgb, var(--warn) 10%, var(--bg2)); }
+.cam-salida {
+  margin:0 10px 8px; padding:7px 9px; border-radius:7px;
+  background:color-mix(in srgb, var(--ok) 10%, var(--bg2));
+  border:1px solid color-mix(in srgb, var(--ok) 40%, transparent);
+}
+.cam-salida-op { display:flex; align-items:center; gap:6px; font-size:15px; font-weight:700; color:var(--text); min-width:0; }
+.cam-salida-op .t { overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; line-height:1.2; }
+.cam-card-num { flex-wrap:wrap; }
+.cam-salida-op svg { flex-shrink:0; color:var(--ok); }
+.cam-salida-cob { font-size:13px; color:var(--muted); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.cam-reserva {
+  margin:0 10px 8px; padding:6px 9px; border-radius:7px; font-size:13px; color:var(--sky);
+  background:color-mix(in srgb, var(--sky) 9%, var(--bg2)); border:1px solid color-mix(in srgb, var(--sky) 35%, transparent);
+  line-height:1.3;
+}
+.cam-reserva b { color:var(--text); }
+
+/* Interruptor claro / oscuro */
+.theme-toggle {
+  flex-shrink:0; height:40px; min-width:40px; padding:0 12px; border-radius:8px;
+  border:1px solid var(--border2); background:var(--bg3); color:var(--text);
+  font:600 13px 'Barlow',sans-serif; cursor:pointer; display:flex; align-items:center; gap:6px;
+}
+.theme-toggle:hover { border-color:var(--hl-4); }
+
+.cb-search { display:flex; align-items:center; min-height:52px; }
+
+@media (max-width:760px) {
+  .cam-stats { overflow-x:auto; }
+  .cam-stat { min-width:130px; padding:12px 14px; min-height:auto; }
+  .cam-stat-val { font-size:40px; }
+  .cam-filters, .cb-filters { flex-wrap:wrap; }
+  .cam-search, .cb-search { flex:1 1 100%; min-height:50px; border-right:none; border-bottom:1px solid var(--border); }
+  .cam-filter-row, .cb-filter-row { flex:1 1 100%; border-right:none; border-bottom:1px solid var(--border); height:auto; min-height:52px; }
+  .cam-filter-btns, .cb-filter-btns { overflow-x:auto; padding:6px 10px; }
+  .cam-filter-row, .cb-filter-row { min-height:46px; }
+  .cam-filter-label, .cb-filter-label { min-width:64px; }
+  .cam-add, .cb-add { flex:1 1 100%; min-height:46px; margin-left:0; }
+  header { position:relative; }
+  .theme-toggle span { display:none; }
+  .theme-toggle { padding:0 10px; }
+  .cb-top { flex-direction:column; }
+  .cb-totals { flex:0 0 auto; flex-direction:row; }
+  .cb-tiles { grid-template-columns:repeat(2,1fr); }
+  .cam-grid-wrap, .grid-wrap { padding:8px 12px 100px; }
+  .cam-model-row, .veh-model-row { flex-direction:column; }
+  .cam-model-label, .veh-model-label { flex-direction:row; align-items:baseline; gap:10px; margin:0 0 8px; flex:0 0 auto; }
+  .cam-model-cards { gap:8px; width:100%; }
+  .cam-card { width:calc(50% - 4px); }
+  .cam-slot { display:none !important; }
+  .cam-card-num .cn-num { font-size:46px !important; }
+  .grid { grid-template-columns:1fr; }
+  .modal-overlay { padding:0; align-items:flex-end; }
+  .modal { border-radius:16px 16px 0 0; max-height:94vh; overflow-y:auto; }
+  .modal-actions { flex-wrap:wrap; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   MEJORAS 2026-11 (2) · cabecera fija, datos, filtros y fichas compactas
+   ═══════════════════════════════════════════════════════ */
+/* Cabecera: fila 1 = marca + secciones + herramientas; fila 2 = vistas */
+header {
+  display:flex; flex-direction:column; align-items:stretch; gap:0;
+  height:auto; padding:0; position:sticky; top:0; z-index:100;
+}
+.hdr-main { display:flex; align-items:center; gap:16px; height:52px; padding:0 16px; }
+.hdr-main .logo { font-size:21px; flex-shrink:0; }
+.hdr-main .top-nav { margin-left:4px; }
+.hdr-main .top-btn { min-height:36px; font-size:14px; padding:4px 14px; }
+.hdr-tools { margin-left:auto; display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.hdr-tools > * { flex-shrink:0; }
+.hdr-clock {
+  display:flex; align-items:baseline; gap:8px; height:36px; padding:0 12px;
+  border-radius:8px; background:var(--bg3); border:1px solid var(--border);
+}
+#clock-date { font-size:13px; font-weight:600; color:var(--muted); text-transform:capitalize; align-self:center; }
+#clock-time { font-family:'Barlow Condensed',sans-serif; font-size:24px; font-weight:800; color:var(--a3); line-height:34px; letter-spacing:.5px; }
+.hdr-zoom { display:flex; align-items:center; height:36px; border:1px solid var(--border2); border-radius:8px; overflow:hidden; background:var(--bg2); }
+.hdr-zoom button {
+  height:100%; min-width:34px; border:none; background:none; color:var(--text);
+  font:600 15px 'Barlow',sans-serif; cursor:pointer;
+}
+.hdr-zoom button:hover { background:var(--bg3); }
+.hdr-zoom #zoom-val { min-width:52px; font-size:12px; color:var(--muted); border-left:1px solid var(--border); border-right:1px solid var(--border); }
+.hdr-status { display:flex; align-items:center; gap:6px; height:36px; padding:0 10px; border-radius:8px; border:1px solid var(--border); }
+#user-widget { display:flex; align-items:center; gap:10px; white-space:nowrap; }
+#user-widget span { font-size:13px !important; }
+#user-widget button { font-size:12px !important; }
+.theme-toggle { height:36px; }
+.hdr-views { display:flex; align-items:center; height:42px; padding:0 12px; border-top:1px solid var(--border); overflow-x:auto; }
+.hdr-views nav { margin-left:0; gap:2px; }
+.hdr-views nav button { min-height:34px; padding:4px 14px; white-space:nowrap; }
+
+/* Datos: franja de indicadores de igual altura, número + etiqueta en línea */
+.cam-stats { display:grid; grid-template-columns:2fr repeat(4,1fr); gap:1px; }
+.cam-stat {
+  display:grid; grid-template-columns:auto 1fr; grid-template-rows:auto auto;
+  column-gap:12px; row-gap:2px; align-items:center;
+  min-height:0; padding:10px 16px;
+}
+.cam-stat-val { grid-row:1 / span 2; font-size:38px !important; line-height:1; }
+.cam-stat-label { grid-column:2; align-self:end; font-size:12px; }
+.cam-stat-sub { grid-column:2; align-self:start; font-size:12px; min-height:0 !important; display:flex; flex-wrap:wrap; gap:2px 10px; }
+.cam-stat-sub > span { font-weight:600; color:var(--muted); }
+
+/* Filtros: fila 1 = búsqueda · Prod · Del · Tipo · acciones; fila 2 = Modelo */
+.cam-filters { display:flex; flex-wrap:wrap; align-items:center; gap:10px 22px; padding:10px 16px; min-height:0; }
+.cam-search {
+  flex:0 0 300px; height:36px; border:1px solid var(--border2); border-radius:8px; background:var(--bg2);
+}
+.cam-search input { font-size:14px; padding-left:36px; }
+.cam-search .cb-search-icon { left:12px; font-size:14px; }
+.cam-filter-row { border:none !important; min-height:0 !important; height:auto; gap:8px; flex:0 0 auto; }
+.cam-filter-label { border:none; padding:0; height:auto; min-width:auto; font-size:11px; }
+.cam-filter-btns { padding:0; gap:0; flex-wrap:nowrap; }
+.cam-filter-btns .cam-btn {
+  min-height:32px; padding:4px 12px; font-size:12px; border-radius:0; margin-left:-1px;
+  background:var(--bg2); box-shadow:none;
+}
+.cam-filter-btns .cam-btn:first-of-type { border-radius:7px 0 0 7px; margin-left:0; }
+.cam-filter-btns .cam-btn:last-of-type  { border-radius:0 7px 7px 0; }
+.cam-filter-btns .cam-btn.active { position:relative; z-index:1; background:var(--text); color:var(--bg2); border-color:var(--text); box-shadow:none; }
+.cam-filter-btns .cam-btn.a3.active { background:var(--a3); border-color:var(--a3); color:#fff; }
+.cam-filter-btns .cam-btn.l6.active { background:var(--l6); border-color:var(--l6); color:#fff; }
+.cam-filter-btns .cam-btn.visual.active { background:var(--kinto); border-color:var(--kinto); color:#fff; }
+#empresa-filter-btns { margin-left:10px; }
+#modelo-filter-row { order:10; flex:1 1 100%; }
+#modelo-filter-row .cam-filter-btns { flex-wrap:wrap; row-gap:4px; }
+.cam-actions { order:5; margin-left:auto; display:flex; gap:8px; }
+.cam-order-btn {
+  height:36px; padding:0 12px; border-radius:8px; border:1px solid var(--border2);
+  background:var(--bg2); color:var(--muted); font:600 12px 'Barlow',sans-serif; cursor:pointer;
+}
+.cam-order-btn:hover { color:var(--text); }
+.cam-add { height:36px !important; min-height:36px !important; border-radius:8px; padding:0 18px; margin-left:0; }
+
+/* Rejilla de filtros: fila 1 búsqueda · Prod · Del · Tipo; fila 2 Modelo · acciones */
+.cam-filters {
+  display:grid; grid-template-columns:300px auto auto 1fr auto; align-items:center;
+  grid-template-areas:"search prod del tipo tipo" "modelo modelo modelo modelo actions";
+}
+.cam-filters > .cam-search { grid-area:search; }
+.cam-filters > .cam-filter-row:nth-child(2) { grid-area:prod; }
+.cam-filters > .cam-filter-row:nth-child(3) { grid-area:del; }
+.cam-filters > #modelo-filter-row { grid-area:modelo; }
+.cam-filters > #tipo-filter-row { grid-area:tipo; justify-self:start; }
+.cam-filters > .cam-actions { grid-area:actions; margin-left:0; }
+.cam-model-label > span:first-child { font-size:14px; letter-spacing:.5px; }
+
+/* Resumen de la selección: una línea compacta */
+.cam-selection { padding:6px 16px; gap:10px; }
+.cam-sel-num { font-size:22px; }
+
+/* Fichas compactas, alineadas por modelo y sin huecos */
+:root { --card-w: 150px; --card-gap: 6px; }
+.cam-grid-wrap { padding:6px 16px 60px; }
+.cam-model-row { padding:6px 0; align-items:stretch; }
+.cam-model-label { flex:0 0 64px; padding:4px 8px; margin-right:8px; font-size:11px; }
+.cam-model-count { font-size:22px; }
+.cam-model-cards { gap:var(--card-gap); }
+.cam-slot { display:none !important; }
+.cam-grid:has(.cam-card.dragging) .cam-slot { display:block !important; height:110px !important; opacity:.6 !important; border-color:var(--hl-3) !important; }
+.cam-card { width:var(--card-w); border-radius:8px; }
+.cam-card-accent { height:3px; }
+.cam-status { padding:3px 8px; font-size:11px; letter-spacing:.3px; }
+.cam-card-top { padding:5px 8px 0; }
+.cam-card-code { font-size:15px !important; letter-spacing:1px; }
+.cam-card-top .prod-badge { font-size:11px; padding:1px 6px; }
+.cam-card-modelo-small { display:none; }
+.cam-card-num { padding:0 8px 4px; }
+.cam-card-num .cn-model { font-size:14px !important; }
+.cam-card-num .cn-num { font-size:40px !important; letter-spacing:-1px; }
+.cam-nota-tag { font-size:11px; padding:2px 6px; margin-bottom:4px !important; }
+.cam-card-model { padding:0 8px 4px; font-size:12px; }
+.cam-card-model:empty { display:none; }
+.cam-card-bottom { border-top:none; padding:0 8px 5px; min-height:12px; gap:4px; }
+.cam-card-bottom .cam-chip { font-size:11px; padding:1px 6px; }
+.cam-salida { margin:0 6px 6px; padding:4px 7px; }
+.cam-salida-op { font-size:14px; gap:5px; }
+.cam-salida-cob { font-size:12px; }
+.cam-reserva { margin:0 6px 6px; padding:4px 7px; font-size:12px; }
+
+@media (max-width:1300px) {
+  #clock-date, .hdr-status #sb-status-label { display:none; }
+  .theme-toggle span { display:none; }
+}
+@media (max-width:760px) {
+  header { position:relative; }
+  .hdr-main { flex-wrap:wrap; height:auto; padding:8px 12px; }
+  .hdr-main .top-nav { order:3; flex:1 1 100%; overflow-x:auto; margin-left:0; }
+  .hdr-zoom, #user-widget button { display:none; }
+  .cam-stats { grid-template-columns:repeat(2,1fr); }
+  .cam-stat:first-child { grid-column:1 / -1; }
+  .cam-filters { display:flex; }
+  .cam-search { flex:1 1 100%; }
+  .cam-filter-row { flex:1 1 100%; }
+  .cam-filter-btns { overflow-x:auto; }
+  .cam-actions { flex:1 1 100%; }
+  .cam-add { flex:1; }
+  .cam-model-row { flex-direction:column; }
+  .cam-card { width:calc(33.333% - 4px); }
+  .hdr-main .top-btn { white-space:nowrap; }
+  .cam-model-label { padding:2px 8px; min-height:0; }
+  .cam-card-num .cn-num { font-size:34px !important; }
 }
 </style>
 </head>
@@ -735,18 +1078,31 @@ nav button.active { color:var(--a3); }
 </div>
 
 <header>
-  <div class="logo">TEXAS<span>EXPLO</span></div>
-  <div class="tagline">GESTIÓN DE FLOTA · MEDIAPRO</div>
-  <div style="display:flex;align-items:center;gap:6px;margin-left:8px;padding-left:8px;border-left:1px solid var(--border)">
-    <span id="sb-status-dot" style="width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0"></span>
-    <span id="sb-status-label" style="font-size:10px;color:var(--muted);letter-spacing:.5px;font-family:'Barlow Condensed',sans-serif;font-weight:700">● OFFLINE</span>
+  <div class="hdr-main">
+    <div class="logo" title="Gestión de flota · Mediapro">TEXAS<span>EXPLO</span></div>
+    <div class="top-nav">
+      <button id="top-camaras" class="top-btn active" onclick="setSection('camaras')">📷 CÁMARAS</button>
+      <button id="top-flota"   class="top-btn"        onclick="setSection('flota')">🚗 FLOTA</button>
+      <button id="top-usuarios" class="top-btn" onclick="setSection('usuarios')" style="display:none">👤 USUARIOS</button>
+      <button id="top-asistencia" class="top-btn" onclick="setSection('asistencia')">📋 OPERADORES HOY</button>
+    </div>
+    <div class="hdr-tools">
+      <div class="hdr-clock" id="clock-widget"><span id="clock-date"></span><span id="clock-time"></span></div>
+      <div class="hdr-zoom" id="zoom-pill" title="Tamaño de la pantalla">
+        <button onclick="applyZoom(parseInt(document.getElementById('zoom-slider').value)-10)" aria-label="Reducir tamaño">−</button>
+        <button id="zoom-val" onclick="applyZoom(100)" title="Volver al 100%">100%</button>
+        <button onclick="applyZoom(parseInt(document.getElementById('zoom-slider').value)+10)" aria-label="Aumentar tamaño">+</button>
+        <input type="hidden" id="zoom-slider" value="100">
+      </div>
+      <div class="hdr-status" title="Conexión con la base de datos">
+      <span id="sb-status-dot" style="width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0"></span>
+    <span id="sb-status-label" style="font-size:12px;color:var(--muted);letter-spacing:.5px;font-family:'Barlow Condensed',sans-serif;font-weight:700">● OFFLINE</span>
+      </div>
+      <div id="user-widget"></div>
+      <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" title="Cambiar entre modo claro y oscuro"></button>
+    </div>
   </div>
-  <div class="top-nav">
-    <button id="top-camaras" class="top-btn active" onclick="setSection('camaras')">📷 CÁMARAS</button>
-    <button id="top-flota"   class="top-btn"        onclick="setSection('flota')">🚗 FLOTA</button>
-    <button id="top-usuarios" class="top-btn" onclick="setSection('usuarios')" style="display:none">👤 USUARIOS</button>
-    <button id="top-asistencia" class="top-btn" onclick="setSection('asistencia')">📋 OPERADORES HOY</button>
-  </div>
+  <div class="hdr-views">
   <nav id="sub-nav-camaras">
     <button onclick="showView('camaras')" class="active">Dashboard</button>
     <button id="nav-stats-equipos" onclick="showView('stats-equipos')">Stats Equipos</button>
@@ -761,7 +1117,7 @@ nav button.active { color:var(--a3); }
     <button onclick="showView('stats-flota')">Stats</button>
     <button onclick="showView('admin-flota')">Admin</button>
   </nav>
-  <div style="margin-left:auto;display:flex;align-items:center;gap:10px" id="user-widget"></div>
+  </div>
 </header>
 
 <div id="view-fleet" style="display:none">
@@ -834,7 +1190,7 @@ nav button.active { color:var(--a3); }
           <button class="cam-btn"        data-group="del" data-val="VALENCIA"   onclick="setCamFilter('del','VALENCIA',this)">Valencia</button>
         </div>
       </div>
-      <div class="cam-filter-row">
+      <div class="cam-filter-row" id="modelo-filter-row">
         <span class="cam-filter-label">Modelo</span>
         <div class="cam-filter-btns" id="cam-modelo-filter-btns">
           <button class="cam-btn active" data-group="modelo" data-val="all"  onclick="setCamFilter('modelo','all',this)">Todos</button>
@@ -853,12 +1209,14 @@ nav button.active { color:var(--a3); }
           <button class="cam-btn tipo-alquiler" data-group="tipo" data-val="VISUAL" onclick="setTipoFilter('VISUAL',this)">Alquiladas</button>
         </div>
         <div class="cam-filter-btns" id="empresa-filter-btns" style="border-left:1px solid var(--border);padding-left:10px;display:none">
-          <span style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-right:4px">Empresa:</span>
+          <span style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-right:4px">Empresa:</span>
           <!-- populated dynamically -->
         </div>
       </div>
-      <button onclick="resetCamOrder()" style="height:100%;padding:0 14px;background:none;border:none;border-right:1px solid var(--border);color:var(--muted);font-size:11px;cursor:pointer;font-family:'Barlow',sans-serif;transition:color .15s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'" title="Restaurar orden original">↺ Orden</button>
-      <button class="cam-add" onclick="openAddCamera()">+ Añadir</button>
+      <div class="cam-actions">
+        <button class="cam-order-btn" onclick="resetCamOrder()" title="Restaurar orden original">↺ Orden</button>
+        <button class="cam-add" onclick="openAddCamera()">+ Añadir</button>
+      </div>
     </div>
   </div>
   <div class="cam-selection" id="cam-selection"></div>
@@ -1409,10 +1767,10 @@ function renderSelectionBar() {
     </div>
     <div class="sel-tags">${tags.join('')}</div>
     <div class="sel-stats">
-      <button class="sel-stat ${filterEstado==='disponible'?'active':''}" style="--sc:#22d3ee" onclick="setEstadoFilter('disponible')">
+      <button class="sel-stat ${filterEstado==='disponible'?'active':''}" style="--sc:var(--cyan)" onclick="setEstadoFilter('disponible')">
         <span class="sel-stat-num">${disponibles}</span><span class="sel-stat-label">disponibles</span>
       </button>
-      <button class="sel-stat ${filterEstado==='cita'?'active':''}" style="--sc:#38bdf8" onclick="setEstadoFilter('cita')">
+      <button class="sel-stat ${filterEstado==='cita'?'active':''}" style="--sc:var(--sky)" onclick="setEstadoFilter('cita')">
         <span class="sel-stat-num">${conCita}</span><span class="sel-stat-label">con cita</span>
       </button>
       <button class="sel-stat ${filterEstado==='taller'?'active':''}" style="--sc:var(--warn)" onclick="setEstadoFilter('taller')">
@@ -1551,7 +1909,7 @@ function citaUrgencyInfo(fechaStr) {
   if (diffDays < 0)  return { diffDays, fechaDisp, label:'CITA VENCIDA', bg:'rgba(239,68,68,.18)', border:'rgba(239,68,68,.5)', color:'var(--danger)' };
   if (diffDays === 0) return { diffDays, fechaDisp, label:'CITA HOY', bg:'rgba(239,68,68,.18)', border:'rgba(239,68,68,.5)', color:'var(--danger)' };
   if (diffDays <= 3)  return { diffDays, fechaDisp, label:'CITA EN '+diffDays+'D', bg:'rgba(245,158,11,.15)', border:'rgba(245,158,11,.4)', color:'var(--warn)' };
-  return { diffDays, fechaDisp, label:'CITA '+fechaDisp, bg:'rgba(56,189,248,.12)', border:'rgba(56,189,248,.35)', color:'#38bdf8' };
+  return { diffDays, fechaDisp, label:'CITA '+fechaDisp, bg:'rgba(56,189,248,.12)', border:'rgba(56,189,248,.35)', color:'var(--sky)' };
 }
 
 function renderGrid() {
@@ -1613,7 +1971,7 @@ function renderDelegaciones() {
       <div class="del-grid">
         ${veh.map(v=>`
         <div class="del-mini" onclick="openDetail('${v.id}')">
-          <div class="del-mini-id">${v.id} <span class="prod-badge ${v.prod==='A3'?'a3':'l6'}" style="font-size:9px;padding:2px 5px">${v.prod==='L6'?'L6':v.prod}</span></div>
+          <div class="del-mini-id">${v.id} <span class="prod-badge ${v.prod==='A3'?'a3':'l6'}" style="font-size:11px;padding:2px 5px">${v.prod==='L6'?'L6':v.prod}</span></div>
           <div class="del-mini-model">${v.modelo}</div>
           <div class="del-mini-plate">${v.matricula} · ${v.km.toLocaleString('es-ES')} km</div>
         </div>`).join('')}
@@ -1637,7 +1995,7 @@ function renderHistorico() {
           <div class="card-accent"></div>
           <div class="hist-header">
             <div>
-              <div style="font-family:Barlow Condensed,sans-serif;font-size:10px;letter-spacing:1.5px;color:var(--muted)">${v.id}</div>
+              <div style="font-family:Barlow Condensed,sans-serif;font-size:12px;letter-spacing:1.5px;color:var(--muted)">${v.id}</div>
               <div style="font-family:Barlow Condensed,sans-serif;font-size:20px;font-weight:800;letter-spacing:2px">${v.matricula}</div>
               <div style="font-size:13px;color:var(--muted)">${v.modelo}</div>
             </div>
@@ -1675,6 +2033,7 @@ function showView(view) {
   if (['stats-equipos','stats-operadores','stats-coberturas','stats-mantenimiento'].includes(view) && currentUser?.rol !== 'admin') {
     view = 'camaras';
   }
+  window._txLastView = view;
   ['fleet','camaras','bajas','historico','stats','stats-equipos','stats-operadores','stats-coberturas','coberturas','stats-mantenimiento','stats-flota','admin','admin-flota','usuarios','asistencia'].forEach(v => {
     const el = document.getElementById('view-'+v);
     if (el) el.style.display = view===v ? '' : 'none';
@@ -1753,8 +2112,8 @@ function openDetail(id) {
         <div class="incident-item" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
           <span style="flex:1">${item.descripcion}</span>
           <div style="display:flex;gap:4px;flex-shrink:0">
-            <button onclick="editVehIncident('${id}',${idx})" style="background:none;border:1px solid var(--border2);border-radius:4px;color:var(--muted);padding:2px 7px;font-size:10px;cursor:pointer">✏</button>
-            <button onclick="deleteVehIncident('${id}',${idx})" style="background:none;border:1px solid rgba(239,68,68,.3);border-radius:4px;color:var(--danger);padding:2px 7px;font-size:10px;cursor:pointer">✕</button>
+            <button onclick="editVehIncident('${id}',${idx})" style="background:none;border:1px solid var(--border2);border-radius:4px;color:var(--muted);padding:2px 7px;font-size:12px;cursor:pointer">✏</button>
+            <button onclick="deleteVehIncident('${id}',${idx})" style="background:none;border:1px solid rgba(239,68,68,.3);border-radius:4px;color:var(--danger);padding:2px 7px;font-size:12px;cursor:pointer">✕</button>
           </div>
         </div>`).join('')}
       </div>
@@ -2620,9 +2979,9 @@ function renderCamStats() {
       <div class="cam-stat-sub" style="color:var(--warn);min-height:13px">${mant.length?'Ver →':''}</div>
     </div>
     <div class="cam-stat" onclick="setCamStatFilter('custodia')" style="cursor:pointer" title="Ver en custodia de operador">
-      <div class="cam-stat-val" style="color:#a78bfa">${custodia.length}</div>
+      <div class="cam-stat-val" style="color:var(--purple)">${custodia.length}</div>
       <div class="cam-stat-label">En casa (operador)</div>
-      <div class="cam-stat-sub" style="color:#a78bfa;min-height:13px">${custodia.length?'Ver →':''}</div>
+      <div class="cam-stat-sub" style="color:var(--purple);min-height:13px">${custodia.length?'Ver →':''}</div>
     </div>
     <div class="cam-stat" onclick="setCamStatFilter('alquiler')" style="cursor:pointer" title="Ver en alquiler">
       <div class="cam-stat-val visual">${visual.length}</div>
@@ -2769,7 +3128,7 @@ function renderCamSelection() {
 
   bar.innerHTML = `
     <div style="display:flex;align-items:center;gap:6px">
-      <span style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-right:4px">ENG</span>
+      <span style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-right:4px">ENG</span>
       <div style="display:flex;align-items:baseline;gap:6px">
         <div class="cam-sel-num">${total}</div>
         <div class="cam-sel-label">total${total!==1?'es':''}</div>
@@ -2781,14 +3140,14 @@ function renderCamSelection() {
       </div>
       <div style="width:1px;height:24px;background:var(--border2)"></div>
       <div style="display:flex;align-items:baseline;gap:6px">
-        <div class="cam-sel-num" style="color:#22d3ee">${disponibles}</div>
+        <div class="cam-sel-num" style="color:var(--cyan)">${disponibles}</div>
         <div class="cam-sel-label">disponible${disponibles!==1?'s':''}</div>
       </div>
     </div>
     ${totalSpc ? `
     <div style="width:1px;height:24px;background:var(--border2)"></div>
     <div style="display:flex;align-items:center;gap:6px">
-      <span style="font-size:9px;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:1px;margin-right:4px">SPC</span>
+      <span style="font-size:11px;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:1px;margin-right:4px">SPC</span>
       <div style="display:flex;align-items:baseline;gap:6px">
         <div class="cam-sel-num" style="color:var(--warn)">${totalSpc}</div>
         <div class="cam-sel-label">total${totalSpc!==1?'es':''}</div>
@@ -2840,6 +3199,15 @@ function renderCameras() {
     const safeCode = c.code.replace(/'/g, "\'");
     const dispClass = fromOrigin ? 'displaced-origin' : fromDest ? 'displaced-dest' : '';
     const isAssigned = !!c.asignado_a && !isMant && !isCustodia;
+    const fmtHM = iso => iso ? new Date(iso).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}) : '';
+    const horaS = fmtHM(c.horaSalida);
+    const horaR = fmtHM(c.reservaManana?.horaSalida);
+    let stCls = 'libre', stTxt = '● Disponible';
+    if (isMant)            { stCls = 'mant';     stTxt = '🔧 Mantenimiento'; }
+    else if (isCustodia)   { stCls = 'custodia'; stTxt = '🏠 Apagada · casa'; }
+    else if (fromOrigin)   { stCls = 'fuera';    stTxt = '↗ Fuera · ' + c.temp_del; }
+    else if (isAssigned)   { stCls = 'salida';   stTxt = (c.en_viaje ? '✈ Viaje' : '● Salida') + (horaS ? ' · ' + horaS : ''); }
+    else if (fromDest)     { stCls = 'visita';   stTxt = '↙ De ' + c.del; }
     return `<div class="cam-card ${isMant?'en-mant':''} ${isCustodia?'custodia-card':''} ${dispClass} ${isAssigned?'assigned':''}"
       data-cam-code="${safeCode}"
       onclick="openCamDetail('${safeCode}')"
@@ -2850,15 +3218,14 @@ function renderCameras() {
       ondrop="onCamDrop(event,'${safeCode}','${c.modelo}');event.stopPropagation()"
       ondragend="onCamDragEnd(event)">
       <div class="cam-card-accent ${acc}"></div>
+      <div class="cam-status ${stCls}">${stTxt}</div>
       <div class="cam-card-top">
         <div class="cam-card-code" style="color:var(--cam-${c.modelo.toLowerCase()},var(--muted))">${c.code}</div>
         <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
           ${c.ata ? '<span class="cam-ata-badge">ATA</span>' : ''}
-          ${fromOrigin ? `<span style="font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);color:var(--warn);letter-spacing:.5px">↗ ${c.temp_del}</span>` : ''}
-          ${fromDest ? `<span style="font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.6);color:var(--warn);letter-spacing:.5px">↙ ${c.del}</span>` : ''}
+          ${fromDest ? `<span style="font-size:11px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.6);color:var(--warn);letter-spacing:.5px">↙ ${c.del}</span>` : ''}
           <span style="width:5px;height:5px;border-radius:50%;background:${dc};display:inline-block;flex-shrink:0"></span>
           ${badge}
-          ${isVis?`<span class="cam-chip visual">${c.empresa||'ALQUILER'}</span>`:''}
         </div>
       </div>
       <div class="cam-card-modelo-small ${c.modelo.toLowerCase()}">PXW-${c.modelo}</div>
@@ -2868,13 +3235,14 @@ function renderCameras() {
           : `<span class="cn-num" style="font-size:28px">${c.code}</span>`}
         ${c.nota ? `<span class="cam-nota-tag" style="align-self:flex-end;margin-bottom:6px">${c.nota}</span>` : ''}
       </div>
-      <div class="cam-card-model" style="${isCustodia?'color:#a78bfa':''}">${isCustodia ? '🏠 '+aliasOnly(c.custodiaOperador||'') : (c.del!=='MADRID'?c.del:'')}</div>
-      ${c.asignado_a ? `<div title="${c.asignado_a}${c.operador2_nombre?' + '+c.operador2_nombre:''}" style="margin:0 10px 8px;padding:5px 8px;background:rgba(34,197,94,.14);border:1px solid rgba(34,197,94,.35);border-radius:6px;display:flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--ok);white-space:nowrap;overflow:hidden"><span style="flex-shrink:0">${c.en_viaje?'✈':carIcon(13)}</span><span style="overflow:hidden;text-overflow:ellipsis">${aliasOnly(c.asignado_a)}${c.operador2_nombre?' + '+aliasOnly(c.operador2_nombre):''}</span></div>` : ''}
-      ${c.reservaManana ? `<div title="Reserva para mañana: ${c.reservaManana.operador}" style="margin:0 10px 8px;padding:5px 8px;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.35);border-radius:6px;display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#38bdf8;white-space:nowrap;overflow:hidden"><span style="flex-shrink:0">📅</span><span style="overflow:hidden;text-overflow:ellipsis">Mañana: ${aliasOnly(c.reservaManana.operador)}</span></div>` : ''}
-      ${c.temp_del ? `<div style="padding:0 12px 6px;font-size:10px;color:var(--warn)">↗ ${c.temp_del}</div>` : ''}
+      <div class="cam-card-model" style="${isCustodia?'color:var(--purple)':''}">${isCustodia ? '🏠 '+aliasOnly(c.custodiaOperador||'') : (c.del!=='MADRID'?c.del:'')}</div>
+      ${c.asignado_a ? `<div class="cam-salida" title="${c.asignado_a}${c.operador2_nombre?' + '+c.operador2_nombre:''}${c.cobertura?' — '+c.cobertura:''}">
+        <div class="cam-salida-op"><span>${c.en_viaje?'✈':carIcon(15)}</span><span class="t">${aliasOnly(c.asignado_a)}${c.operador2_nombre?' + '+aliasOnly(c.operador2_nombre):''}</span></div>
+        ${c.cobertura ? `<div class="cam-salida-cob">${c.cobertura}</div>` : ''}
+      </div>` : ''}
+      ${c.reservaManana ? `<div class="cam-reserva" title="Reserva para mañana: ${c.reservaManana.operador}${c.reservaManana.cobertura?' — '+c.reservaManana.cobertura:''}">📅 Mañana${horaR?' '+horaR:''}: <b>${aliasOnly(c.reservaManana.operador)}</b></div>` : ''}
       <div class="cam-card-bottom">
-        ${isMant?'<span class="cam-chip mant">🔧 Mant.</span>':''}
-        ${isCustodia?'<span class="cam-chip" style="border-color:rgba(167,139,250,.4);color:#a78bfa;background:rgba(167,139,250,.1)">🏠 Apagada</span>':''}
+        ${isVis?`<span class="cam-chip visual">${c.empresa||'ALQUILER'}</span>`:''}
         ${c.liveu?'<span class="cam-chip liveu">📡 '+(c.liveu_unidad||'Live-U')+'</span>':''}
         ${c.wificam?'<span class="cam-chip wificam">📶 '+(c.wificam_unidad||'WifiCam')+'</span>':''}
         <div class="${isMant?'mant-dot':'ok-dot'}" style="margin-left:auto;${c.asignado_a?'background:var(--ok);box-shadow:0 0 6px rgba(34,197,94,.7)':''}"></div>
@@ -2901,7 +3269,7 @@ function renderCameras() {
     rowsHtml += `
       <div class="cam-model-row">
         <div class="cam-model-label" style="border-left-color:${modelColor}">
-          <span style="color:${modelColor}">PXW-${modelo}</span>
+          <span style="color:${modelColor}" title="Sony PXW-${modelo}">${modelo}</span>
           <span class="cam-model-count">${cams.filter(c => !c.temp_del || c.temp_del === camFilters.del).length}</span>
         </div>
         <div class="cam-model-cards"
@@ -2920,9 +3288,9 @@ function renderCameras() {
             slots.push(null); slots.push(null); slots.push(null);
             return slots.map((code, idx) => {
               if (!code) return `<div class="cam-slot"
-                style="width:var(--card-w);height:175px;border:1.5px dashed rgba(255,255,255,.06);border-radius:10px;opacity:.08;transition:all .2s;flex-shrink:0"
-                ondragover="event.preventDefault();event.stopPropagation();this.style.opacity='1';this.style.borderColor='rgba(255,255,255,.5)'"
-                ondragleave="this.style.opacity='.3';this.style.borderColor='rgba(255,255,255,.12)'"
+                style="width:var(--card-w);height:175px;border:1.5px dashed var(--hl-1);border-radius:10px;opacity:.08;transition:all .2s;flex-shrink:0"
+                ondragover="event.preventDefault();event.stopPropagation();this.style.opacity='1';this.style.borderColor='var(--hl-5)'"
+                ondragleave="this.style.opacity='.3';this.style.borderColor='var(--hl-2)'"
                 ondrop="onSlotDrop(event,'${modelo}',${idx});event.stopPropagation()"></div>`;
               const cam = cams.find(c=>c.code===code);
               if (!cam) return '';
@@ -2992,7 +3360,7 @@ async function openCamDetail(code) {
     : '';
   const custodiaHtml = isCustodia
     ? '<div class="info-item full" style="background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.3);border-radius:8px;padding:14px 16px;margin-top:4px">'
-      + '<div class="info-key" style="color:#a78bfa">🏠 EN CUSTODIA DE OPERADOR — apagada</div>'
+      + '<div class="info-key" style="color:var(--purple)">🏠 EN CUSTODIA DE OPERADOR — apagada</div>'
       + '<div class="info-val" style="font-size:15px;font-weight:700;margin-top:4px">'+(c.custodiaOperador||'')+'</div>'
       + '<div style="font-size:12px;color:var(--muted);margin-top:6px">Desde '+(c.temp_desde||'?')+(c.temp_motivo?' — '+c.temp_motivo:'')+'</div></div>'
     : '';
@@ -3008,9 +3376,9 @@ async function openCamDetail(code) {
   const reservaHoraStr = c.reservaManana?.horaSalida ? new Date(c.reservaManana.horaSalida).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}) : null;
   const reservaHtml = c.reservaManana
     ? '<div class="info-item full" style="background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);border-radius:8px;padding:14px 16px;margin-top:4px">'
-      + '<div class="info-key" style="display:flex;align-items:center;gap:6px;color:#38bdf8;font-size:11px">📅 RESERVADA PARA MAÑANA</div>'
+      + '<div class="info-key" style="display:flex;align-items:center;gap:6px;color:var(--sky);font-size:11px">📅 RESERVADA PARA MAÑANA</div>'
       + '<div class="info-val" style="font-size:16px;font-weight:700;margin-top:4px">'+(c.reservaManana.cobertura||'')+' — '+(c.reservaManana.operador||'')+'</div>'
-      + (reservaHoraStr ? '<div style="display:flex;align-items:center;gap:6px;margin-top:8px;color:#38bdf8;font-size:14px;font-weight:600">🕐 Recogida prevista: '+reservaHoraStr+'</div>' : '')
+      + (reservaHoraStr ? '<div style="display:flex;align-items:center;gap:6px;margin-top:8px;color:var(--sky);font-size:14px;font-weight:600">🕐 Recogida prevista: '+reservaHoraStr+'</div>' : '')
       + '</div>'
     : '';
 
@@ -3024,8 +3392,8 @@ async function openCamDetail(code) {
           '<div class="incident-item" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">'
           + '<span style="flex:1;line-height:1.5">'+item+'</span>'
           + '<div style="display:flex;gap:4px;flex-shrink:0;margin-top:2px">'
-          + '<button data-idx="'+idx+'" onclick="editCamIncident(window._incidentCamCode,this.dataset.idx)" style="background:none;border:1px solid var(--border2);border-radius:4px;color:var(--muted);padding:2px 7px;font-size:10px;cursor:pointer">✏</button>'
-          + '<button data-idx="'+idx+'" onclick="deleteCamIncident(window._incidentCamCode,this.dataset.idx)" style="background:none;border:1px solid rgba(239,68,68,.3);border-radius:4px;color:var(--danger);padding:2px 7px;font-size:10px;cursor:pointer">✕</button>'
+          + '<button data-idx="'+idx+'" onclick="editCamIncident(window._incidentCamCode,this.dataset.idx)" style="background:none;border:1px solid var(--border2);border-radius:4px;color:var(--muted);padding:2px 7px;font-size:12px;cursor:pointer">✏</button>'
+          + '<button data-idx="'+idx+'" onclick="deleteCamIncident(window._incidentCamCode,this.dataset.idx)" style="background:none;border:1px solid rgba(239,68,68,.3);border-radius:4px;color:var(--danger);padding:2px 7px;font-size:12px;cursor:pointer">✕</button>'
           + '</div></div>'
         ).join('')
       + '</div></div>'
@@ -3034,8 +3402,11 @@ async function openCamDetail(code) {
   document.getElementById('modal-title').textContent = 'PXW-'+c.modelo;
   document.getElementById('modal-sub').textContent   = dispNum+' · Code: '+c.code+' · Serie: '+(c.serie||'—');
 
+  // Estado actual (salida, reserva, custodia, desplazada) arriba del todo: es lo primero que se consulta
+  const statusBlocks = assignHtml + reservaHtml + custodiaHtml + tempHtml;
   document.getElementById('modal-body').innerHTML =
-    '<div class="info-grid">'
+    (statusBlocks ? '<div class="cam-detail-status">' + statusBlocks + '</div>' : '')
+    + '<div class="info-grid">'
     + '<div class="info-item"><div class="info-key">Code</div><div class="info-val mono" style="font-size:20px;color:var(--cam-'+c.modelo.toLowerCase()+')">'+c.code+'</div></div>'
     + '<div class="info-item"><div class="info-key">Equipo</div><div class="info-val mono" style="font-size:20px">'+dispNum+'</div></div>'
     + '<div class="info-item"><div class="info-key">Modelo</div><div class="info-val">Sony PXW-'+c.modelo+'</div></div>'
@@ -3055,7 +3426,7 @@ async function openCamDetail(code) {
       + '</div></div>'
     + (c.comentarios ? '<div class="info-item full"><div class="info-key">Comentarios</div><div class="info-val" style="font-size:13px;line-height:1.6">'+c.comentarios+'</div></div>' : '')
     + '</div>'
-    + tempHtml + custodiaHtml + assignHtml + reservaHtml + incList;
+    + incList;
 
   const ms = isMant
     ? 'background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:var(--ok);'
@@ -3066,13 +3437,13 @@ async function openCamDetail(code) {
     + '<button class="btn" style="'+ms+'" onclick="openMantHistory(\''+safeCode+'\')">'+( isMant?'🔧 En taller':'🔧 Mant.')+'</button>'
     + (isCustodia ? '' : isAssigned
         ? '<button class="btn btn-secondary" onclick="openAssignCamera(\''+safeCode+'\',true)">✏ Editar adjudicación</button>'
-          + '<button class="btn" style="background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3);color:#60a5fa" onclick="openRelevo(\''+safeCode+'\')">🔄 Relevo</button>'
+          + '<button class="btn" style="background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3);color:var(--blue)" onclick="openRelevo(\''+safeCode+'\')">🔄 Relevo</button>'
           + '<button class="btn btn-secondary" onclick="openLiberarConfirm(\''+safeCode+'\')">⏹ Liberar</button>'
         : '<button class="btn btn-secondary" onclick="openAssignCamera(\''+safeCode+'\')">'+carIcon(14)+' Adjudicar</button>')
     + (c.reservaManana
-        ? '<button class="btn" style="background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);color:#38bdf8" onclick="openReservaManana(\''+safeCode+'\')">📅 Editar reserva</button>'
+        ? '<button class="btn" style="background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);color:var(--sky)" onclick="openReservaManana(\''+safeCode+'\')">📅 Editar reserva</button>'
         : '<button class="btn btn-secondary" onclick="openReservaManana(\''+safeCode+'\')">📅 Reservar para mañana</button>')
-    + '<button class="btn btn-secondary" onclick="openMoveCamera(\''+safeCode+'\')" style="'+(isTemp?'color:var(--warn)':isCustodia?'color:#a78bfa':'')+'">↗ '+(isCustodia?'🏠 En casa':isTemp?'Desplazada':'Mover')+'</button>'
+    + '<button class="btn btn-secondary" onclick="openMoveCamera(\''+safeCode+'\')" style="'+(isTemp?'color:var(--warn)':isCustodia?'color:var(--purple)':'')+'">↗ '+(isCustodia?'🏠 En casa':isTemp?'Desplazada':'Mover')+'</button>'
     + '<button class="btn btn-secondary" onclick="openAddCamIncident(\''+safeCode+'\')">+ Incidencia</button>'
     + '<button class="btn" style="background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:var(--danger);margin-left:auto" onclick="openConfirmCamBaja(\''+safeCode+'\')">Dar de baja</button>';
 
@@ -3086,23 +3457,23 @@ function openAddExternalMant() {
   document.getElementById('modal-title').textContent = '+ Gasto equipo externo / alquiler';
   document.getElementById('modal-sub').textContent = 'Reparación de cámara alquilada, no en inventario';
   document.getElementById('modal-body').innerHTML =
-    '<div style="background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.2);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#c084fc">Este gasto no se vincula a ninguna cámara de tu inventario. Útil para reparaciones de equipos alquilados de terceros.</div>'
-    + '<div style="margin-bottom:10px"><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">Descripción del equipo *</label>'
+    '<div style="background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.2);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--violet)">Este gasto no se vincula a ninguna cámara de tu inventario. Útil para reparaciones de equipos alquilados de terceros.</div>'
+    + '<div style="margin-bottom:10px"><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Descripción del equipo *</label>'
     + '<input type="text" id="ext-equipo" placeholder="Ej: PXW-X320 alquiler Visual Producciones, serie 12345" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:13px"></div>'
     + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">'
-    + '<div><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">Fecha entrada *</label>'
+    + '<div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Fecha entrada *</label>'
     + '<input type="date" id="ext-fecha-in" value="'+today+'" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:13px"></div>'
-    + '<div><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">Fecha salida</label>'
+    + '<div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Fecha salida</label>'
     + '<input type="date" id="ext-fecha-out" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:13px"></div>'
     + '</div>'
     + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">'
-    + '<div><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">Producción</label>'
+    + '<div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Producción</label>'
     + '<select id="ext-prod" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:13px">'
     + '<option value="">Sin asignar</option><option value="L6">La Sexta</option><option value="A3">Antena 3</option></select></div>'
-    + '<div><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">Coste reparación (€) *</label>'
-    + '<input type="number" id="ext-coste" placeholder="0.00" step="0.01" min="0" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:16px;font-weight:700;color:#84cc16"></div>'
+    + '<div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Coste reparación (€) *</label>'
+    + '<input type="number" id="ext-coste" placeholder="0.00" step="0.01" min="0" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:16px;font-weight:700;color:var(--lime)"></div>'
     + '</div>'
-    + '<div><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">Delegación</label>'
+    + '<div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Delegación</label>'
     + '<select id="ext-del" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:13px">'
     + '<option value="MADRID">Madrid</option><option value="PAÍS VASCO">P.Vasco</option><option value="GALICIA">Galicia</option><option value="VALENCIA">Valencia</option></select></div>';
 
@@ -3202,7 +3573,7 @@ async function openMantHistory(code) {
       + '</div>'
       + '</div>'
       + '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">'
-      + '<span style="font-family:Barlow Condensed,sans-serif;font-size:22px;font-weight:800;color:#84cc16">' + costeStr + '</span>'
+      + '<span style="font-family:Barlow Condensed,sans-serif;font-size:22px;font-weight:800;color:var(--lime)">' + costeStr + '</span>'
       + '<div style="display:flex;gap:4px">'
       + '<button data-mid="'+m.id+'" onclick="openEditMant(this.dataset.mid)" style="background:none;border:1px solid var(--border2);border-radius:4px;color:var(--muted);padding:2px 8px;font-size:11px;cursor:pointer">✏ Editar</button>'
       + '<button data-mid="'+m.id+'" onclick="deleteMantEntry(this.dataset.mid)" style="background:none;border:1px solid rgba(239,68,68,.3);border-radius:4px;color:var(--danger);padding:2px 8px;font-size:11px;cursor:pointer">✕</button>'
@@ -3220,13 +3591,13 @@ async function openMantHistory(code) {
     + '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">'
     + '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px">'
     + '<div style="font-family:Barlow Condensed,sans-serif;font-size:30px;font-weight:800;color:var(--danger)">'+mants.length+'</div>'
-    + '<div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Entradas taller</div></div>'
+    + '<div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Entradas taller</div></div>'
     + '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px">'
     + '<div style="font-family:Barlow Condensed,sans-serif;font-size:30px;font-weight:800;color:var(--warn)">'+totalDias+'d</div>'
-    + '<div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Días en taller</div></div>'
+    + '<div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Días en taller</div></div>'
     + '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px">'
-    + '<div style="font-family:Barlow Condensed,sans-serif;font-size:30px;font-weight:800;color:#84cc16">'+(totalCost>0?totalCost.toLocaleString('es-ES')+'€':'—')+'</div>'
-    + '<div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Coste total</div></div>'
+    + '<div style="font-family:Barlow Condensed,sans-serif;font-size:30px;font-weight:800;color:var(--lime)">'+(totalCost>0?totalCost.toLocaleString('es-ES')+'€':'—')+'</div>'
+    + '<div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Coste total</div></div>'
     + '</div>'
 
     // Historial
@@ -3239,20 +3610,20 @@ async function openMantHistory(code) {
     + '<div style="border-top:1px solid var(--border);padding-top:12px">'
     + '<div style="font-size:11px;font-weight:600;color:var(--warn);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">+ Nueva entrada</div>'
     + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">'
-    + '<div><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:3px">Fecha entrada</label>'
+    + '<div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:3px">Fecha entrada</label>'
     + '<input type="date" id="mant-fecha-in" value="'+today+'" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:7px 8px;font-size:13px"></div>'
-    + '<div><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:3px">Fecha salida</label>'
+    + '<div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:3px">Fecha salida</label>'
     + '<input type="date" id="mant-fecha-out" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:7px 8px;font-size:13px"></div>'
     + '</div>'
     + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">'
-    + '<div><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:3px">Tipo</label>'
+    + '<div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:3px">Tipo</label>'
     + '<select id="mant-tipo" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:7px 8px;font-size:13px">'
     + '<option value="averia">🔴 Avería</option><option value="preventivo">🟡 Preventivo</option><option value="otro">⚪ Otro</option>'
     + '</select></div>'
-    + '<div><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:3px">Coste reparación (€)</label>'
+    + '<div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:3px">Coste reparación (€)</label>'
     + '<input type="number" id="mant-coste" placeholder="0.00" step="0.01" min="0" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:7px 8px;font-size:15px;font-weight:600"></div>'
     + '</div>'
-    + '<div><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:3px">Descripción</label>'
+    + '<div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:3px">Descripción</label>'
     + '<input type="text" id="mant-desc" placeholder="Motivo, descripción..." style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:7px 8px;font-size:13px"></div>'
     + '</div>';
 
@@ -3271,22 +3642,22 @@ function openEditMant(id) {
   document.getElementById('modal-sub').textContent = fmtDate(m.fecha_entrada) + (m.descripcion?' — '+m.descripcion:'');
   document.getElementById('modal-body').innerHTML =
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">'
-    + '<div><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">Fecha entrada *</label>'
+    + '<div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Fecha entrada *</label>'
     + '<input type="date" id="edit-mant-fecha-in" value="'+(m.fecha_entrada||'')+'" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:13px"></div>'
-    + '<div><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">Fecha salida</label>'
+    + '<div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Fecha salida</label>'
     + '<input type="date" id="edit-mant-fecha-out" value="'+(m.fecha_salida||'')+'" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:13px"></div>'
     + '</div>'
     + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">'
-    + '<div><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">Tipo</label>'
+    + '<div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Tipo</label>'
     + '<select id="edit-mant-tipo" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:13px">'
     + '<option value="averia" '+(m.tipo==='averia'?'selected':'')+'>🔴 Avería</option>'
     + '<option value="preventivo" '+(m.tipo==='preventivo'?'selected':'')+'>🟡 Preventivo</option>'
     + '<option value="otro" '+(m.tipo==='otro'?'selected':'')+'>⚪ Otro</option>'
     + '</select></div>'
-    + '<div><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">Coste reparación (€)</label>'
-    + '<input type="number" id="edit-mant-coste" value="'+(m.coste||'')+'" placeholder="0.00" step="0.01" min="0" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:16px;font-weight:700;color:#84cc16"></div>'
+    + '<div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Coste reparación (€)</label>'
+    + '<input type="number" id="edit-mant-coste" value="'+(m.coste||'')+'" placeholder="0.00" step="0.01" min="0" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:16px;font-weight:700;color:var(--lime)"></div>'
     + '</div>'
-    + '<div><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">Descripción / motivo</label>'
+    + '<div><label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Descripción / motivo</label>'
     + '<input type="text" id="edit-mant-desc" value="'+(m.descripcion||'')+'" placeholder="Golpe objetivo, fallo sensor..." style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:13px"></div>';
 
   document.getElementById('modal-actions').innerHTML =
@@ -3352,22 +3723,22 @@ async function editMantEntry(id) {
   document.getElementById('modal-sub').textContent = fmtDate(m.fecha_entrada) + (m.descripcion ? ' — '+m.descripcion : '');
   document.getElementById('modal-body').innerHTML =
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">'
-    + '<div><label style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px">Fecha entrada *</label>'
+    + '<div><label style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px">Fecha entrada *</label>'
     + '<input type="date" id="edit-mant-fecha-in" value="'+(m.fecha_entrada||'')+'" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:13px"></div>'
-    + '<div><label style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px">Fecha salida</label>'
+    + '<div><label style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px">Fecha salida</label>'
     + '<input type="date" id="edit-mant-fecha-out" value="'+(m.fecha_salida||'')+'" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:13px"></div>'
     + '</div>'
     + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">'
-    + '<div><label style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px">Tipo</label>'
+    + '<div><label style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px">Tipo</label>'
     + '<select id="edit-mant-tipo" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:13px">'
     + '<option value="averia" '+(m.tipo==='averia'?'selected':'')+'>🔴 Avería</option>'
     + '<option value="preventivo" '+(m.tipo==='preventivo'?'selected':'')+'>🟡 Preventivo</option>'
     + '<option value="otro" '+(m.tipo==='otro'?'selected':'')+'>⚪ Otro</option>'
     + '</select></div>'
-    + '<div><label style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px">Coste reparación (€)</label>'
+    + '<div><label style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px">Coste reparación (€)</label>'
     + '<input type="number" id="edit-mant-coste" value="'+(m.coste||'')+'" placeholder="0.00" step="0.01" min="0" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:16px;font-weight:600"></div>'
     + '</div>'
-    + '<div><label style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px">Descripción / motivo</label>'
+    + '<div><label style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px">Descripción / motivo</label>'
     + '<input type="text" id="edit-mant-desc" value="'+(m.descripcion||'')+'" placeholder="Golpe objetivo, fallo sensor..." style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:13px"></div>';
 
   document.getElementById('modal-actions').innerHTML =
@@ -4125,9 +4496,9 @@ function renderAsistenciaRows() {
           const isFdi = !!o.fdi;
           return '<div data-op="'+name.replace(/"/g,'&quot;')+'" data-prod="'+prod+'" onclick="toggleAsistencia(this)" style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:'+(present?'rgba(34,197,94,.1)':isFdi?'rgba(167,139,250,.07)':'var(--bg3)')+';border:1px solid '+(present?'rgba(34,197,94,.3)':isFdi?'rgba(167,139,250,.3)':'var(--border)')+';border-radius:8px;cursor:pointer">'
             + '<div style="width:22px;height:22px;border-radius:5px;border:2px solid '+(present?'var(--ok)':'var(--border2)')+';background:'+(present?'var(--ok)':'transparent')+';display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;color:#000;font-weight:900">'+(present?'✓':'')+'</div>'
-            + '<div style="flex:1;font-size:14px;font-weight:'+(present?'600':'400')+'">'+name+(isFdi?' <span style="font-size:9px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,.15);border:1px solid rgba(167,139,250,.4);border-radius:3px;padding:1px 5px;margin-left:4px">FDI</span>':'')+'</div>'
-            + (present && active ? '<span style="font-size:9px;font-weight:700;color:var(--ok);background:rgba(34,197,94,.15);padding:2px 6px;border-radius:3px;flex-shrink:0">CON COBERTURA</span>' : '')
-            + (present && !active ? '<span style="font-size:9px;font-weight:700;color:var(--warn);background:rgba(245,158,11,.15);padding:2px 6px;border-radius:3px;flex-shrink:0">SIN COBERTURA</span>' : '')
+            + '<div style="flex:1;font-size:14px;font-weight:'+(present?'600':'400')+'">'+name+(isFdi?' <span style="font-size:11px;font-weight:700;color:var(--purple);background:rgba(167,139,250,.15);border:1px solid rgba(167,139,250,.4);border-radius:3px;padding:1px 5px;margin-left:4px">FDI</span>':'')+'</div>'
+            + (present && active ? '<span style="font-size:11px;font-weight:700;color:var(--ok);background:rgba(34,197,94,.15);padding:2px 6px;border-radius:3px;flex-shrink:0">CON COBERTURA</span>' : '')
+            + (present && !active ? '<span style="font-size:11px;font-weight:700;color:var(--warn);background:rgba(245,158,11,.15);padding:2px 6px;border-radius:3px;flex-shrink:0">SIN COBERTURA</span>' : '')
             + '</div>';
         }).join('') : '<div style="color:var(--muted);font-size:12px;padding:8px 0">Sin coincidencias</div>')
       + '</div></div>';
@@ -4254,7 +4625,7 @@ async function renderUsuarios() {
     + '<button class="cb-add" onclick="openNewUser()">+ Nuevo usuario</button>'
     + '</div>'
     + '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden">'
-    + '<div style="display:grid;grid-template-columns:1fr 1fr 90px 90px 220px;gap:10px;padding:10px 16px;background:var(--bg3);font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)">'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr 90px 90px 220px;gap:10px;padding:10px 16px;background:var(--bg3);font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)">'
     + '<div>Login</div><div>Nombre</div><div>Rol</div><div>Estado</div><div></div></div>'
     + rows.map(u =>
         '<div style="display:grid;grid-template-columns:1fr 1fr 90px 90px 220px;gap:10px;padding:10px 16px;border-top:1px solid var(--border);align-items:center;font-size:13px">'
@@ -4396,7 +4767,7 @@ function showSyncStatus(msg, type='info') {
     document.body.appendChild(bar);
   }
   const colors = {
-    info:    'background:#1a1e28;border:1px solid rgba(255,255,255,.15);color:#9ca3af;',
+    info:    'background:var(--bg3);border:1px solid var(--hl-2);color:var(--muted);',
     ok:      'background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#22c55e;',
     error:   'background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#ef4444;',
     loading: 'background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:#f59e0b;'
@@ -4506,7 +4877,7 @@ async function initSupabase() {
         const extras = [
           { categoria:'produccion', valor:'SC',   etiqueta:'Sexta Columna', color:'#22c55e', orden:3, activo:true },
           { categoria:'produccion', valor:'NNPP', etiqueta:'NNPP',          color:'#f97316', orden:4, activo:true },
-          { categoria:'produccion', valor:'MDP',  etiqueta:'MDP',           color:'#a78bfa', orden:5, activo:true },
+          { categoria:'produccion', valor:'MDP',  etiqueta:'MDP',           color:'var(--purple)', orden:5, activo:true },
         ];
         // Only insert ones not already there
         const existing = prodCfg.map(p=>p.valor);
@@ -5045,7 +5416,7 @@ function openAssignCamera(code, isEdit) {
     + '<div class="form-group full"><label>Operador</label>'
     + '<input id="asgn-op" list="asgn-op-list" placeholder="Escribe un nombre o elige de la lista" style="font-size:13px" value="'+(isEdit?escAttr(c.asignado_a):'')+'">'
     + '<datalist id="asgn-op-list">' + opOptions + '</datalist>'
-    + '<div style="font-size:10px;color:var(--muted);margin-top:4px">Elige uno existente de la lista o escribe un nombre nuevo (suplente, externo...)</div>'
+    + '<div style="font-size:12px;color:var(--muted);margin-top:4px">Elige uno existente de la lista o escribe un nombre nuevo (suplente, externo...)</div>'
     + '</div></div>'
     + '<div class="form-row">'
     + '<div class="form-group full"><label>Cobertura / descripción</label>'
@@ -5062,7 +5433,7 @@ function openAssignCamera(code, isEdit) {
     + '<div class="form-row">'
     + '<div class="form-group full"><label>🕐 Hora de salida</label>'
     + '<input type="time" id="asgn-horasalida" value="'+(isEdit && c.horaSalida ? new Date(c.horaSalida).toTimeString().slice(0,5) : new Date().toTimeString().slice(0,5))+'">'
-    + '<div style="font-size:10px;color:var(--muted);margin-top:4px">Por defecto la hora actual — corrígela si la cámara salió antes.</div>'
+    + '<div style="font-size:12px;color:var(--muted);margin-top:4px">Por defecto la hora actual — corrígela si la cámara salió antes.</div>'
     + '</div></div>'
     + '<div class="form-row" style="align-items:center">'
     + '<div class="form-group" style="display:flex;align-items:center;gap:10px;padding-top:8px">'
@@ -5361,7 +5732,7 @@ function openRelevo(code) {
   document.getElementById('modal-body').innerHTML =
     '<div style="font-size:12px;color:var(--muted);margin-bottom:14px">Marca a quién se le hace relevo (a quien no marques, se queda) y quién llega a sustituirle.</div>'
     + '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:14px">'
-    + '<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Operador(es) en el sitio ahora</div>'
+    + '<div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Operador(es) en el sitio ahora</div>'
     + '<label style="display:flex;align-items:center;gap:10px;margin-bottom:'+(c.operador2_nombre?'8px':'0')+';cursor:pointer">'
     + '<input type="checkbox" id="rl-relevar-prim" checked style="width:18px;height:18px;cursor:pointer;accent-color:var(--danger)">'
     + '<span style="font-size:14px;font-weight:600">'+c.asignado_a+'</span>'
@@ -5381,15 +5752,15 @@ function openRelevo(code) {
     + '<datalist id="asgn-op-list">'+opOptions+'</datalist></div></div>'
     + '<div class="form-row"><div class="form-group full"><label>🕐 Hora del relevo</label><input type="time" id="rl-hora" value="'+nowHM+'"></div></div>'
     + '<div style="background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.25);border-radius:8px;padding:12px 14px;margin-top:6px">'
-    + '<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#60a5fa;margin-bottom:8px">📡 Live-U en este relevo</div>'
+    + '<div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--blue);margin-bottom:8px">📡 Live-U en este relevo</div>'
     + '<label style="display:flex;align-items:center;gap:8px;margin-bottom:6px;cursor:pointer">'
-    + '<input type="radio" name="rl-liveu" value="none" '+(!c.liveu?'checked':'')+' style="accent-color:#60a5fa">'
+    + '<input type="radio" name="rl-liveu" value="none" '+(!c.liveu?'checked':'')+' style="accent-color:var(--blue)">'
     + '<span style="font-size:13px">Sin Live-U después del relevo</span></label>'
     + '<label style="display:flex;align-items:center;gap:8px;margin-bottom:6px;cursor:pointer">'
-    + '<input type="radio" name="rl-liveu" value="same" '+(c.liveu?'checked':'')+' style="accent-color:#60a5fa">'
+    + '<input type="radio" name="rl-liveu" value="same" '+(c.liveu?'checked':'')+' style="accent-color:var(--blue)">'
     + '<span style="font-size:13px">Se queda con el equipo'+(c.liveu_unidad?' ('+c.liveu_unidad+')':'')+'</span></label>'
     + '<label style="display:flex;align-items:center;gap:8px;cursor:pointer">'
-    + '<input type="radio" name="rl-liveu" value="other" style="accent-color:#60a5fa">'
+    + '<input type="radio" name="rl-liveu" value="other" style="accent-color:var(--blue)">'
     + '<span style="font-size:13px">Traen otra unidad:</span>'
     + '<select id="rl-liveu-unidad" style="margin-left:4px;font-size:12px"><option value="">— Seleccionar —</option>'
     + cfgList('banco_liveu').map(u=>`<option value="${u.valor}">${u.etiqueta||u.valor}</option>`).join('')
@@ -5719,7 +6090,7 @@ async function renderAdmin() {
       <h2 style="font-family:Barlow Condensed,sans-serif;font-size:22px;font-weight:700;letter-spacing:1px;text-transform:uppercase">Administración</h2>
     </div>
     <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:12px">
-      ${tabs.map(t => `<button onclick="setAdminTab('${t.id}')" id="atab-${t.id}" style="padding:6px 14px;border-radius:6px;font-size:11px;font-family:'Barlow',sans-serif;font-weight:600;letter-spacing:.3px;text-transform:uppercase;border:1px solid ${adminTab===t.id?'rgba(255,255,255,.3)':'var(--border2)'};background:${adminTab===t.id?'var(--bg3)':'transparent'};color:${adminTab===t.id?'var(--text)':'var(--muted)'};cursor:pointer">${t.label}</button>`).join('')}
+      ${tabs.map(t => `<button onclick="setAdminTab('${t.id}')" id="atab-${t.id}" style="padding:6px 14px;border-radius:6px;font-size:11px;font-family:'Barlow',sans-serif;font-weight:600;letter-spacing:.3px;text-transform:uppercase;border:1px solid ${adminTab===t.id?'var(--hl-4)':'var(--border2)'};background:${adminTab===t.id?'var(--bg3)':'transparent'};color:${adminTab===t.id?'var(--text)':'var(--muted)'};cursor:pointer">${t.label}</button>`).join('')}
     </div>
     <div id="admin-tab-content"></div>`;
 
@@ -5784,12 +6155,12 @@ function renderOpCard(op, dimmed) {
     <div>
       <div style="font-size:14px;font-weight:500;color:var(--text)">${op.alias?'<span style="font-family:Barlow Condensed,sans-serif;font-size:12px;color:var(--warn);font-weight:700;margin-right:6px">['+op.alias+']</span>':''}${op.apellidos||''}, ${op.nombre||''}</div>
       <div style="font-size:11px;color:var(--muted);margin-top:2px">${op.email||''}</div>
-      <div style="font-size:10px;color:var(--muted)">${op.telefono||''}</div>
+      <div style="font-size:12px;color:var(--muted)">${op.telefono||''}</div>
     </div>
     <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
       <div style="width:6px;height:6px;border-radius:50%;background:${prodColor}"></div>
-      <button onclick="openEditOperator('${sc}')" style="background:none;border:1px solid var(--border2);border-radius:4px;color:var(--muted);padding:2px 7px;font-size:10px;cursor:pointer">Editar</button>
-      <button onclick="toggleOperatorActivo('${sc}')" style="background:none;border:1px solid var(--border2);border-radius:4px;color:${dimmed?'var(--ok)':'var(--danger)'};padding:2px 7px;font-size:10px;cursor:pointer">${dimmed?'Activar':'Baja'}</button>
+      <button onclick="openEditOperator('${sc}')" style="background:none;border:1px solid var(--border2);border-radius:4px;color:var(--muted);padding:2px 7px;font-size:12px;cursor:pointer">Editar</button>
+      <button onclick="toggleOperatorActivo('${sc}')" style="background:none;border:1px solid var(--border2);border-radius:4px;color:${dimmed?'var(--ok)':'var(--danger)'};padding:2px 7px;font-size:12px;cursor:pointer">${dimmed?'Activar':'Baja'}</button>
     </div>
   </div>`;
 }
@@ -5813,7 +6184,7 @@ function renderConfigSection(cat) {
     </div>
     <div style="display:flex;flex-direction:column;gap:6px;max-width:600px">
       ${active.map(item => renderConfigCard(item, false)).join('')}
-      ${inactive.length ? '<div style="font-size:10px;color:var(--muted);margin-top:12px;text-transform:uppercase;letter-spacing:1px">Inactivos</div>' : ''}
+      ${inactive.length ? '<div style="font-size:12px;color:var(--muted);margin-top:12px;text-transform:uppercase;letter-spacing:1px">Inactivos</div>' : ''}
       ${inactive.map(item => renderConfigCard(item, true)).join('')}
     </div>`;
 }
@@ -5824,7 +6195,7 @@ function renderConfigCard(item, dimmed) {
     <div style="display:flex;align-items:center;gap:10px">
       ${item.color ? `<span style="width:10px;height:10px;border-radius:50%;background:${item.color};flex-shrink:0"></span>` : ''}
       <div>
-        <div style="font-size:14px;font-weight:600;color:var(--text)">${item.etiqueta||item.valor} ${item.tipo_camara==='SPC'?'<span style="font-size:9px;font-weight:700;color:var(--warn);background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);border-radius:3px;padding:1px 5px;margin-left:4px">SPC</span>':''}</div>
+        <div style="font-size:14px;font-weight:600;color:var(--text)">${item.etiqueta||item.valor} ${item.tipo_camara==='SPC'?'<span style="font-size:11px;font-weight:700;color:var(--warn);background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);border-radius:3px;padding:1px 5px;margin-left:4px">SPC</span>':''}</div>
         <div style="font-size:11px;color:var(--muted)">valor: <code>${item.valor}</code></div>
       </div>
     </div>
@@ -6019,7 +6390,7 @@ function renderOpGroup(title, ops, prod, dimmed=false) {
           const sc = (op.id||'').replace(/'/g,"\'");
           return `<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center">
             <div>
-              <div style="font-size:14px;font-weight:500">${op.apellidos||''}, ${op.nombre||''} ${op.fdi?'<span style="font-size:9px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,.15);border:1px solid rgba(167,139,250,.4);border-radius:3px;padding:1px 5px;margin-left:4px">FDI</span>':''}</div>
+              <div style="font-size:14px;font-weight:500">${op.apellidos||''}, ${op.nombre||''} ${op.fdi?'<span style="font-size:11px;font-weight:700;color:var(--purple);background:rgba(167,139,250,.15);border:1px solid rgba(167,139,250,.4);border-radius:3px;padding:1px 5px;margin-left:4px">FDI</span>':''}</div>
               <div style="font-size:11px;color:var(--muted)">${op.email||''} ${op.telefono?'· '+op.telefono:''}</div>
             </div>
             <div style="display:flex;gap:6px">
@@ -6041,7 +6412,7 @@ function openAddOperator() {
     + '<div class="form-group"><label>Apellidos</label><input id="op-apellidos" placeholder="Apellidos"></div>'
     + '</div>'
     + '<div class="form-row">'
-    + '<div class="form-group"><label>Alias <span style="font-size:10px;color:var(--muted)">(código corto)</span></label><input id="op-alias" placeholder="PEPE, RAFA, CL..." style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()"></div>'
+    + '<div class="form-group"><label>Alias <span style="font-size:12px;color:var(--muted)">(código corto)</span></label><input id="op-alias" placeholder="PEPE, RAFA, CL..." style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()"></div>'
     + '<div class="form-group"><label>Teléfono</label><input id="op-tel"></div>'
     + '</div>'
     + '<div class="form-row">'
@@ -6055,8 +6426,8 @@ function openAddOperator() {
     + '</div>'
     + '<div class="form-row" style="align-items:center">'
     + '<div class="form-group" style="display:flex;align-items:center;gap:10px;padding-top:8px">'
-    + '<input type="checkbox" id="op-fdi" style="width:18px;height:18px;cursor:pointer;accent-color:#a78bfa">'
-    + '<label for="op-fdi" style="font-size:13px;font-weight:600;color:#a78bfa;cursor:pointer">FDI — trabaja para las dos producciones</label>'
+    + '<input type="checkbox" id="op-fdi" style="width:18px;height:18px;cursor:pointer;accent-color:var(--purple)">'
+    + '<label for="op-fdi" style="font-size:13px;font-weight:600;color:var(--purple);cursor:pointer">FDI — trabaja para las dos producciones</label>'
     + '</div></div>';
   document.getElementById('modal-actions').innerHTML = `
     <button class="btn btn-primary" onclick="saveNewOperator()">Guardar</button>
@@ -6096,7 +6467,7 @@ function openEditOperator(id) {
     + '<div class="form-group"><label>Apellidos</label><input id="op-apellidos" value="'+(op.apellidos||'')+'"></div>'
     + '</div>'
     + '<div class="form-row">'
-    + '<div class="form-group"><label>Alias <span style="font-size:10px;color:var(--muted)">(código corto)</span></label>'
+    + '<div class="form-group"><label>Alias <span style="font-size:12px;color:var(--muted)">(código corto)</span></label>'
     + '<input id="op-alias" value="'+(op.alias||'')+'" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()" placeholder="PEPE, RAFA..."></div>'
     + '<div class="form-group"><label>Teléfono</label><input id="op-tel" value="'+(op.telefono||'')+'"></div>'
     + '</div>'
@@ -6111,8 +6482,8 @@ function openEditOperator(id) {
     + '</div>'
     + '<div class="form-row" style="align-items:center">'
     + '<div class="form-group" style="display:flex;align-items:center;gap:10px;padding-top:8px">'
-    + '<input type="checkbox" id="op-fdi" '+(op.fdi?'checked':'')+' style="width:18px;height:18px;cursor:pointer;accent-color:#a78bfa">'
-    + '<label for="op-fdi" style="font-size:13px;font-weight:600;color:#a78bfa;cursor:pointer">FDI — trabaja para las dos producciones</label>'
+    + '<input type="checkbox" id="op-fdi" '+(op.fdi?'checked':'')+' style="width:18px;height:18px;cursor:pointer;accent-color:var(--purple)">'
+    + '<label for="op-fdi" style="font-size:13px;font-weight:600;color:var(--purple);cursor:pointer">FDI — trabaja para las dos producciones</label>'
     + '</div></div>'
     + '<div style="font-size:11px;color:var(--muted);margin-top:14px;padding-top:10px;border-top:1px solid var(--border)">Si cambias el nombre/alias, las coberturas y horas ya guardadas se actualizan solas para seguir contando para esta persona.</div>';
   const sc = id.replace(/'/g,"\'");
@@ -6344,7 +6715,7 @@ async function renderStats() {
   function kpiCard(val, label, sub, color) {
     return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:16px 20px;display:flex;flex-direction:column;gap:4px">'
       + '<div style="font-family:Barlow Condensed,sans-serif;font-size:44px;font-weight:800;line-height:1;color:'+(color||'var(--text)')+'">'+val+'</div>'
-      + '<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600">'+label+'</div>'
+      + '<div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600">'+label+'</div>'
       + (sub?'<div style="font-size:11px;color:var(--muted)">'+sub+'</div>':'')
       + '</div>';
   }
@@ -6357,7 +6728,7 @@ async function renderStats() {
     return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:6px">'
       + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'
       + '<div><div style="font-size:13px;font-weight:500">'+label+'</div>'
-      + (sub?'<div style="font-size:10px;color:var(--muted)">'+sub+'</div>':'')
+      + (sub?'<div style="font-size:12px;color:var(--muted)">'+sub+'</div>':'')
       + '</div>'
       + '<div style="font-family:Barlow Condensed,sans-serif;font-size:28px;font-weight:800;color:'+(color||'var(--text)')+'">'+val+'</div>'
       + '</div>'
@@ -6403,11 +6774,11 @@ async function renderStats() {
     + kpiCard(averias.length, 'Averías período', incs.length+' incidencias total', 'var(--danger)')
     + kpiCard((averias.length/months).toFixed(1), 'Media mes averías', 'incidencias tipo avería', 'var(--warn)')
     + kpiCard(projAveria12, 'Proyección averías año', 'estimación 12 meses', 'var(--muted)')
-    + kpiCard(costeTotal > 0 ? costeTotal.toLocaleString('es-ES')+'€' : '—', 'Coste total', 'reparaciones período', '#84cc16')
+    + kpiCard(costeTotal > 0 ? costeTotal.toLocaleString('es-ES')+'€' : '—', 'Coste total', 'reparaciones período', 'var(--lime)')
     + '</div>'
     + '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px">'
-    + kpiCard(costeMedia > 0 ? costeMedia+'€' : '—', 'Coste medio/mes', 'media mensual reparaciones', '#84cc16')
-    + kpiCard(projCoste12 > 0 ? projCoste12.toLocaleString('es-ES')+'€' : '—', 'Coste proyectado año', 'estimación 12 meses', '#84cc16')
+    + kpiCard(costeMedia > 0 ? costeMedia+'€' : '—', 'Coste medio/mes', 'media mensual reparaciones', 'var(--lime)')
+    + kpiCard(projCoste12 > 0 ? projCoste12.toLocaleString('es-ES')+'€' : '—', 'Coste proyectado año', 'estimación 12 meses', 'var(--lime)')
     + kpiCard(incs.filter(i=>i.resuelto).length, 'Resueltas', 'de '+incs.length+' incidencias', 'var(--ok)')
     + kpiCard(incs.filter(i=>!i.resuelto).length, 'Pendientes', 'sin resolver', 'var(--warn)')
     + '</div>'
@@ -6547,7 +6918,7 @@ function renderBajas() {
       <div class="cam-card-top">
         <div class="cam-card-code" style="color:${modelColor};opacity:.7;font-style:italic">${c.code}</div>
         <div style="display:flex;gap:5px;align-items:center">
-          ${hasSeguro ? '<span style="font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.4);color:#818cf8;letter-spacing:.5px">SEG</span>' : ''}
+          ${hasSeguro ? '<span style="font-size:11px;font-weight:700;padding:1px 5px;border-radius:3px;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.4);color:var(--indigo);letter-spacing:.5px">SEG</span>' : ''}
           ${c.prod ? `<span class="prod-badge ${c.prod==='A3'?'a3':'l6'}" style="opacity:.6">${c.prod==='L6'?'L6':'A3'}</span>` : ''}
         </div>
       </div>
@@ -6558,15 +6929,15 @@ function renderBajas() {
           : `<span class="cn-num" style="font-size:28px;opacity:.85">${c.code}</span>`}
       </div>
       <div style="padding:2px 12px 6px;display:flex;flex-direction:column;gap:2px">
-        ${fechaBaja ? `<div style="font-size:10px;color:var(--danger);opacity:.8;font-style:italic">✗ ${fmtDate(fechaBaja)}</div>` : ''}
-        ${motivo ? `<div style="font-size:10px;color:var(--muted);font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${motivo}</div>` : ''}
-        ${indemnizacion ? `<div style="font-size:10px;color:#84cc16;font-weight:600">💶 ${indemnizacion}€</div>` : ''}
+        ${fechaBaja ? `<div style="font-size:12px;color:var(--danger);opacity:.8;font-style:italic">✗ ${fmtDate(fechaBaja)}</div>` : ''}
+        ${motivo ? `<div style="font-size:12px;color:var(--muted);font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${motivo}</div>` : ''}
+        ${indemnizacion ? `<div style="font-size:12px;color:var(--lime);font-weight:600">💶 ${indemnizacion}€</div>` : ''}
       </div>
-      <div class="cam-card-bottom" style="border-top:1px solid rgba(255,255,255,.05)">
+      <div class="cam-card-bottom" style="border-top:1px solid var(--hl-1)">
         <button onclick="event.stopPropagation();restaurarCamara('${sc}')"
-          style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);border-radius:5px;color:var(--ok);padding:3px 8px;font-size:9px;cursor:pointer;font-family:'Barlow',sans-serif;font-weight:600;opacity:.8">↩</button>
+          style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);border-radius:5px;color:var(--ok);padding:3px 8px;font-size:11px;cursor:pointer;font-family:'Barlow',sans-serif;font-weight:600;opacity:.8">↩</button>
         <button onclick="event.stopPropagation();openEditBaja('${sc}')"
-          style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:5px;color:var(--muted);padding:3px 8px;font-size:9px;cursor:pointer;font-family:'Barlow',sans-serif">✏</button>
+          style="background:var(--hl-1);border:1px solid var(--hl-2);border-radius:5px;color:var(--muted);padding:3px 8px;font-size:11px;cursor:pointer;font-family:'Barlow',sans-serif">✏</button>
       </div>
       <div style="height:2px;background:var(--muted);opacity:.15"></div>
     </div>`;
@@ -6580,7 +6951,7 @@ function renderBajas() {
     rowsHtml += `
       <div class="cam-model-row" style="opacity:.8">
         <div class="cam-model-label" style="border-left-color:${modelColor};opacity:.6">
-          <span style="color:${modelColor}">PXW-${modelo}</span>
+          <span style="color:${modelColor}" title="Sony PXW-${modelo}">${modelo}</span>
           <span class="cam-model-count" style="opacity:.5">${cams.length}</span>
         </div>
         <div class="cam-model-cards">
@@ -6726,11 +7097,11 @@ function statBox(top, topLabel, bottom, bottomLabel, color) {
   return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px">'
     + '<div style="display:flex;flex-direction:column;gap:2px">'
     + bigNum(top, color)
-    + '<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600">'+topLabel+'</div>'
+    + '<div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600">'+topLabel+'</div>'
     + '</div>'
     + (bottom !== null && bottom !== undefined ? '<div style="border-top:1px solid var(--border);padding-top:8px;display:flex;flex-direction:column;gap:2px">'
     + bigNum(bottom, color ? color+'99' : 'var(--muted)')
-    + '<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600">'+bottomLabel+'</div>'
+    + '<div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600">'+bottomLabel+'</div>'
     + '</div>' : '')
     + '</div>';
 }
@@ -6742,7 +7113,7 @@ function sectionHdr(title, color) {
 function dateFilterBar(idPrefix, onChangeFn, defaultPreset) {
   const r = statsDateRange(defaultPreset || 'mes');
   return '<div style="display:flex;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 16px;margin-bottom:16px;flex-wrap:wrap">'
-    + '<span style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Período</span>'
+    + '<span style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Período</span>'
     + '<input type="date" id="'+idPrefix+'-from" value="'+r.from+'" onchange="'+onChangeFn+'()" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:4px 8px;font-size:12px">'
     + '<span style="color:var(--muted)">→</span>'
     + '<input type="date" id="'+idPrefix+'-to" value="'+r.to+'" onchange="'+onChangeFn+'()" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:4px 8px;font-size:12px">'
@@ -6834,7 +7205,7 @@ function rankBar(label, val, max, sub, color) {
     + '<div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70%">'+label+'</div>'
     + '<div style="font-family:Barlow Condensed,sans-serif;font-size:24px;font-weight:800;color:'+(color||'var(--text)')+'">'+val+'</div>'
     + '</div>'
-    + (sub ? '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">'+sub+'</div>' : '')
+    + (sub ? '<div style="font-size:12px;color:var(--muted);margin-bottom:4px">'+sub+'</div>' : '')
     + '<div style="height:3px;background:var(--border);border-radius:2px"><div style="height:3px;width:'+pct+'%;background:'+(color||'var(--l6)')+';border-radius:2px;transition:width .3s"></div></div>'
     + '</div>';
 }
@@ -6874,7 +7245,7 @@ function miniDonut(counts, colors, labels) {
     return '<circle cx="18" cy="18" r="15.9155" fill="none" stroke="'+(colors[k]||'var(--muted)')+'" stroke-width="5" stroke-dasharray="'+dash+'" stroke-dashoffset="'+offset+'" transform="rotate(-90 18 18)"></circle>';
   }).join('');
   const legend = entries.map(([k,v])=>
-    '<div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)">'
+    '<div style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted)">'
     + '<span style="width:7px;height:7px;border-radius:50%;background:'+(colors[k]||'var(--muted)')+';display:inline-block;flex-shrink:0"></span>'
     + (labels[k]||k)+' · '+v+'</div>'
   ).join('');
@@ -6951,7 +7322,7 @@ function renderStatsEquiposBody(asgn) {
       + statBox(Math.round(total/months*12), 'Proyección año', mediaXCamMes, 'Media/cámara/mes', color)
       + statBox(mediaXCamAño, 'Media/cámara/año', camCount+' cámaras disp.', 'disponibles', 'var(--muted)')
       + '</div>'
-      + '<div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Ranking equipos</div>'
+      + '<div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Ranking equipos</div>'
       + (camRank || '<div style="color:var(--muted);font-size:12px">Sin datos</div>')
       + '</div>';
   }
@@ -6974,7 +7345,7 @@ function renderStatsEquiposBody(asgn) {
 
     + sectionHdr('BUSCAR POR EQUIPO / CÁMARA', 'var(--muted)')
     + '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 16px">'
-    + '<span style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Fecha</span>'
+    + '<span style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Fecha</span>'
     + '<input type="date" id="seq-search-from" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:4px 8px;font-size:12px" onchange="renderStatsEquiposSearch()">'
     + '<span style="color:var(--muted)">→</span>'
     + '<input type="date" id="seq-search-to" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:4px 8px;font-size:12px" onchange="renderStatsEquiposSearch()">'
@@ -7023,8 +7394,8 @@ function renderStatsEquiposSearch() {
     return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer" data-camid="'+id+'" onclick="showCamStatsDetail(this.dataset.camid)">'
       + '<div style="font-family:Barlow Condensed,sans-serif;font-size:22px;font-weight:800;color:'+mc+'">'+d.label+'</div>'
       + '<div style="font-family:Barlow Condensed,sans-serif;font-size:36px;font-weight:900;line-height:1">'+d.total+'</div>'
-      + '<div style="font-size:10px;color:var(--muted)">coberturas</div>'
-      + '<div style="font-size:10px;color:var(--muted);margin-top:4px">'+d.ops.size+' operador'+(d.ops.size!==1?'es':'')+'</div>'
+      + '<div style="font-size:12px;color:var(--muted)">coberturas</div>'
+      + '<div style="font-size:12px;color:var(--muted);margin-top:4px">'+d.ops.size+' operador'+(d.ops.size!==1?'es':'')+'</div>'
       + '<div style="height:3px;background:var(--border);border-radius:2px;margin-top:8px"><div style="height:3px;width:'+pct+'%;background:'+mc+';border-radius:2px"></div></div>'
       + '</div>';
   }).join('');
@@ -7079,21 +7450,21 @@ async function renderCoberturas() {
   el.innerHTML = '<div style="font-size:20px;font-weight:700;margin-bottom:4px">🔍 Buscador de coberturas</div>'
     + '<div style="font-size:12px;color:var(--muted);margin-bottom:18px">Filtra por producción, operador y/o fechas — déjalo todo en blanco para ver todas las coberturas registradas.</div>'
     + '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:8px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px">'
-    + '<div style="display:flex;flex-direction:column;gap:3px"><label style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Producción</label>'
+    + '<div style="display:flex;flex-direction:column;gap:3px"><label style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Producción</label>'
     + '<select id="cob-prod" onchange="cobFilterChanged()" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px 10px;font-size:13px">'
     + '<option value="">Todas</option><option value="L6">La Sexta</option><option value="A3">Antena 3</option>'
     + '</select></div>'
-    + '<div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:220px"><label style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Operador (opcional)</label>'
+    + '<div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:220px"><label style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Operador (opcional)</label>'
     + '<input id="cob-op" list="cob-op-list" autocomplete="off" oninput="cobFilterChanged()" placeholder="Todos los operadores..." style="background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px 10px;font-size:13px">'
     + '<datalist id="cob-op-list">'+opNames.map(n=>'<option value="'+n.replace(/"/g,'&quot;')+'">').join('')+'</datalist></div>'
-    + '<div style="display:flex;flex-direction:column;gap:3px"><label style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Desde</label>'
+    + '<div style="display:flex;flex-direction:column;gap:3px"><label style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Desde</label>'
     + '<input type="date" id="cob-from" onclick="this.showPicker && this.showPicker()" onchange="cobDateChanged(\'from\')" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px 10px;font-size:13px;cursor:pointer"></div>'
-    + '<div style="display:flex;flex-direction:column;gap:3px"><label style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Hasta</label>'
+    + '<div style="display:flex;flex-direction:column;gap:3px"><label style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Hasta</label>'
     + '<input type="date" id="cob-to" onclick="this.showPicker && this.showPicker()" onchange="cobDateChanged(\'to\')" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px 10px;font-size:13px;cursor:pointer"></div>'
     + '<button onclick="document.getElementById(\'cob-prod\').value=\'\';document.getElementById(\'cob-op\').value=\'\';document.getElementById(\'cob-from\').value=\'\';document.getElementById(\'cob-to\').value=\'\';window._cobSoloSospechosas=false;window._cobSoloLiveu=false;[\'cob-sospechosas\',\'cob-liveu\'].forEach(id=>{const b=document.getElementById(id);if(b){b.style.background=\'\';b.style.color=\'var(--muted)\';b.textContent=b.id===\'cob-sospechosas\'?\'⚠ Solo sospechosas\':\'📡 Solo Live-U\';}});cobFilterChanged()" style="background:none;border:1px solid var(--border2);color:var(--muted);border-radius:6px;padding:8px 14px;font-size:12px;cursor:pointer;align-self:flex-end">✕ Limpiar</button>'
     + '<button id="cob-sospechosas" onclick="toggleCobSospechosas()" style="background:none;border:1px solid var(--danger);color:var(--muted);border-radius:6px;padding:8px 14px;font-size:12px;cursor:pointer;align-self:flex-end;white-space:nowrap">⚠ Solo sospechosas</button>'
-    + '<button id="cob-liveu" onclick="toggleCobLiveu()" style="background:none;border:1px solid #60a5fa;color:var(--muted);border-radius:6px;padding:8px 14px;font-size:12px;cursor:pointer;align-self:flex-end;white-space:nowrap">📡 Solo Live-U</button>'
-    + '<button onclick="openExportModal()" style="background:#38bdf8;border:1px solid #38bdf8;color:#0d0f14;font-weight:700;border-radius:6px;padding:8px 14px;font-size:12px;cursor:pointer;align-self:flex-end;white-space:nowrap">📤 Exportar avanzado</button>'
+    + '<button id="cob-liveu" onclick="toggleCobLiveu()" style="background:none;border:1px solid var(--blue);color:var(--muted);border-radius:6px;padding:8px 14px;font-size:12px;cursor:pointer;align-self:flex-end;white-space:nowrap">📡 Solo Live-U</button>'
+    + '<button onclick="openExportModal()" style="background:var(--sky);border:1px solid var(--sky);color:var(--on-accent);font-weight:700;border-radius:6px;padding:8px 14px;font-size:12px;cursor:pointer;align-self:flex-end;white-space:nowrap">📤 Exportar avanzado</button>'
     + '</div>'
     + '<div style="font-size:11px;color:var(--muted);margin:6px 0 4px">💡 Para ver un solo día, elige solo "Desde" — "Hasta" se rellena igual automáticamente. Cambia "Hasta" si quieres un rango.</div>'
     + '<div id="cob-results"></div>';
@@ -7106,7 +7477,7 @@ function toggleCobLiveu() {
   const btn = document.getElementById('cob-liveu');
   if (btn) {
     btn.style.background = window._cobSoloLiveu ? 'rgba(96,165,250,.15)' : '';
-    btn.style.color = window._cobSoloLiveu ? '#60a5fa' : 'var(--muted)';
+    btn.style.color = window._cobSoloLiveu ? 'var(--blue)' : 'var(--muted)';
     btn.textContent = window._cobSoloLiveu ? '📡 Solo Live-U ✓' : '📡 Solo Live-U';
   }
   window._cobPage = 0;
@@ -7201,7 +7572,7 @@ function renderCoberturasResults() {
     + '</div>'
     + '<div style="display:flex;gap:8px;flex-wrap:wrap">'
     + '<button class="cb-add" style="font-size:13px;padding:9px 16px" onclick="openAddPastCobertura(\''+(opFilter||'').replace(/'/g,"\\'")+'\')">+ Añadir cobertura</button>'
-    + '<button class="cb-add" style="font-size:11px;padding:7px 13px;background:#a78bfa;border-color:#a78bfa" onclick="openAddUnionHours(\''+(opFilter||'').replace(/'/g,"\\'")+'\')">⚖ Horas sindicales</button>'
+    + '<button class="cb-add" style="font-size:11px;padding:7px 13px;background:var(--purple);border-color:var(--purple)" onclick="openAddUnionHours(\''+(opFilter||'').replace(/'/g,"\\'")+'\')">⚖ Horas sindicales</button>'
     + '</div></div>'
     + '<div style="display:flex;flex-direction:column;gap:8px">'
     + (shown.length ? shown.map(a => {
@@ -7273,13 +7644,13 @@ function renderCoberturasOperatorMode(el, op, prod, from, to, scrollY) {
     + statBox(diasActivos, 'Días activos en el período', mediaDiaActivo, 'Media coberturas/día activo', 'var(--l6)')
     + statBox(fmtHM(tiempoTotal), 'Total horas en cobertura', fmtHM(mediaTiempo), 'Media tiempo/cobertura', 'var(--l6)')
     + statBox(viajesHist, '✈ Viajes (histórico)', viajesPeriodo, '✈ Viajes en el período', 'var(--warn)')
-    + unionStatBox(unionHoras, unionMediaSemana, unionMediaDia, '#a78bfa')
+    + unionStatBox(unionHoras, unionMediaSemana, unionMediaDia, 'var(--purple)')
     + '</div>'
     + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:8px">'
     + sectionHdr((from||to ? 'Coberturas + horas sindicales en el período' : 'Últimas 10 entradas (coberturas + horas sindicales)'), 'var(--l6)')
     + '<div style="display:flex;gap:8px;flex-wrap:wrap">'
     + '<button class="cb-add" style="font-size:14px;padding:10px 20px" onclick="openAddPastCobertura(\''+op.replace(/'/g,"\\'")+'\')">+ Añadir cobertura</button>'
-    + '<button class="cb-add" style="font-size:12px;padding:8px 16px;background:#a78bfa;border-color:#a78bfa" onclick="openAddUnionHours(\''+op.replace(/'/g,"\\'")+'\')">⚖ Horas sindicales</button>'
+    + '<button class="cb-add" style="font-size:12px;padding:8px 16px;background:var(--purple);border-color:var(--purple)" onclick="openAddUnionHours(\''+op.replace(/'/g,"\\'")+'\')">⚖ Horas sindicales</button>'
     + '</div>'
     + '</div>'
     + '<div style="font-size:12px;color:var(--muted);margin:-2px 0 14px">Toca cualquiera de la lista para corregirla o eliminarla</div>'
@@ -7300,11 +7671,11 @@ function renderCoberturasOperatorMode(el, op, prod, from, to, scrollY) {
         if (item.t === 'union') {
           const r = item.data;
           const dur = unionHoursDuration(r);
-          return '<div onclick="openEditUnionHours(\''+r.id+'\')" style="padding:16px 20px;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.3);border-radius:10px;display:flex;gap:18px;align-items:center;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor=\'#a78bfa\'" onmouseout="this.style.borderColor=\'rgba(167,139,250,.3)\'">'
+          return '<div onclick="openEditUnionHours(\''+r.id+'\')" style="padding:16px 20px;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.3);border-radius:10px;display:flex;gap:18px;align-items:center;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor=\'var(--purple)\'" onmouseout="this.style.borderColor=\'rgba(167,139,250,.3)\'">'
             + '<span style="color:var(--muted);flex-shrink:0;font-size:16px;font-weight:700;min-width:75px">'+fmtDate(r.fecha)+'</span>'
-            + '<span style="flex-shrink:0;font-size:12px;font-weight:700;color:#a78bfa;background:rgba(167,139,250,.15);border:1px solid rgba(167,139,250,.4);border-radius:6px;padding:3px 9px;min-width:75px;text-align:center">⚖ Sindical</span>'
-            + '<span style="flex:1;font-size:14px;font-weight:600;color:#a78bfa">'+(r.hora_inicio||'?')+' – '+(r.hora_fin||'?')+'</span>'
-            + '<span style="color:#a78bfa;flex-shrink:0;font-weight:800;font-size:18px;font-family:Barlow Condensed,sans-serif;min-width:75px;text-align:right">'+fmtHM(dur*60)+'</span>'
+            + '<span style="flex-shrink:0;font-size:12px;font-weight:700;color:var(--purple);background:rgba(167,139,250,.15);border:1px solid rgba(167,139,250,.4);border-radius:6px;padding:3px 9px;min-width:75px;text-align:center">⚖ Sindical</span>'
+            + '<span style="flex:1;font-size:14px;font-weight:600;color:var(--purple)">'+(r.hora_inicio||'?')+' – '+(r.hora_fin||'?')+'</span>'
+            + '<span style="color:var(--purple);flex-shrink:0;font-weight:800;font-size:18px;font-family:Barlow Condensed,sans-serif;min-width:75px;text-align:right">'+fmtHM(dur*60)+'</span>'
             + '<span style="color:var(--border2);flex-shrink:0;font-size:15px">✎</span>'
             + '</div>';
         }
@@ -7471,14 +7842,14 @@ function dowLiveUChartData(subset, from, to) {
 
 function miniInline(value, label) {
   return '<div><div style="font-family:Barlow Condensed,sans-serif;font-size:20px;font-weight:800;color:var(--text);line-height:1.1">'+value+'</div>'
-    + '<div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-top:1px">'+label+'</div></div>';
+    + '<div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-top:1px">'+label+'</div></div>';
 }
 
 function miniStatCard(value, label, color) {
   color = color || 'var(--text)';
   return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;min-width:112px">'
     + '<div style="font-family:Barlow Condensed,sans-serif;font-size:22px;font-weight:800;color:'+color+';line-height:1.1">'+value+'</div>'
-    + '<div style="font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:600;margin-top:3px">'+label+'</div>'
+    + '<div style="font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:600;margin-top:3px">'+label+'</div>'
     + '</div>';
 }
 
@@ -7486,13 +7857,13 @@ function miniStatCardMedia(value, label, color) {
   color = color || 'var(--muted)';
   return '<div style="background:transparent;border:1px dashed var(--border2);border-radius:8px;padding:10px 14px;min-width:112px">'
     + '<div style="font-family:Barlow Condensed,sans-serif;font-size:19px;font-weight:700;color:'+color+';line-height:1.1">'+value+'</div>'
-    + '<div style="font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:600;margin-top:3px">'+label+'</div>'
+    + '<div style="font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:600;margin-top:3px">'+label+'</div>'
     + '</div>';
 }
 
 function weekTypeCard(title, stats, color, numDays) {
   return '<div style="background:var(--bg3);border:1px solid var(--border);border-left:3px solid '+color+';border-radius:10px;padding:14px 16px;flex:1;min-width:230px">'
-    + '<div style="font-size:10px;font-weight:700;color:'+color+';text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">'+title+' <span style="color:var(--muted);font-weight:500;text-transform:none;letter-spacing:0">('+numDays+' día'+(numDays===1?'':'s')+')</span></div>'
+    + '<div style="font-size:12px;font-weight:700;color:'+color+';text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">'+title+' <span style="color:var(--muted);font-weight:500;text-transform:none;letter-spacing:0">('+numDays+' día'+(numDays===1?'':'s')+')</span></div>'
     + '<div style="display:flex;gap:16px;flex-wrap:wrap">'
     + miniInline(stats.total, 'Coberturas')
     + miniInline(stats.mediaDia.toFixed(1), 'Media/día')
@@ -7539,12 +7910,12 @@ function renderSopChart(canvasId, labels, series) {
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: {
-        legend: { display: stacked, labels: { color: '#e8eaf0', font: { size: 11 }, boxWidth: 12 } },
+        legend: { display: stacked, labels: { color: resolveCssColor('var(--text)'), font: { size: 11 }, boxWidth: 12 } },
         tooltip: { callbacks: { label: ctx => (ctx.dataset.label ? ctx.dataset.label+': ' : '')+ctx.parsed.y } },
       },
       scales: {
-        y: { stacked, beginAtZero: true, grid: { color: 'rgba(255,255,255,.06)' }, ticks: { color: '#6b7280', font: { size: 10 } } },
-        x: { stacked, grid: { display: false }, ticks: { color: '#e8eaf0', font: { size: 12, weight: 700 } } },
+        y: { stacked, beginAtZero: true, grid: { color: resolveCssColor('var(--grid)') }, ticks: { color: resolveCssColor('var(--muted)'), font: { size: 10 } } },
+        x: { stacked, grid: { display: false }, ticks: { color: resolveCssColor('var(--text)'), font: { size: 12, weight: 700 } } },
       },
     },
   });
@@ -7563,7 +7934,7 @@ function renderStatsOpHoy() {
   function hoyBlock(subset, attSubset, label, color) {
     const s = computeBlockStats(subset, attSubset, 1);
     return '<div style="flex:1;min-width:230px;background:var(--bg3);border:1px solid var(--border);border-left:3px solid '+color+';border-radius:10px;padding:12px 16px">'
-      + '<div style="font-size:10px;font-weight:700;color:'+color+';text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">'+label+'</div>'
+      + '<div style="font-size:12px;font-weight:700;color:'+color+';text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">'+label+'</div>'
       + '<div style="display:flex;gap:14px;flex-wrap:wrap">'
       + miniInline(s.total, 'Coberturas')
       + miniInline(fmtHM(s.tiempoTotal), 'Horas')
@@ -7577,7 +7948,7 @@ function renderStatsOpHoy() {
       + (weekendToday ? ' <span style="color:var(--muted);font-weight:500;text-transform:none;letter-spacing:0">· fin de semana</span>' : '')
       + '</div>'
     + '<div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:24px">'
-    + hoyBlock(todayAsgn, todayAtt, 'GLOBAL', '#38bdf8')
+    + hoyBlock(todayAsgn, todayAtt, 'GLOBAL', 'var(--sky)')
     + hoyBlock(todayAsgn.filter(a=>a.prod==='L6'), todayAtt.filter(a=>a.prod==='L6'), 'LA SEXTA', 'var(--l6)')
     + hoyBlock(todayAsgn.filter(a=>a.prod==='A3'), todayAtt.filter(a=>a.prod==='A3'), 'ANTENA 3', 'var(--a3)')
     + '</div>';
@@ -7596,10 +7967,10 @@ function sopTabBar() {
   const tab = window._sopTab || 'global';
   const mk = (key, label, color) => {
     const on = tab === key;
-    return '<button onclick="setSopTab(\''+key+'\')" style="background:'+(on?color:'var(--bg3)')+';color:'+(on?'#0d0f14':'var(--muted)')+';border:1px solid '+(on?color:'var(--border2)')+';border-radius:7px;padding:8px 22px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.5px">'+label+'</button>';
+    return '<button onclick="setSopTab(\''+key+'\')" style="background:'+(on?color:'var(--bg3)')+';color:'+(on?'var(--on-accent)':'var(--muted)')+';border:1px solid '+(on?color:'var(--border2)')+';border-radius:7px;padding:8px 22px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.5px">'+label+'</button>';
   };
   return '<div style="display:flex;gap:8px;margin-bottom:20px">'
-    + mk('global', 'GLOBAL', '#38bdf8')
+    + mk('global', 'GLOBAL', 'var(--sky)')
     + mk('l6', 'LA SEXTA', 'var(--l6)')
     + mk('a3', 'ANTENA 3', 'var(--a3)')
     + '</div>';
@@ -7616,7 +7987,7 @@ function renderSopTabContent() {
   const { from, to, days } = window._sopBodyRange || getDateRange('sop');
   const tab = window._sopTab || 'global';
   const prodMap  = { global: null, l6: 'L6', a3: 'A3' };
-  const colorMap = { global: '#38bdf8', l6: 'var(--l6)', a3: 'var(--a3)' };
+  const colorMap = { global: 'var(--sky)', l6: 'var(--l6)', a3: 'var(--a3)' };
   const prod  = prodMap[tab];
   const color = colorMap[tab];
 
@@ -7672,12 +8043,12 @@ function renderSopTabContent() {
 function sopChartHeader(mode) {
   const mk = (key, label) => {
     const on = mode === key;
-    return '<button onclick="setSopChartMode(\''+key+'\')" style="background:'+(on?'#38bdf8':'transparent')+';color:'+(on?'#0d0f14':'var(--muted)')+';border:1px solid '+(on?'#38bdf8':'var(--border2)')+';border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.3px">'+label+'</button>';
+    return '<button onclick="setSopChartMode(\''+key+'\')" style="background:'+(on?'var(--sky)':'transparent')+';color:'+(on?'var(--on-accent)':'var(--muted)')+';border:1px solid '+(on?'var(--sky)':'var(--border2)')+';border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.3px">'+label+'</button>';
   };
   const titles = {
     coberturas: '📊 Media de coberturas por día de la semana <span style="color:var(--warn);font-weight:600;text-transform:none;letter-spacing:0">· fines de semana en naranja</span>',
-    presentes:  '📊 Media de operadores presentes por día — <span style="color:#38bdf8;font-weight:600;text-transform:none;letter-spacing:0">con cobertura</span> vs <span style="color:var(--warn);font-weight:600;text-transform:none;letter-spacing:0">sin cobertura</span>',
-    liveu:      '📊 Media de salidas con Live-U por día — <span style="color:#60a5fa;font-weight:600;text-transform:none;letter-spacing:0">1 operador</span> vs <span style="color:#a78bfa;font-weight:600;text-transform:none;letter-spacing:0">2 operadores</span>',
+    presentes:  '📊 Media de operadores presentes por día — <span style="color:var(--sky);font-weight:600;text-transform:none;letter-spacing:0">con cobertura</span> vs <span style="color:var(--warn);font-weight:600;text-transform:none;letter-spacing:0">sin cobertura</span>',
+    liveu:      '📊 Media de salidas con Live-U por día — <span style="color:var(--blue);font-weight:600;text-transform:none;letter-spacing:0">1 operador</span> vs <span style="color:var(--purple);font-weight:600;text-transform:none;letter-spacing:0">2 operadores</span>',
   };
   return '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px">'
     + '<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px">'+titles[mode]+'</div>'
@@ -7694,14 +8065,14 @@ function renderSopChartByMode(mode, subset, attSubset, from, to, color) {
   if (mode === 'presentes') {
     const d = dowPresenciaChartData(subset, attSubset, from, to);
     renderSopChart('sop-chart-dow', d.labels, [
-      { data: d.dataCon, color: '#38bdf8', label: 'Con cobertura' },
+      { data: d.dataCon, color: 'var(--sky)', label: 'Con cobertura' },
       { data: d.dataSin, color: 'var(--warn)', label: 'Sin cobertura' },
     ]);
   } else if (mode === 'liveu') {
     const d = dowLiveUChartData(subset, from, to);
     renderSopChart('sop-chart-dow', d.labels, [
-      { data: d.data1, color: '#60a5fa', label: '1 operador' },
-      { data: d.data2, color: '#a78bfa', label: '2 operadores' },
+      { data: d.data1, color: 'var(--blue)', label: '1 operador' },
+      { data: d.data2, color: 'var(--purple)', label: '2 operadores' },
     ]);
   } else {
     const d = dowChartData(subset, from, to);
@@ -7719,7 +8090,7 @@ function renderSopOperatorPanel() {
     + '<datalist id="sop-op-list">'+opNames.map(n=>'<option value="'+n.replace(/"/g,'&quot;')+'">').join('')+'</datalist>'
     + '<button class="btn btn-primary" style="padding:9px 20px;font-size:12px" onclick="renderSopOperatorStats()">Buscar</button>'
     + '</div>'
-    + '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Se calcula sobre el período elegido arriba (📅 Período) — si lo cambias, pulsa Buscar de nuevo.</div>'
+    + '<div style="font-size:12px;color:var(--muted);margin-bottom:4px">Se calcula sobre el período elegido arriba (📅 Período) — si lo cambias, pulsa Buscar de nuevo.</div>'
     + '<div id="sop-op-result" style="margin-top:14px"></div>'
     + '</div>';
 }
@@ -7772,28 +8143,28 @@ function renderSopOperatorStats() {
 
   resEl.innerHTML =
     '<div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px">👤 '+realNameOnly(name)+' <span style="color:var(--muted);font-weight:500;font-size:11px">· '+fmtDate(from)+' a '+fmtDate(to)+' · La Sexta '+totalL6+' / Antena 3 '+totalA3+'</span></div>'
-    + sectionHdr('Actividad', '#38bdf8')
+    + sectionHdr('Actividad', 'var(--sky)')
     + '<div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px">'
-    + miniStatCard(total, 'Total coberturas', '#38bdf8')
-    + miniStatCard(fmtHM(tiempoTotal), 'Horas totales', '#38bdf8')
-    + miniStatCard(diasPresente, 'Días presente', '#38bdf8')
-    + miniStatCard(diasConCobertura, 'Días con cobertura', '#38bdf8')
+    + miniStatCard(total, 'Total coberturas', 'var(--sky)')
+    + miniStatCard(fmtHM(tiempoTotal), 'Horas totales', 'var(--sky)')
+    + miniStatCard(diasPresente, 'Días presente', 'var(--sky)')
+    + miniStatCard(diasConCobertura, 'Días con cobertura', 'var(--sky)')
     + miniStatCard(diasPresenteSinCobertura, 'Días presente sin cobertura', 'var(--warn)')
     + '</div>'
     + '<div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px">'
-    + miniStatCardMedia(mediaCobDiaPresente, 'coberturas / día presente', '#38bdf8')
-    + miniStatCardMedia(mediaCobDiaActivo, 'coberturas / día con cobertura', '#38bdf8')
-    + miniStatCardMedia(fmtHM(mediaTiempo), 'tiempo / cobertura', '#38bdf8')
+    + miniStatCardMedia(mediaCobDiaPresente, 'coberturas / día presente', 'var(--sky)')
+    + miniStatCardMedia(mediaCobDiaActivo, 'coberturas / día con cobertura', 'var(--sky)')
+    + miniStatCardMedia(fmtHM(mediaTiempo), 'tiempo / cobertura', 'var(--sky)')
     + '</div>'
     + sectionHdr('Entre semana vs fin de semana', 'var(--muted)')
     + '<div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px">'
-    + miniStatCard(totalWeekday, 'Coberturas entre semana (L–V)', '#38bdf8')
+    + miniStatCard(totalWeekday, 'Coberturas entre semana (L–V)', 'var(--sky)')
     + miniStatCard(totalWeekend, 'Coberturas fin de semana (S–D)', 'var(--warn)')
     + '</div>'
     + sectionHdr('Equipamiento', '#8b5cf6')
     + '<div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px">'
-    + miniStatCard(liveu1, 'Salidas Live-U · 1 op.', '#60a5fa')
-    + miniStatCard(liveu2, 'Salidas Live-U · 2 ops.', '#a78bfa')
+    + miniStatCard(liveu1, 'Salidas Live-U · 1 op.', 'var(--blue)')
+    + miniStatCard(liveu2, 'Salidas Live-U · 2 ops.', 'var(--purple)')
     + miniStatCard(wificamN, 'Salidas WifiCam', '#ec4899')
     + miniStatCard(viajesN, 'Viajes', 'var(--warn)')
     + miniStatCard(mineAsSegundo.length, 'Veces como 2º operador', 'var(--muted)')
@@ -7819,13 +8190,13 @@ function unionStatBox(totalHoras, mediaSemana, mediaDia, color) {
   return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px">'
     + '<div style="display:flex;flex-direction:column;gap:2px">'
     + bigNum(totalHoras.toFixed(1)+'h', color)
-    + '<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600">Horas sindicales en el período</div>'
+    + '<div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600">Horas sindicales en el período</div>'
     + '</div>'
     + '<div style="border-top:1px solid var(--border);padding-top:8px;display:flex;gap:16px">'
     + '<div style="flex:1"><div style="font-family:Barlow Condensed,sans-serif;font-size:22px;font-weight:800;color:'+color+'99">'+mediaSemana.toFixed(1)+'h</div>'
-    + '<div style="font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Media/semana</div></div>'
+    + '<div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Media/semana</div></div>'
     + '<div style="flex:1"><div style="font-family:Barlow Condensed,sans-serif;font-size:22px;font-weight:800;color:'+color+'99">'+mediaDia.toFixed(1)+'h</div>'
-    + '<div style="font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Media/día</div></div>'
+    + '<div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Media/día</div></div>'
     + '</div></div>';
 }
 
@@ -7850,7 +8221,7 @@ function openAddUnionHours(opName) {
     + '<div class="form-group"><label>🕐 Hora de fin</label><input type="time" id="uh-fin"></div>'
     + '</div>';
   document.getElementById('modal-actions').innerHTML =
-    '<button class="btn btn-primary" style="background:#a78bfa;border-color:#a78bfa" onclick="saveUnionHours(\''+(opName||'').replace(/'/g,"\\'")+'\')">Guardar</button>'
+    '<button class="btn btn-primary" style="background:var(--purple);border-color:var(--purple)" onclick="saveUnionHours(\''+(opName||'').replace(/'/g,"\\'")+'\')">Guardar</button>'
     + '<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>';
   document.getElementById('modal').classList.add('open');
 }
@@ -7904,7 +8275,7 @@ function openEditUnionHours(id) {
     + '<div class="form-group"><label>🕐 Hora de fin</label><input type="time" id="euh-fin" value="'+(r.hora_fin||'').slice(0,5)+'"></div>'
     + '</div>';
   document.getElementById('modal-actions').innerHTML =
-    '<button class="btn btn-primary" style="background:#a78bfa;border-color:#a78bfa" onclick="saveEditUnionHours(\''+id+'\')">Guardar</button>'
+    '<button class="btn btn-primary" style="background:var(--purple);border-color:var(--purple)" onclick="saveEditUnionHours(\''+id+'\')">Guardar</button>'
     + '<button class="btn" style="background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:var(--danger)" onclick="deleteUnionHours(\''+id+'\')">🗑 Eliminar</button>'
     + '<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>';
   document.getElementById('modal').classList.add('open');
@@ -8419,7 +8790,7 @@ function openExportModal() {
   document.getElementById('modal-actions').innerHTML =
     '<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>'
     + '<button class="btn" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text)" onclick="runAdvancedExport(\'xlsx\')">📊 Exportar XLSX</button>'
-    + '<button class="btn" style="background:#38bdf8;color:#0d0f14" onclick="runAdvancedExport(\'pdf\')">📄 Exportar PDF</button>';
+    + '<button class="btn" style="background:var(--sky);color:var(--on-accent)" onclick="runAdvancedExport(\'pdf\')">📄 Exportar PDF</button>';
 
   ['exp-from','exp-to','exp-prod','exp-del','exp-op','exp-liveu','exp-wificam','exp-viaje','exp-sospechosa'].forEach(id => {
     const elm = document.getElementById(id);
@@ -8587,13 +8958,13 @@ function openEditCobertura(id) {
     + '<input id="ec-op2" list="ec-op-list" value="'+(a.operador2_nombre||'').replace(/"/g,'&quot;')+'" style="font-size:13px">'
     + '<datalist id="ec-op-list">'+opOptions+'</datalist></div></div>'
     + '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-top:4px">'
-    + '<div style="font-size:10px;color:var(--ok);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">🕐 Salida</div>'
+    + '<div style="font-size:12px;color:var(--ok);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">🕐 Salida</div>'
     + '<div class="form-row" style="margin-bottom:0">'
     + '<div class="form-group"><label>Fecha de salida</label><input type="date" id="ec-salida-fecha" value="'+salidaDate+'"></div>'
     + '<div class="form-group"><label>Hora de salida</label><input type="time" id="ec-salida" value="'+salidaHM+'"></div>'
     + '</div></div>'
     + '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-top:10px">'
-    + '<div style="font-size:10px;color:var(--l6);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">🕐 Regreso</div>'
+    + '<div style="font-size:12px;color:var(--l6);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">🕐 Regreso</div>'
     + '<div class="form-row" style="margin-bottom:0">'
     + '<div class="form-group"><label>Fecha de regreso</label><input type="date" id="ec-regreso-fecha" value="'+regresoDate+'"></div>'
     + '<div class="form-group"><label>Hora de regreso</label><input type="time" id="ec-regreso" value="'+regresoHM+'"></div>'
@@ -8806,7 +9177,7 @@ function scobMetrics() {
 
 function scobCard(title, color, big, bigLbl, lines) {
   return '<div style="background:var(--bg3);border:1px solid var(--border);border-top:3px solid '+color+';border-radius:10px;padding:14px 16px">'
-    + '<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:'+color+';font-weight:700;margin-bottom:6px">'+title+'</div>'
+    + '<div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:'+color+';font-weight:700;margin-bottom:6px">'+title+'</div>'
     + '<div style="font-size:30px;font-weight:800;color:#fff;line-height:1">'+big+'</div>'
     + '<div style="font-size:11px;color:var(--muted);margin:2px 0 8px">'+bigLbl+'</div>'
     + lines.map(l => '<div style="display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:4px 0;border-top:1px solid var(--border)">'
@@ -8818,7 +9189,7 @@ function renderStatsCoberturasBody() {
   const el = document.getElementById('scob-body');
   if (!el) return;
   const d = scobGetData();
-  const cols = [['GLOBAL','#e8eaf0',d.G],['LA SEXTA','var(--l6)',d.L6],['ANTENA 3','var(--a3)',d.A3]];
+  const cols = [['GLOBAL','var(--text)',d.G],['LA SEXTA','var(--l6)',d.L6],['ANTENA 3','var(--a3)',d.A3]];
   const grid = inner => '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px">'+inner+'</div>';
   const n = v => v.toLocaleString('es-ES');
 
@@ -8827,7 +9198,7 @@ function renderStatsCoberturasBody() {
     + grid(cols.map(([t,c,s]) => scobCard(t, c, n(s.total), 'coberturas en el período',
         t==='GLOBAL' ? [['La Sexta', n(d.L6.total)+' · '+scobPctTxt(d.L6.total, s.total)], ['Antena 3', n(d.A3.total)+' · '+scobPctTxt(d.A3.total, s.total)]]
                      : [['Peso sobre el global', scobPctTxt(s.total, d.G.total)]])).join(''))
-    + sectionHdr('📡 Live-U', '#60a5fa')
+    + sectionHdr('📡 Live-U', 'var(--blue)')
     + grid(cols.map(([t,c,s]) => scobCard(t, c, n(s.liveu), 'con Live-U · '+scobPctTxt(s.liveu, s.total)+' del total', [
         ['👤 Operador solo', n(s.liveuSolo)+' · '+scobPctTxt(s.liveuSolo, s.liveu)],
         ['👥 Acompañado', n(s.liveuAcomp)+' · '+scobPctTxt(s.liveuAcomp, s.liveu)],
@@ -8936,12 +9307,12 @@ async function renderStatsMant() {
 
     // External expense button
     + '<div style="display:flex;justify-content:flex-end;margin-bottom:8px">'
-    + '<button onclick="openAddExternalMant()" style="background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.35);border-radius:8px;color:#c084fc;padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer">+ Gasto equipo externo / alquiler</button>'
+    + '<button onclick="openAddExternalMant()" style="background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.35);border-radius:8px;color:var(--violet);padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer">+ Gasto equipo externo / alquiler</button>'
     + '</div>'
 
     // Stats histórico — with delegation filter
     + '<div style="display:flex;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 16px;margin-bottom:8px;flex-wrap:wrap">'
-    + '<span style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Delegación</span>'
+    + '<span style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Delegación</span>'
     + '<select id="smant-del" onchange="renderStatsMantBody()" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:5px 10px;font-size:12px">'
     + '<option value="">Todas</option><option value="MADRID">Madrid</option><option value="PAÍS VASCO">P.Vasco</option><option value="GALICIA">Galicia</option><option value="VALENCIA">Valencia</option>'
     + '</select>'
@@ -9008,9 +9379,9 @@ function renderMantPanel() {
     return '<div data-camcode="'+c.code+'" style="background:var(--bg3);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer" onclick="openMantHistory(this.dataset.camcode)">'
       + '<span style="font-family:Barlow Condensed,sans-serif;font-size:20px;font-weight:800;color:'+mc+'">'+dn+'</span>'
       + '<span class="prod-badge '+(c.prod==='A3'?'a3':'l6')+'">'+(c.prod==='L6'?'L6':'A3')+'</span>'
-      + '<span style="font-size:10px;color:var(--muted)">'+c.del+'</span>'
-      + '<button onclick="event.stopPropagation();window._mantLiberar(this)" data-mcode="'+c.code+'" style="margin-left:auto;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:5px;color:var(--ok);padding:3px 8px;font-size:10px;cursor:pointer">✓ Liberar</button>'
-      + '<button onclick="event.stopPropagation();openMantHistory(this.dataset.camcode)" data-camcode="'+c.code+'" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:5px;color:var(--warn);padding:3px 8px;font-size:10px;cursor:pointer">🔧 Historial</button>'
+      + '<span style="font-size:12px;color:var(--muted)">'+c.del+'</span>'
+      + '<button onclick="event.stopPropagation();window._mantLiberar(this)" data-mcode="'+c.code+'" style="margin-left:auto;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:5px;color:var(--ok);padding:3px 8px;font-size:12px;cursor:pointer">✓ Liberar</button>'
+      + '<button onclick="event.stopPropagation();openMantHistory(this.dataset.camcode)" data-camcode="'+c.code+'" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:5px;color:var(--warn);padding:3px 8px;font-size:12px;cursor:pointer">🔧 Historial</button>'
       + '</div>';
   }).join('');
 }
@@ -9057,22 +9428,22 @@ function renderStatsMantBody() {
     + '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">'
     + '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px">'
     + '<div style="font-family:Barlow Condensed,sans-serif;font-size:36px;font-weight:800;color:var(--danger)">'+totalMants+'</div>'
-    + '<div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Entradas taller</div></div>'
+    + '<div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Entradas taller</div></div>'
     + '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px">'
     + '<div style="font-family:Barlow Condensed,sans-serif;font-size:36px;font-weight:800;color:var(--warn)">'+totalDias+'d</div>'
-    + '<div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Días en taller</div></div>'
+    + '<div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Días en taller</div></div>'
     + '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px">'
-    + '<div style="font-family:Barlow Condensed,sans-serif;font-size:36px;font-weight:800;color:#84cc16">'+(totalCosteMants>0?totalCosteMants.toLocaleString('es-ES')+'€':'—')+'</div>'
-    + '<div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Coste total</div></div>'
+    + '<div style="font-family:Barlow Condensed,sans-serif;font-size:36px;font-weight:800;color:var(--lime)">'+(totalCosteMants>0?totalCosteMants.toLocaleString('es-ES')+'€':'—')+'</div>'
+    + '<div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Coste total</div></div>'
     + '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px">'
     + '<div style="font-family:Barlow Condensed,sans-serif;font-size:36px;font-weight:800;color:var(--muted)">'+(totalMants>0?(totalDias/totalMants).toFixed(1):'—')+'d</div>'
-    + '<div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Media días/entrada</div></div>'
+    + '<div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Media días/entrada</div></div>'
     + '</div>'
     + '<div style="display:flex;gap:8px;margin-top:10px">'
     + '<div style="flex:1;background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.25);border-radius:8px;padding:8px 12px;font-size:12px">'
-    + '<span style="color:#c084fc;font-weight:700">🔶 Externos / alquiler</span> — '+mantsExt.length+' gasto(s) · <b style="color:#c084fc">'+(costeExt>0?costeExt.toLocaleString('es-ES')+'€':'—')+'</b></div>'
+    + '<span style="color:var(--violet);font-weight:700">🔶 Externos / alquiler</span> — '+mantsExt.length+' gasto(s) · <b style="color:var(--violet)">'+(costeExt>0?costeExt.toLocaleString('es-ES')+'€':'—')+'</b></div>'
     + '<div style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12px">'
-    + '<span style="color:var(--text);font-weight:700">📷 Inventario propio</span> — '+mantsProp.length+' entrada(s) · <b style="color:#84cc16">'+(costeProp>0?costeProp.toLocaleString('es-ES')+'€':'—')+'</b></div>'
+    + '<span style="color:var(--text);font-weight:700">📷 Inventario propio</span> — '+mantsProp.length+' entrada(s) · <b style="color:var(--lime)">'+(costeProp>0?costeProp.toLocaleString('es-ES')+'€':'—')+'</b></div>'
     + '</div>'
     + (totalMants===0 ? '<div style="font-size:12px;color:var(--muted);margin-top:10px">Aún no hay entradas de mantenimiento registradas. Usa el botón 🔧 Mant. en la ficha de cada cámara para añadir reparaciones.</div>' : '')
     + '</div>';
@@ -9116,17 +9487,17 @@ function renderStatsMantBody() {
       + sectionHdr(label, color)
       + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">'
       + statBox(totalAver, 'Averías período', mediaMesAver, 'Media/mes', 'var(--danger)')
-      + statBox(costeMant>0?costeMant.toLocaleString('es-ES')+'€':'—', '€ Reparaciones', costeMant>0?mediaMesCoste+'€/mes':'—', 'Media €/mes', '#84cc16')
+      + statBox(costeMant>0?costeMant.toLocaleString('es-ES')+'€':'—', '€ Reparaciones', costeMant>0?mediaMesCoste+'€/mes':'—', 'Media €/mes', 'var(--lime)')
       + statBox(diasMant+'d', 'Días en taller', mediaDiasEntrada!=='—'?mediaDiasEntrada+'d':'—', 'Media días/entrada', 'var(--warn)')
       + '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">'
-      + '<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600">Averías por modelo</div>'
+      + '<div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600">Averías por modelo</div>'
       + modelBarChart(modelCounts)
       + '</div>'
       + '</div>'
-      + (Object.keys(byCam).length ? '<div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Equipos con más entradas en taller</div>'
+      + (Object.keys(byCam).length ? '<div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Equipos con más entradas en taller</div>'
         + Object.entries(byCam).sort((a,b)=>b[1].total-a[1].total).slice(0,8).map(([k,d])=>{
             const clickable = d.code ? ' data-code="'+d.code+'" onclick="openMantHistory(this.dataset.code)" style="cursor:pointer"' : '';
-            return '<div'+clickable+'>'+rankBar(k, d.total, maxA, d.coste>0?d.coste.toLocaleString('es-ES')+'€':'sin coste', d.externo?'#c084fc':'var(--danger)')+'</div>';
+            return '<div'+clickable+'>'+rankBar(k, d.total, maxA, d.coste>0?d.coste.toLocaleString('es-ES')+'€':'sin coste', d.externo?'var(--violet)':'var(--danger)')+'</div>';
           }).join('')
         : '<div style="color:var(--muted);font-size:12px">Sin entradas registradas</div>')
       + '</div>';
@@ -9193,51 +9564,34 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateClockWidget() {
   const widget = document.getElementById('clock-widget');
   if (!widget) return;
-  const camView = document.getElementById('view-camaras');
-  const visible = camView && camView.style.display !== 'none';
-  widget.style.display = visible ? '' : 'none';
-  if (!visible) return;
   const now = new Date();
-  const dateStr = now.toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'long' });
-  const yy = String(now.getFullYear()).slice(-2);
-  document.getElementById('clock-date').textContent = dateStr + " · '" + yy;
+  widget.title = now.toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  document.getElementById('clock-date').textContent = now.toLocaleDateString('es-ES', { weekday:'short', day:'numeric', month:'short' }).replace(/\./g,'');
   document.getElementById('clock-time').textContent = now.toLocaleTimeString('es-ES', { hour:'2-digit', minute:'2-digit' });
 }
 updateClockWidget();
 setInterval(updateClockWidget, 10000);
 
+
+// ── Modo claro / oscuro ─────────────────────────────────
+function txTheme() { return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'; }
+function updateThemeToggle() {
+  const b = document.getElementById('theme-toggle');
+  if (!b) return;
+  const dark = txTheme() === 'dark';
+  b.innerHTML = dark ? '☀️ <span>Claro</span>' : '🌙 <span>Oscuro</span>';
+  b.setAttribute('aria-label', dark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+}
+function toggleTheme() {
+  const next = txTheme() === 'dark' ? 'light' : 'dark';
+  if (next === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+  else document.documentElement.removeAttribute('data-theme');
+  try { localStorage.setItem('tx_theme', next); } catch(e) {}
+  updateThemeToggle();
+  // Los gráficos (canvas) no leen variables CSS: se redibuja la vista actual
+  if (window._txLastView && document.querySelector('canvas')) { try { showView(window._txLastView); } catch(e) {} }
+}
+updateThemeToggle();
 </script>
-<!-- RELOJ DASHBOARD CÁMARAS -->
-<div id="clock-widget" style="
-  position:fixed; top:64px; right:16px; z-index:400;
-  background:linear-gradient(135deg, var(--bg2), var(--bg3));
-  border:1px solid rgba(249,115,22,.35); border-radius:14px;
-  padding:16px 30px; text-align:right;
-  box-shadow:0 8px 28px rgba(0,0,0,.5), 0 0 0 1px rgba(249,115,22,.08);
-  display:none;
-">
-  <div id="clock-date" style="font-size:16px;font-weight:700;color:#38bdf8;text-transform:capitalize;white-space:nowrap;letter-spacing:.3px"></div>
-  <div id="clock-time" style="font-family:Barlow Condensed,sans-serif;font-size:48px;font-weight:800;color:#f97316;line-height:1.15;white-space:nowrap;letter-spacing:1px"></div>
-</div>
-<!-- ZOOM CONTROL -->
-<div id="zoom-pill" style="
-  position:fixed; bottom:16px; left:16px; z-index:500;
-  background:var(--bg2); border:1px solid var(--border2); border-radius:20px;
-  display:flex; align-items:center; gap:8px; padding:6px 12px;
-  box-shadow:0 4px 16px rgba(0,0,0,.4);
-  transition:opacity .2s;
-" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='.6'"
-style="opacity:.6">
-  <button onclick="applyZoom(parseInt(document.getElementById('zoom-slider').value)-10)"
-    style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 2px">−</button>
-  <input type="range" id="zoom-slider" min="60" max="130" value="100" step="5"
-    style="width:70px;accent-color:var(--a3);cursor:pointer"
-    oninput="applyZoom(this.value)">
-  <button onclick="applyZoom(parseInt(document.getElementById('zoom-slider').value)+10)"
-    style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 2px">+</button>
-  <span id="zoom-val" style="font-size:11px;color:var(--muted);min-width:30px;text-align:center">100%</span>
-  <button onclick="applyZoom(100)" title="Reset"
-    style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;padding:0">↺</button>
-</div>
 </body>
 </html>
