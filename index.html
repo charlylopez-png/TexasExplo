@@ -1056,6 +1056,67 @@ header {
   .cam-model-label { padding:2px 8px; min-height:0; }
   .cam-card-num .cn-num { font-size:34px !important; }
 }
+/* ════════════════════════════════════════════════════════════
+   PANEL B 2026-11 · tablero de cámaras de un vistazo
+   Libre = ficha verde maciza · Salida = borde azul · Viaje = morado
+   Mantenimiento = borde discontinuo ámbar · WifiCAM violeta · Live-U naranja/azul
+   ════════════════════════════════════════════════════════════ */
+:root { --acc-wifi:#7c3aed; --acc-liveu-a:#ea580c; --acc-liveu-b:#1d4ed8; --acc-ink:#ffffff; }
+:root[data-theme="dark"] { --acc-wifi:#7c3aed; --acc-liveu-a:#ea580c; --acc-liveu-b:#2563eb; --acc-ink:#ffffff; }
+
+/* Fichas de la misma altura en cada fila, pie siempre abajo */
+.cam-model-cards { align-items:stretch; }
+.cam-card { display:flex; flex-direction:column; border-width:2px; }
+.cam-card-bottom { margin-top:auto; padding-top:4px; }
+.cam-card-bottom .ok-dot, .cam-card-bottom .mant-dot { display:none; }
+
+/* Etiqueta de modelo: bloque oscuro con libres */
+.cam-model-label { background:var(--text); color:var(--bg2); border-left:none !important; border-radius:8px; padding:8px 10px; align-self:stretch; justify-content:center; }
+.cam-model-label > span:first-child { color:var(--bg2) !important; }
+.cam-model-label .cam-model-count { color:var(--bg2); }
+.cam-model-free { font:600 12px/1.2 'Barlow',sans-serif; letter-spacing:0; text-transform:none; opacity:.85; }
+
+/* DISPONIBLE: verde macizo, salta a la vista */
+.cam-card.st-libre { background:var(--ok); border-color:var(--ok); color:var(--on-accent); }
+.cam-card.st-libre:hover { background:color-mix(in srgb, var(--ok) 88%, var(--text)); border-color:var(--ok); }
+.cam-card.st-libre .cam-status { background:transparent; color:var(--on-accent); border-bottom-color:color-mix(in srgb, var(--on-accent) 30%, transparent); }
+.cam-card.st-libre .cam-card-code,
+.cam-card.st-libre .cn-model,
+.cam-card.st-libre .cn-num,
+.cam-card.st-libre .cam-card-model { color:var(--on-accent) !important; }
+.cam-card.st-libre .prod-badge,
+.cam-card.st-libre .cam-reserva,
+.cam-card.st-libre .cam-nota-tag,
+.cam-card.st-libre .cam-chip { background:var(--bg2); }
+.cam-card.st-libre .cam-card-accent { background:transparent !important; }
+
+/* EN SALIDA: blanca con borde azul */
+.cam-card.st-salida, .cam-card.assigned.st-salida { background:var(--bg2); border-color:var(--blue); }
+.cam-card.st-salida .cam-status.salida { background:var(--blue); border-color:var(--blue); color:var(--on-accent); }
+.cam-card.st-salida .cam-salida { background:color-mix(in srgb, var(--blue) 8%, var(--bg2)); border-color:color-mix(in srgb, var(--blue) 35%, transparent); }
+.cam-card.st-salida .cam-salida-op svg { color:var(--blue); }
+
+/* VIAJE: borde morado */
+.cam-card.st-viaje, .cam-card.assigned.st-viaje { background:var(--bg2); border-color:var(--purple); }
+.cam-card.st-viaje .cam-status.salida { background:var(--purple); border-color:var(--purple); color:var(--on-accent); }
+.cam-card.st-viaje .cam-salida { background:color-mix(in srgb, var(--purple) 8%, var(--bg2)); border-color:color-mix(in srgb, var(--purple) 35%, transparent); }
+
+/* MANTENIMIENTO: discontinuo ámbar */
+.cam-card.st-mant { border:2px dashed var(--warn); background:color-mix(in srgb, var(--warn) 9%, var(--bg2)); }
+/* CUSTODIA (apagada en casa): discontinuo morado */
+.cam-card.st-custodia { border:2px dashed var(--purple); }
+/* FUERA (en otra delegación) y VISITA: turquesa */
+.cam-card.st-fuera { border-color:var(--cyan); }
+.cam-card.st-fuera .cam-status.fuera { background:var(--cyan); color:var(--on-accent); }
+.cam-card.st-visita { border-color:var(--cyan); }
+.cam-card.st-visita .cam-status.visita { background:color-mix(in srgb, var(--cyan) 14%, var(--bg2)); color:var(--cyan); }
+
+/* Accesorios: WifiCAM violeta · Live-U naranja/azul */
+.acc-badge { display:inline-flex; align-items:center; gap:4px; padding:2px 6px; border-radius:6px; font:700 11px/1.2 'Barlow',sans-serif; color:var(--acc-ink); white-space:nowrap; max-width:100%; overflow:hidden; }
+.acc-badge > span { overflow:hidden; text-overflow:ellipsis; }
+.acc-badge svg { flex-shrink:0; }
+.acc-badge.wificam { background:var(--acc-wifi); }
+.acc-badge.liveu { background:linear-gradient(135deg, var(--acc-liveu-a) 50%, var(--acc-liveu-b) 50%); }
 </style>
 </head>
 <body>
@@ -3167,6 +3228,17 @@ function renderCamSelection() {
     <button class="cam-sel-clear" onclick="clearCamFilters()">✕ Limpiar</button>`;
 }
 
+// Iconos de accesorios (WifiCAM / Live-U) en las fichas del tablero
+const ACC_ICONS = {
+  wificam: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8.5a15 15 0 0 1 20 0"/><path d="M5.5 12a10 10 0 0 1 13 0"/><path d="M9 15.5a5 5 0 0 1 6 0"/><path d="M12 19h.01"/></svg>',
+  liveu: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4"/><path d="M7.8 16.2a6 6 0 0 1 0-8.4"/><path d="M19.1 4.9a10 10 0 0 1 0 14.2"/><path d="M4.9 19.1a10 10 0 0 1 0-14.2"/></svg>'
+};
+function accBadge(kind, unidad) {
+  const label = kind === 'wificam' ? 'WifiCAM' : 'Live-U';
+  const short = String(unidad).replace(/^(wifi ?cam|live-?u)[\s\-_·:]*/i, '') || label;
+  return '<span class="acc-badge ' + kind + '" title="' + label + ' ' + unidad + '">' + ACC_ICONS[kind] + '<span>' + short + '</span></span>';
+}
+
 function renderCameras() {
   renderCamStats();
   renderCamSelection();
@@ -3208,7 +3280,8 @@ function renderCameras() {
     else if (fromOrigin)   { stCls = 'fuera';    stTxt = '↗ Fuera · ' + c.temp_del; }
     else if (isAssigned)   { stCls = 'salida';   stTxt = (c.en_viaje ? '✈ Viaje' : '● Salida') + (horaS ? ' · ' + horaS : ''); }
     else if (fromDest)     { stCls = 'visita';   stTxt = '↙ De ' + c.del; }
-    return `<div class="cam-card ${isMant?'en-mant':''} ${isCustodia?'custodia-card':''} ${dispClass} ${isAssigned?'assigned':''}"
+    const stCard = (stCls === 'salida' && c.en_viaje) ? 'viaje' : stCls;
+    return `<div class="cam-card st-${stCard} ${isMant?'en-mant':''} ${isCustodia?'custodia-card':''} ${dispClass} ${isAssigned?'assigned':''}"
       data-cam-code="${safeCode}"
       onclick="openCamDetail('${safeCode}')"
       draggable="true"
@@ -3243,8 +3316,8 @@ function renderCameras() {
       ${c.reservaManana ? `<div class="cam-reserva" title="Reserva para mañana: ${c.reservaManana.operador}${c.reservaManana.cobertura?' — '+c.reservaManana.cobertura:''}">📅 Mañana${horaR?' '+horaR:''}: <b>${aliasOnly(c.reservaManana.operador)}</b></div>` : ''}
       <div class="cam-card-bottom">
         ${isVis?`<span class="cam-chip visual">${c.empresa||'ALQUILER'}</span>`:''}
-        ${c.liveu?'<span class="cam-chip liveu">📡 '+(c.liveu_unidad||'Live-U')+'</span>':''}
-        ${c.wificam?'<span class="cam-chip wificam">📶 '+(c.wificam_unidad||'WifiCam')+'</span>':''}
+        ${c.wificam?accBadge('wificam', c.wificam_unidad||'WifiCam'):''}
+        ${c.liveu?accBadge('liveu', c.liveu_unidad||'Live-U'):''}
         <div class="${isMant?'mant-dot':'ok-dot'}" style="margin-left:auto;${c.asignado_a?'background:var(--ok);box-shadow:0 0 6px rgba(34,197,94,.7)':''}"></div>
       </div>
       <div style="height:2px;background:var(--cam-${c.modelo.toLowerCase()},var(--muted));opacity:.6"></div>
@@ -3271,6 +3344,7 @@ function renderCameras() {
         <div class="cam-model-label" style="border-left-color:${modelColor}">
           <span style="color:${modelColor}" title="Sony PXW-${modelo}">${modelo}</span>
           <span class="cam-model-count">${cams.filter(c => !c.temp_del || c.temp_del === camFilters.del).length}</span>
+          <span class="cam-model-free">${(n => n + (n === 1 ? ' libre' : ' libres'))(cams.filter(c => !c.temp_del && !c.asignado_a && c.estado !== 'mantenimiento' && c.estado !== 'custodia').length)}</span>
         </div>
         <div class="cam-model-cards"
           ondragover="event.preventDefault()"
